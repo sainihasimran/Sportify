@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sportify">
         <activity
+            android:name=".HomescreenActivity"
+            android:exported="true" />
+        <activity
             android:name=".loginActivity"
             android:exported="true" />
         <activity android:name=".MainActivity">

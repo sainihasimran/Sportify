@@ -15,9 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.google.android.material.textfield.TextInputLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar bar;
     FirebaseAuth mAuth;
     String fuser;
-
-   // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void gotosignin(View view) {
+    public void gotologin(View view) {
         startActivity(new Intent(MainActivity.this, loginActivity.class));
     }
 
-    public void singup(View view) {
+    public void adminsingup(View view) {
         bar.setVisibility(View.VISIBLE);
 
         String brname = brandname.getEditText().getText().toString();
