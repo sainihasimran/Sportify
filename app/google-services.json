@@ -1,10 +1,7 @@
 {
   "project_info": {
     "project_number": "1012491882693",
-<<<<<<< HEAD
     "firebase_url": "https://sportify-5484f-default-rtdb.firebaseio.com",
-=======
->>>>>>> origin/master
     "project_id": "sportify-5484f",
     "storage_bucket": "sportify-5484f.appspot.com"
   },
@@ -17,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1012491882693-psfer17t283gsemke1sn0nk10pg2o5o0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cegep.sportify",
+            "certificate_hash": "814d0d9c2547f156b91c9e234218178b5d8748cd"
+          }
+        },
         {
           "client_id": "1012491882693-9856c47ol46qudejstuugogqq7omm1qu.apps.googleusercontent.com",
           "client_type": 3
