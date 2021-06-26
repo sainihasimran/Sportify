@@ -1,6 +1,10 @@
 {
   "project_info": {
     "project_number": "1012491882693",
+<<<<<<< HEAD
+    "firebase_url": "https://sportify-5484f-default-rtdb.firebaseio.com",
+=======
+>>>>>>> origin/master
     "project_id": "sportify-5484f",
     "storage_bucket": "sportify-5484f.appspot.com"
   },
