@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/orders"
+            android:title="Your Orders"
+            android:icon="@drawable/yourorders"/>
+
+        <item android:id="@+id/savedItems"
+            android:title="Saved Items"
+            android:icon="@drawable/saveditems"/>
+
+        <item android:id="@+id/reset"
+            android:icon="@drawable/resetpassword"
+            android:title="Reset Password"/>
+
+        <item android:id="@+id/editAddress"
+            android:title="Saved Items"
+            android:icon="@drawable/editaddress"/>
+
+        <item android:id="@+id/equipment"
+            android:title="Saved Items"
+            android:icon="@drawable/equipment"/>
+
+        <item android:id="@+id/logout"
+            android:icon="@drawable/logout"
+            android:title="Logout"/>
+
+
+
+    </group>
+</menu>
