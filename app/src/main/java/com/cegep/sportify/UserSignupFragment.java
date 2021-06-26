@@ -1,0 +1,226 @@
+package com.cegep.sportify;
+
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.UUID;
+
+
+public class UserSignupFragment extends Fragment {
+
+
+    DatabaseReference DatabaseReference ;
+    //FirebaseStorage fbaseStorage = FirebaseStorage.getInstance();
+   // StorageReference storageRef = fbaseStorage.getReference();
+
+    DatePickerDialog.OnDateSetListener setListener;
+    public UserSignupFragment() {
+        // Required empty public constructor
+    }
+
+    //private ImagePickerLauncher imagepickerLauncher = null;
+
+    Button btnsign;
+    TextInputLayout txtmail, txtpswd,firstname, lastname,txtcpswd;
+    EditText edate;
+    TextView tvlogin;
+    ProgressBar bar;
+    String fuser;
+   // ImageView img;
+    FirebaseAuth fauth;
+//    Uri imguri;
+//    Intent idata;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_signupragment, container, false);
+
+        btnsign = view.findViewById(R.id.btnsign);
+        tvlogin = view.findViewById(R.id.btnlog);
+        edate = view.findViewById(R.id.dob);
+        firstname = (TextInputLayout) view.findViewById(R.id.fname);
+        lastname = (TextInputLayout) view.findViewById(R.id.lname);
+        txtmail = (TextInputLayout) view.findViewById(R.id.email);
+        txtpswd = (TextInputLayout) view.findViewById(R.id.pwd);
+        txtcpswd = (TextInputLayout) view.findViewById(R.id.cnfpwd);
+        bar = (ProgressBar) view.findViewById(R.id.progressBar3);
+
+        fauth = FirebaseAuth.getInstance();
+        DatabaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+        Calendar calendar =Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+//        if(fauth.getCurrentUser() != null)
+//        {
+//            LoginFragment fragment2 = new LoginFragment();
+//            FragmentManager fragmentManager = getFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.fragment_container, fragment2);
+//            fragmentTransaction.commit();
+//
+//        }
+
+        edate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Disable future dates
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(Calendar.MONTH, month);
+                                calendar.set(Calendar.YEAR, year);
+                                calendar.set(Calendar.DAY_OF_MONTH, day);
+
+                                long dob = calendar.getTimeInMillis();
+                            }
+                        },year, month, day);
+                datePickerDialog.show();
+                
+            }
+        });
+
+        btnsign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                bar.setVisibility(View.VISIBLE);
+
+                String email = txtmail.getEditText().getText().toString();
+                String password = txtpswd.getEditText().getText().toString();
+                String cpassword = txtcpswd.getEditText().getText().toString();
+                String fname = firstname.getEditText().getText().toString();
+                String lname = lastname.getEditText().getText().toString();
+                String dob = edate.getText().toString();
+
+                if (dob.isEmpty() == true) {
+                    bar.setVisibility(View.INVISIBLE);
+                    edate.setError("DOB field is empty!");
+                }
+                else if (fname.isEmpty() == true) {
+                    bar.setVisibility(View.INVISIBLE);
+                    firstname.setError("First name field is empty!");
+                }
+               else if (lname.isEmpty() == true) {
+                    bar.setVisibility(View.INVISIBLE);
+                    lastname.setError("Last name field is empty!");
+                }
+                else if (TextUtils.isEmpty(email)) {
+                    bar.setVisibility(View.INVISIBLE);
+                    txtmail.setError("Email is Required.");
+                }
+
+                else if (TextUtils.isEmpty(password)) {
+                    bar.setVisibility(View.INVISIBLE);
+                    txtpswd.setError("Password is Required.");
+                }
+
+               else if (password.length() < 9) {
+                    bar.setVisibility(View.INVISIBLE);
+                    txtpswd.setError("Length of password is not less than 9.");
+                }
+               else if (!password.equals(cpassword)) {
+                    bar.setVisibility(View.INVISIBLE);
+                    txtcpswd.setError("Password not matched!");
+                }
+               else {
+
+                    fauth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                bar.setVisibility(View.INVISIBLE);
+
+                                fuser = fauth.getCurrentUser().getUid();
+
+                                LoginFragment fragment2 = new LoginFragment();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.fragment_container, fragment2);
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity().getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
+
+//
+                                String email = txtmail.getEditText().getText().toString();
+                                Users user = new Users(email,fname,lname);
+                                user.firstname = fname;
+                                DatabaseReference.push().setValue(user);
+
+                            } else {
+                                bar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getActivity().getApplicationContext()
+                                        , "Registeration Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    });
+                }
+            }
+        });
+
+
+        tvlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LoginFragment fragment2 = new LoginFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment2);
+                fragmentTransaction.commit();
+
+            }
+        });
+        return view;
+    }
+}
