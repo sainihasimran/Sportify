@@ -5,4 +5,9 @@
 
     <string name="drawer_open">Hello blank fragment</string>
     <string name="drawer_close">Hello blank fragment</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="saved_card">Saved Card</string>
+    <string name="saved_address">Saved Address</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="user_profile">User Profile</string>
 </resources>
