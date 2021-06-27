@@ -42,7 +42,6 @@ public class UserSignupFragment extends Fragment {
 
     Button btnsign;
     TextInputLayout txtmail, txtpswd,firstname, lastname,txtcpswd;
-    EditText edate;
     TextView tvlogin;
     ProgressBar bar;
 
@@ -55,7 +54,7 @@ public class UserSignupFragment extends Fragment {
 
         btnsign = view.findViewById(R.id.btnsign);
         tvlogin = view.findViewById(R.id.btnlog);
-        edate = view.findViewById(R.id.dob);
+
         firstname = (TextInputLayout) view.findViewById(R.id.fname);
         lastname = (TextInputLayout) view.findViewById(R.id.lname);
         txtmail = (TextInputLayout) view.findViewById(R.id.email);
@@ -71,25 +70,6 @@ public class UserSignupFragment extends Fragment {
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        edate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Disable future dates
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month++;
-                                String date =  day+"/"+month+"/"+year;
-                                edate.setText(date);
-
-                            }
-                        },year, month, day);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-
-            }
-        });
 
         btnsign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,13 +82,14 @@ public class UserSignupFragment extends Fragment {
                 String cpassword = txtcpswd.getEditText().getText().toString();
                 String fname = firstname.getEditText().getText().toString();
                 String lname = lastname.getEditText().getText().toString();
-                String dob = edate.getText().toString();
 
-                if (dob.isEmpty() == true) {
-                    bar.setVisibility(View.INVISIBLE);
-                    edate.setError("DOB field is empty!");
-                }
-                else if (fname.isEmpty() == true) {
+                firstname.setError(null);
+                lastname.setError(null);
+                txtmail.setError(null);
+                txtpswd.setError(null);
+                txtcpswd.setError(null);
+
+                if (fname.isEmpty() == true) {
                     bar.setVisibility(View.INVISIBLE);
                     firstname.setError("First name field is empty!");
                 }
@@ -128,7 +109,7 @@ public class UserSignupFragment extends Fragment {
 
                else if (password.length() < 9) {
                     bar.setVisibility(View.INVISIBLE);
-                    txtpswd.setError("Length of password is not less than 9.");
+                    txtpswd.setError("Min password length is 9");
                 }
                else if (!password.equals(cpassword)) {
                     bar.setVisibility(View.INVISIBLE);
@@ -143,7 +124,7 @@ public class UserSignupFragment extends Fragment {
                                 bar.setVisibility(View.INVISIBLE);
 
                                 String email = txtmail.getEditText().getText().toString();
-                                User user = new User(email, fname, lname, dob);
+                                User user = new User(email, fname, lname, 0);
                                 user.firstname = fname;
 
                                 DatabaseReference userDatabaseReference = DatabaseReference.push();

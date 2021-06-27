@@ -4,7 +4,9 @@ public class User {
 
     public String userId;
     public String firstname, lastname;
-    public String email,date;
+    public String email;
+
+    long dob;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -15,14 +17,14 @@ public class User {
         this.firstname = other.firstname;
         this.lastname = other.lastname;
         this.email = other.email;
-        this.date = other.date;
+        this.dob = other.dob;
     }
 
-    public User(String email, String firstname, String lastname, String date) {
+    public User(String email, String firstname, String lastname, long dob) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.date = date;
+        this.dob = dob;
 
     }
 }
