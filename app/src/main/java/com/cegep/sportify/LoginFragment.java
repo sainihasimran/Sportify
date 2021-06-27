@@ -21,6 +21,12 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.content.ContentValues.TAG;
 
@@ -83,9 +89,37 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), task -> {
                     if (task.isSuccessful())
                     {
-                        Intent intent = new Intent(requireActivity(), MainActivity.class);
-                        startActivity(intent);
-                        requireActivity().finish();
+                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                        DatabaseReference databaseReference  = firebaseDatabase.getReference("Users");
+                        Query query = databaseReference.orderByChild("email").equalTo(currentUser.getEmail());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                DataSnapshot userSnapshot = null;
+                                for (DataSnapshot child : snapshot.getChildren()) {
+                                    userSnapshot = child;
+                                }
+
+                                User user = userSnapshot.getValue(User.class);
+                                SportifyApp.user = user;
+
+                                if (user == null) {
+                                    Toast.makeText(requireContext(), "Failed to login", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    requireActivity().finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), "Authenticate Failed!", Toast.LENGTH_SHORT).show();
                     }

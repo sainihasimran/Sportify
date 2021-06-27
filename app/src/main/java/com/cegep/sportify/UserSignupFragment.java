@@ -150,6 +150,8 @@ public class UserSignupFragment extends Fragment {
                                 user.userId = userDatabaseReference.getKey();
                                 userDatabaseReference.setValue(user);
 
+                                SportifyApp.user = user;
+
                                 Intent intent = new Intent(requireActivity(), MainActivity.class);
                                 startActivity(intent);
                                 requireActivity().finish();
