@@ -16,7 +16,7 @@
         <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Splash">
