@@ -10,4 +10,8 @@
     <string name="saved_address">Saved Address</string>
     <string name="reset_password">Reset Password</string>
     <string name="user_profile">User Profile</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="update_profile">Update Profile</string>
 </resources>

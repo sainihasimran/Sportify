@@ -22,7 +22,7 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.user_profile_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }
