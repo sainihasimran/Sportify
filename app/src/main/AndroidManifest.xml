@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"

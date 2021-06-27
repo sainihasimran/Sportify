@@ -70,20 +70,11 @@ public class LoginFragment extends Fragment {
         joinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Here you can redirect to SignUp fragment
-
+                Intent intent = new Intent(requireActivity(), SignUpActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
             }
         });
-    }
-
-    public void onStart() {
-        super.onStart();
-
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            // For sending in drashboard and not login each time
-            Toast.makeText(getActivity().getApplicationContext(), "User Already Signin.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void doSignin(String email, String pass)
@@ -92,7 +83,9 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), task -> {
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(getActivity().getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(requireActivity(), MainActivity.class);
+                        startActivity(intent);
+                        requireActivity().finish();
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), "Authenticate Failed!", Toast.LENGTH_SHORT).show();
                     }
