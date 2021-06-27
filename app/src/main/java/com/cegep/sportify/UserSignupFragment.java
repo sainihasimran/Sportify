@@ -55,15 +55,9 @@ public class UserSignupFragment extends Fragment {
 
 
     DatabaseReference DatabaseReference ;
-    //FirebaseStorage fbaseStorage = FirebaseStorage.getInstance();
-   // StorageReference storageRef = fbaseStorage.getReference();
-
-    DatePickerDialog.OnDateSetListener setListener;
     public UserSignupFragment() {
         // Required empty public constructor
     }
-
-    //private ImagePickerLauncher imagepickerLauncher = null;
 
     Button btnsign;
     TextInputLayout txtmail, txtpswd,firstname, lastname,txtcpswd;
@@ -71,11 +65,7 @@ public class UserSignupFragment extends Fragment {
     TextView tvlogin;
     ProgressBar bar;
     String fuser;
-   // ImageView img;
     FirebaseAuth fauth;
-//    Uri imguri;
-//    Intent idata;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,15 +89,6 @@ public class UserSignupFragment extends Fragment {
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
-//        if(fauth.getCurrentUser() != null)
-//        {
-//            LoginFragment fragment2 = new LoginFragment();
-//            FragmentManager fragmentManager = getFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.fragment_container, fragment2);
-//            fragmentTransaction.commit();
-//
-//        }
 
         edate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,14 +98,13 @@ public class UserSignupFragment extends Fragment {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int day) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.MONTH, month);
-                                calendar.set(Calendar.YEAR, year);
-                                calendar.set(Calendar.DAY_OF_MONTH, day);
+                                month++;
+                                String date =  day+"/"+month+"/"+year;
+                                edate.setText(date);
 
-                                long dob = calendar.getTimeInMillis();
                             }
                         },year, month, day);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
                 
             }
@@ -190,9 +170,8 @@ public class UserSignupFragment extends Fragment {
                                 fragmentTransaction.commit();
                                 Toast.makeText(getActivity().getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
 
-//
                                 String email = txtmail.getEditText().getText().toString();
-                                Users user = new Users(email,fname,lname);
+                                Users user = new Users(email,fname,lname,dob);
                                 user.firstname = fname;
                                 DatabaseReference.push().setValue(user);
 
