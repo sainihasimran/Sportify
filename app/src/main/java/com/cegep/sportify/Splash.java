@@ -14,17 +14,13 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        setContentView(R.layout.activity_splash);
         imageView=findViewById(R.id.imageView);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.clockwise);
-        imageView.startAnimation(animation);
 
         Thread timer=new Thread()
         {
             public void run() {
                 try {
-                    sleep(5000);
+                    sleep(1000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -41,13 +37,12 @@ public class Splash extends AppCompatActivity {
                    */
 
                     Intent i = new Intent(Splash.this, MainActivity.class);
-                    finish();
                     startActivity(i);
+                    finish();
 
                 }
             }
         };
         timer.start();
-
     }
 }
