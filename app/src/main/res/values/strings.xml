@@ -14,4 +14,9 @@
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="update_profile">Update Profile</string>
+    <string name="orders">My Orders</string>
+    <string name="saved_items">Saved Items</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
 </resources>
