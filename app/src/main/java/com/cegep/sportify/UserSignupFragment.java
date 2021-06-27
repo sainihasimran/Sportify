@@ -150,6 +150,9 @@ public class UserSignupFragment extends Fragment {
                                 user.userId = userDatabaseReference.getKey();
                                 userDatabaseReference.setValue(user);
 
+                                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                startActivity(intent);
+                                requireActivity().finish();
                             } else {
                                 bar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getActivity().getApplicationContext()
