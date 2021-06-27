@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Sportify">
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity android:name=".MainActivity" />
 
