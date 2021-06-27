@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/user_profile_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/user_profile"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.3"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/reset_password_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/reset_password"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.3"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/saved_address_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/saved_address"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.3"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/saved_card_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/saved_card"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.3"
+        android:background="@color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_out_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/sign_out" />
+
+</LinearLayout>

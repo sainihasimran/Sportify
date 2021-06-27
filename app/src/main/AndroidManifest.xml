@@ -7,27 +7,27 @@
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Sportify">
-
+        android:name=".SportifyApp"
+        android:theme="@style/Theme.Sportify"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity android:name=".MainActivity" />
-
         <activity android:name=".Splash">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

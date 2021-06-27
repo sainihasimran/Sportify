@@ -1,25 +1,14 @@
 package com.cegep.sportify;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,28 +16,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+import com.google.firebase.database.DatabaseReference;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
-import java.util.UUID;
 
 
 public class UserSignupFragment extends Fragment {
@@ -61,10 +42,9 @@ public class UserSignupFragment extends Fragment {
 
     Button btnsign;
     TextInputLayout txtmail, txtpswd,firstname, lastname,txtcpswd;
-    EditText edate;
     TextView tvlogin;
     ProgressBar bar;
-    String fuser;
+
     FirebaseAuth fauth;
 
     @Override
@@ -74,7 +54,7 @@ public class UserSignupFragment extends Fragment {
 
         btnsign = view.findViewById(R.id.btnsign);
         tvlogin = view.findViewById(R.id.btnlog);
-        edate = view.findViewById(R.id.dob);
+
         firstname = (TextInputLayout) view.findViewById(R.id.fname);
         lastname = (TextInputLayout) view.findViewById(R.id.lname);
         txtmail = (TextInputLayout) view.findViewById(R.id.email);
@@ -90,25 +70,6 @@ public class UserSignupFragment extends Fragment {
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        edate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Disable future dates
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month++;
-                                String date =  day+"/"+month+"/"+year;
-                                edate.setText(date);
-
-                            }
-                        },year, month, day);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-                
-            }
-        });
 
         btnsign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,13 +82,14 @@ public class UserSignupFragment extends Fragment {
                 String cpassword = txtcpswd.getEditText().getText().toString();
                 String fname = firstname.getEditText().getText().toString();
                 String lname = lastname.getEditText().getText().toString();
-                String dob = edate.getText().toString();
 
-                if (dob.isEmpty() == true) {
-                    bar.setVisibility(View.INVISIBLE);
-                    edate.setError("DOB field is empty!");
-                }
-                else if (fname.isEmpty() == true) {
+                firstname.setError(null);
+                lastname.setError(null);
+                txtmail.setError(null);
+                txtpswd.setError(null);
+                txtcpswd.setError(null);
+
+                if (fname.isEmpty() == true) {
                     bar.setVisibility(View.INVISIBLE);
                     firstname.setError("First name field is empty!");
                 }
@@ -147,7 +109,7 @@ public class UserSignupFragment extends Fragment {
 
                else if (password.length() < 9) {
                     bar.setVisibility(View.INVISIBLE);
-                    txtpswd.setError("Length of password is not less than 9.");
+                    txtpswd.setError("Min password length is 9");
                 }
                else if (!password.equals(cpassword)) {
                     bar.setVisibility(View.INVISIBLE);
@@ -161,20 +123,19 @@ public class UserSignupFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 bar.setVisibility(View.INVISIBLE);
 
-                                fuser = fauth.getCurrentUser().getUid();
-
-                                LoginFragment fragment2 = new LoginFragment();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.fragment_container, fragment2);
-                                fragmentTransaction.commit();
-                                Toast.makeText(getActivity().getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
-
                                 String email = txtmail.getEditText().getText().toString();
-                                Users user = new Users(email,fname,lname,dob);
+                                User user = new User(email, fname, lname, 0);
                                 user.firstname = fname;
-                                DatabaseReference.push().setValue(user);
 
+                                DatabaseReference userDatabaseReference = DatabaseReference.push();
+                                user.userId = userDatabaseReference.getKey();
+                                userDatabaseReference.setValue(user);
+
+                                SportifyApp.user = user;
+
+                                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                startActivity(intent);
+                                requireActivity().finish();
                             } else {
                                 bar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getActivity().getApplicationContext()
@@ -191,13 +152,9 @@ public class UserSignupFragment extends Fragment {
         tvlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                LoginFragment fragment2 = new LoginFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment2);
-                fragmentTransaction.commit();
-
+                Intent intent = new Intent(requireActivity(), LoginActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
             }
         });
         return view;
