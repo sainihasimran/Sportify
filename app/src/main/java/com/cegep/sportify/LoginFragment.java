@@ -1,5 +1,6 @@
 package com.cegep.sportify;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Here you can redirect to SignUp fragment
+
             }
         });
     }
@@ -91,7 +93,6 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful())
                     {
                         Toast.makeText(getActivity().getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
-                        
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), "Authenticate Failed!", Toast.LENGTH_SHORT).show();
                     }
