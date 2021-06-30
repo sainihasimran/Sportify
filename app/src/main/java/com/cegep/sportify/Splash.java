@@ -32,21 +32,17 @@ public class Splash extends AppCompatActivity {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 } finally {
-                  /*  if ( !(fuser == null))
-                    {
-                        Intent i = new Intent(Splash.this, MainActivity.class);
-                        finish();
-                        startActivity(i);
-                    }
 
-                   */
 
+                    /* User Authentication using FirebaseAuth Service*/
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     if (currentUser == null) {
                         Intent intent = new Intent(Splash.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
+                        /*Functionality for existing User*/
+                        /* User Data will be captured and extracted into the view variables*/
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                         DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
                         Query query = databaseReference.orderByChild("email").equalTo(currentUser.getEmail());
