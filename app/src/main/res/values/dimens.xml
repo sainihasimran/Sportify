@@ -7,4 +7,6 @@
     <dimen name="size_xl">32dp</dimen>
     <dimen name="size_xxl">48dp</dimen>
     <dimen name="size_xxxl">52dp</dimen>
+
+    <dimen name="size_button_size">@dimen/size_l</dimen>
 </resources>

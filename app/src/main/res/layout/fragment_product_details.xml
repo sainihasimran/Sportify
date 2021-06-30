@@ -125,43 +125,89 @@
             android:id="@+id/sizes_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_l"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/available_sizes_label">
 
-            <RadioButton
-                android:id="@+id/xs_size_button"
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/x_small_size_text" />
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/xs_size_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_radio_button_background"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/x_small_size_text"
+                android:textColor="@color/circular_radio_button_text_color" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/s_size_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_radio_button_background"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/small_size_text"
+                android:textColor="@color/circular_radio_button_text_color" />
+
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/small_size_text" />
+                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/m_size_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_radio_button_background"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/medium_size_text"
+                android:textColor="@color/circular_radio_button_text_color" />
+
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/medium_size_text" />
+                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/l_size_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_radio_button_background"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/large_size_text"
+                android:textColor="@color/circular_radio_button_text_color" />
+
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/large_size_text" />
+                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/xl_size_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_radio_button_background"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/x_large_size_text"
+                android:textColor="@color/circular_radio_button_text_color" />
+
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/x_large_size_text" />
+                android:layout_weight="1" />
 
         </RadioGroup>
 
