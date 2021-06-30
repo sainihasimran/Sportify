@@ -31,6 +31,53 @@
             app:layout_constraintTop_toBottomOf="@id/product_title_text"
             tools:background="@color/grey" />
 
+        <ImageView
+            android:id="@+id/no_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:importantForAccessibility="no"
+            android:src="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@id/viewpager"
+            app:layout_constraintEnd_toEndOf="@id/viewpager"
+            app:layout_constraintStart_toStartOf="@id/viewpager"
+            app:layout_constraintTop_toTopOf="@id/viewpager" />
+
+        <TextView
+            android:id="@+id/no_image_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_images"
+            android:textAppearance="?textAppearanceCaption"
+            android:textColor="@color/black"
+            app:drawableTopCompat="@drawable/ic_no_image"
+            app:layout_constraintBottom_toBottomOf="@id/no_image"
+            app:layout_constraintEnd_toEndOf="@id/no_image"
+            app:layout_constraintStart_toStartOf="@id/no_image"
+            app:layout_constraintTop_toTopOf="@id/no_image" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/no_images_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="no_image,no_image_text" />
+
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            android:id="@+id/dots_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_s"
+            android:visibility="gone"
+            app:dotsColor="@color/black"
+            app:dotsSize="@dimen/size_m"
+            app:dotsSpacing="@dimen/size_s"
+            app:dotsStrokeColor="@color/black"
+            app:dotsStrokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewpager"
+            tools:visibility="visible" />
+
         <TextView
             android:id="@+id/product_price"
             android:layout_width="wrap_content"
@@ -240,6 +287,18 @@
             app:layout_constraintTop_toBottomOf="@id/available_colors_label"
             tools:visibility="visible" />
 
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/available_colors_label">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Sportify.Chip.Choice"
+                android:layout_width="@dimen/size_xxxl"
+                android:layout_height="@dimen/size_xxxl" />
+
+        </com.google.android.material.chip.ChipGroup>
+
         <RadioButton
             android:id="@+id/colors_group"
             android:layout_width="match_parent"
@@ -262,6 +321,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_l"
             android:text="@string/add_to_cart"
+            app:icon="@drawable/ic_add_shopping_cart"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/size_l"
             app:layout_constraintTop_toBottomOf="@id/colors_barrier"
             app:strokeColor="@color/black" />
 
@@ -271,6 +333,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_s"
             android:text="@string/buy_now"
+            app:icon="@drawable/ic_money"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/size_l"
+            app:iconTint="@color/white"
             app:layout_constraintTop_toBottomOf="@id/add_to_cart_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

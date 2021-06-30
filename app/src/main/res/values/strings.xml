@@ -36,4 +36,5 @@
     <string name="no_colors_available_text">No colors available at this time</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="buy_now">Buy Now</string>
+    <string name="no_images">No Images</string>
 </resources>

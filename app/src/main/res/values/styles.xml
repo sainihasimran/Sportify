@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Sportify.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="shapeAppearance">@style/ShapeAppearance.Sportify.SmallComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.Sportify.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">100%</item>
+        <item name="cornerRadius">2dp</item>
+    </style>
+</resources>
