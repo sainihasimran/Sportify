@@ -21,6 +21,23 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
 
         Toolbar topAppBar = findViewById(R.id.toolbar);
+        topAppBar.inflateMenu(R.menu.menu_home);
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_filter) {
+
+                return true;
+            } else if (item.getItemId() == R.id.action_search) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            else if (item.getItemId() == R.id.action_cart) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
         topAppBar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(Gravity.LEFT));
 
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -40,4 +57,5 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }
