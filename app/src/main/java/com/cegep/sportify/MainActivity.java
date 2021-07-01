@@ -29,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
+            else if (item.getItemId() == R.id.orders) {
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(intent);
+                return true;
+
+            }
+
             return false;
         });
     }

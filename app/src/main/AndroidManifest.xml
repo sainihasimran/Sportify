@@ -16,6 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".SignUpActivity"></activity>
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".OrderActivity" />
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
