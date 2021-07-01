@@ -18,9 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class DashboardFragment extends Fragment {
 
     private boolean isShowingProducts = true;
-
     public DashboardFragment() {
-        // Required empty public constructor
     }
 
     @Override
