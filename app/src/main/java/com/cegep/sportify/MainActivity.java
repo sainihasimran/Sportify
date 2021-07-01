@@ -11,8 +11,6 @@ import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             else if (item.getItemId() == R.id.action_cart) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -57,5 +55,4 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
-
 }

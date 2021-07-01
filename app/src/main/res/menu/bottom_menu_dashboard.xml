@@ -5,11 +5,11 @@
         android:id="@+id/action_clothing"
         android:enabled="true"
         android:icon="@drawable/ic_clothing"
-        android:title="@string/clothing" />
+        android:title="Cloathing" />
 
     <item
         android:id="@+id/action_equipment"
         android:enabled="true"
         android:icon="@drawable/ic_equipment"
-        android:title="@string/equipments" />
+        android:title="Equipment" />
 </menu>
