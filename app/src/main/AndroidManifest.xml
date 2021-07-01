@@ -14,10 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".CartActivity"></activity>
+
+        <activity android:name=".productdetails.ProductDetailsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"
             android:exported="true" />
+
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ProfileActivity" />
@@ -26,11 +37,6 @@
             android:exported="true" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
