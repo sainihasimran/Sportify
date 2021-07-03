@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".productdetails.ProductDetailsActivity">
+    tools:context=".details.productdetails.ProductDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,6 +28,6 @@
         android:name="com.cegep.sportify.productdetails.ProductDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".productdetails.ProductDetailsActivity" />
+        tools:context=".details.productdetails.ProductDetailsActivity" />
 
 </LinearLayout>

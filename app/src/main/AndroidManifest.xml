@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".productdetails.ProductDetailsActivity" />
+        <activity android:name=".details.productdetails.ProductDetailsActivity" />
 
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"

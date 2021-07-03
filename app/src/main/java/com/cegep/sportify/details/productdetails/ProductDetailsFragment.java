@@ -1,4 +1,4 @@
-package com.cegep.sportify.productdetails;
+package com.cegep.sportify.details.productdetails;
 
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -17,18 +17,22 @@ import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.R;
+import com.cegep.sportify.details.QuantityFragment;
+import com.cegep.sportify.details.QuantitySelectedListener;
 import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Product;
 import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
-public class ProductDetailsFragment extends Fragment {
+public class ProductDetailsFragment extends Fragment implements QuantitySelectedListener {
 
     private Product product;
 
     private String selectedSize;
 
     private String selectedColor;
+
+    private boolean isBuyMode = false;
 
     @Nullable
     @Override
@@ -171,12 +175,10 @@ public class ProductDetailsFragment extends Fragment {
     private void setupAddToCart(View view) {
         Button addToCartButton = view.findViewById(R.id.add_to_cart_button);
         addToCartButton.setEnabled(!product.isOutOfStock());
-        addToCartButton.findViewById(R.id.add_to_cart_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isProductValid()) {
-
-                }
+        addToCartButton.findViewById(R.id.add_to_cart_button).setOnClickListener(v -> {
+            if (isProductValid()) {
+                showQuantityFragment();
+                isBuyMode = false;
             }
         });
     }
@@ -184,12 +186,10 @@ public class ProductDetailsFragment extends Fragment {
     private void setupBuyNow(View view) {
         Button buyNowButton = view.findViewById(R.id.buy_now_button);
         buyNowButton.setEnabled(!product.isOutOfStock());
-        buyNowButton.findViewById(R.id.buy_now_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isProductValid()) {
-                    
-                }
+        buyNowButton.findViewById(R.id.buy_now_button).setOnClickListener(v -> {
+            if (isProductValid()) {
+                showQuantityFragment();
+                isBuyMode = true;
             }
         });
     }
@@ -205,5 +205,16 @@ public class ProductDetailsFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void showQuantityFragment() {
+        QuantityFragment quantityFragment = new QuantityFragment();
+        quantityFragment.setTargetFragment(ProductDetailsFragment.this, 0);
+        quantityFragment.show(getParentFragmentManager(), null);
+    }
+
+    @Override
+    public void onQuantitySelected(int quantity) {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.cegep.sportify.productdetails;
+package com.cegep.sportify.details.productdetails;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
