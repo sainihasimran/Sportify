@@ -288,16 +288,13 @@
             tools:visibility="visible" />
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/color_chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/available_colors_label">
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Sportify.Chip.Choice"
-                android:layout_width="@dimen/size_xxxl"
-                android:layout_height="@dimen/size_xxxl" />
-
-        </com.google.android.material.chip.ChipGroup>
+            android:layout_marginTop="@dimen/size_l"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/available_colors_label"
+            tools:visibility="visible" />
 
         <RadioButton
             android:id="@+id/colors_group"

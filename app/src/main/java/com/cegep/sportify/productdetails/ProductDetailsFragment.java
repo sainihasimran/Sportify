@@ -2,6 +2,7 @@ package com.cegep.sportify.productdetails;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
@@ -17,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.R;
 import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Product;
+import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 public class ProductDetailsFragment extends Fragment {
@@ -24,6 +27,8 @@ public class ProductDetailsFragment extends Fragment {
     private Product product;
 
     private String selectedSize;
+
+    private String selectedColor;
 
     @Nullable
     @Override
@@ -145,9 +150,16 @@ public class ProductDetailsFragment extends Fragment {
     }
 
     private void setupProductColors(View view) {
-        RadioGroup colorsRadioGroup = view.findViewById(R.id.colors_group);
+        ChipGroup colorsRadioGroup = view.findViewById(R.id.colors_group);
         TextView noColorsTextView = view.findViewById(R.id.no_colors_text);
         if (product.hasColors()) {
+            LayoutInflater inflater = LayoutInflater.from(requireContext());
+            for (final String color : product.getColors()) {
+                View chip = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
+                chip.setOnClickListener(v -> selectedColor = color);
+                colorsRadioGroup.addView(chip);
+            }
+
             colorsRadioGroup.setVisibility(View.VISIBLE);
             noColorsTextView.setVisibility(View.GONE);
         } else {
@@ -162,7 +174,9 @@ public class ProductDetailsFragment extends Fragment {
         addToCartButton.findViewById(R.id.add_to_cart_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isProductValid()) {
 
+                }
             }
         });
     }
@@ -173,8 +187,23 @@ public class ProductDetailsFragment extends Fragment {
         buyNowButton.findViewById(R.id.buy_now_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (isProductValid()) {
+                    
+                }
             }
         });
+    }
+
+    private boolean isProductValid() {
+        if (product.hasColors() && TextUtils.isEmpty(selectedColor)) {
+            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!product.isOutOfStock() && TextUtils.isEmpty(selectedSize)) {
+            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
