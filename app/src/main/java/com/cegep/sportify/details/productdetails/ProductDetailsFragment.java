@@ -195,6 +195,11 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     }
 
     private boolean isProductValid() {
+        if (product.isOutOfStock()) {
+            Toast.makeText(requireContext(), "Currently out of stock. Check back at a later time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (product.hasColors() && TextUtils.isEmpty(selectedColor)) {
             Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
             return false;

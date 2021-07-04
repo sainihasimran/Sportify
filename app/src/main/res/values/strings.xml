@@ -40,4 +40,9 @@
     <string name="select_quantity">Select quantity</string>
     <string name="_1">1</string>
     <string name="done">Done</string>
+    <string name="cart_total">Cart Total:</string>
+    <string name="checkout">Checkout</string>
+    <string name="shopping_cart_size">Size: %s</string>
+    <string name="shopping_cart_sport">Sport: %s</string>
+    <string name="shopping_cart">Shopping Cart</string>
 </resources>

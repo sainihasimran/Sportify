@@ -1,0 +1,23 @@
+package com.cegep.sportify;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class Utils {
+
+    public static DatabaseReference getShoppingCartReference() {
+        return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
+    }
+
+    public static DatabaseReference getProductReference(String productId) {
+        return getAdminDatabase().getReference("Products").child(productId);
+    }
+
+    public static DatabaseReference getEquipmentReference(String equipmentId) {
+        return getAdminDatabase().getReference("Equipments").child(equipmentId);
+    }
+
+    public static FirebaseDatabase getAdminDatabase() {
+        return FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+    }
+}
