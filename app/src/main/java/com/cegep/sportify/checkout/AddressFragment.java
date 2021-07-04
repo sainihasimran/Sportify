@@ -1,6 +1,7 @@
 package com.cegep.sportify.checkout;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ public class AddressFragment extends Fragment {
     private EditText cityEditText;
     private EditText provinceEditText;
     private EditText postalCodeEditText;
+    private EditText phoneNumberEditText;
 
     private final Address address = new Address();
 
@@ -44,6 +46,7 @@ public class AddressFragment extends Fragment {
         setupCityEditText(view);
         setupProvinceEditText(view);
         setupPostalCodeEditText(view);
+        setupPhoneNumberEditText(view);
         setupSaveButton(view);
 
         Utils.getAddressReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -56,12 +59,14 @@ public class AddressFragment extends Fragment {
                     cityEditText.setText(address.getCity());
                     provinceEditText.setText(address.getProvince());
                     postalCodeEditText.setText(address.getPostalCode());
+                    phoneNumberEditText.setText(address.getPhoneNumber());
 
                     setSelection(suiteNumberEditText);
                     setSelection(streetAddressEditText);
                     setSelection(cityEditText);
                     setSelection(provinceEditText);
                     setSelection(postalCodeEditText);
+                    setSelection(phoneNumberEditText);
                 }
             }
 
@@ -163,6 +168,27 @@ public class AddressFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 address.setPostalCode(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void setupPhoneNumberEditText(View view) {
+        phoneNumberEditText = view.findViewById(R.id.phone_number_input);
+        phoneNumberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                address.setPhoneNumber(s.toString());
             }
 
             @Override

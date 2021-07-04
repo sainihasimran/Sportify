@@ -16,6 +16,8 @@ public class Address {
 
     private String postalCode;
 
+    private String phoneNumber;
+
     public String getSuiteNumber() {
         return suiteNumber;
     }
@@ -56,6 +58,14 @@ public class Address {
         this.postalCode = postalCode;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public boolean isValid(Context context) {
         if (TextUtils.isEmpty(suiteNumber)) {
             Toast.makeText(context, "Please enter suite number", Toast.LENGTH_SHORT).show();
@@ -74,6 +84,11 @@ public class Address {
 
         if (TextUtils.isEmpty(postalCode)) {
             Toast.makeText(context, "Please enter postal code", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(phoneNumber)) {
+            Toast.makeText(context, "Please enter phone number", Toast.LENGTH_SHORT).show();
             return false;
         }
 

@@ -53,4 +53,11 @@
     <string name="save_address_hint">Use this address for future deliveries</string>
     <string name="save">Save</string>
     <string name="address">Address</string>
+    <string name="no_addresses_text">No addresses found</string>
+    <string name="add_address">Add Address</string>
+    <string name="delivery">Delivery</string>
+    <string name="edit">Edit</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="next">Next</string>
+    <string name="shipping">Shipping</string>
 </resources>
