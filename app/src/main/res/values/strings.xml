@@ -45,4 +45,12 @@
     <string name="shopping_cart_size">Size: %s</string>
     <string name="shopping_cart_sport">Sport: %s</string>
     <string name="shopping_cart">Shopping Cart</string>
+    <string name="suite_input_hint">Apt. or Building #</string>
+    <string name="street_address">Street Address</string>
+    <string name="city">City</string>
+    <string name="state_province_region">State/Province/Region</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="save_address_hint">Use this address for future deliveries</string>
+    <string name="save">Save</string>
+    <string name="address">Address</string>
 </resources>

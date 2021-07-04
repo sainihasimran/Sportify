@@ -85,15 +85,12 @@ public class ProfileFragment extends Fragment {
 
     private void updateUser(User user) {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId);
-        userReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    SportifyApp.user = user;
-                    endUpdateUser();
-                } else {
-                    Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show();
-                }
+        userReference.setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                SportifyApp.user = user;
+                endUpdateUser();
+            } else {
+                Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show();
             }
         });
     }

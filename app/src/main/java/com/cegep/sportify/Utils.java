@@ -5,6 +5,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Utils {
 
+    public static DatabaseReference getUserReference() {
+        return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId);
+    }
+
+    public static DatabaseReference getAddressReference() {
+        return getUserReference().child("Address");
+    }
+
     public static DatabaseReference getShoppingCartReference() {
         return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
     }
