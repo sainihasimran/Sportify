@@ -39,6 +39,7 @@
         <activity android:name=".checkout.ShoppingCartActivity" />
         <activity android:name=".checkout.AddressActivity" />
         <activity android:name=".checkout.ShippingActivity" />
+        <activity android:name=".checkout.PaymentActivity" />
     </application>
 
 </manifest>

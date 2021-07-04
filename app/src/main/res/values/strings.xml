@@ -40,7 +40,7 @@
     <string name="select_quantity">Select quantity</string>
     <string name="_1">1</string>
     <string name="done">Done</string>
-    <string name="cart_total">Cart Total:</string>
+    <string name="cart_total">Cart Total</string>
     <string name="checkout">Checkout</string>
     <string name="shopping_cart_size">Size: %s</string>
     <string name="shopping_cart_sport">Sport: %s</string>
@@ -60,4 +60,15 @@
     <string name="phone_number">Phone Number</string>
     <string name="next">Next</string>
     <string name="shipping">Shipping</string>
+    <string name="payment_header">Enter your payment details</string>
+    <string name="name_on_card">Name on Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry">Expiry(MM/YY)</string>
+    <string name="cvv">CVV</string>
+    <string name="save_card_text">Save card for later</string>
+    <string name="total">Total</string>
+    <string name="tax">Tax@15%</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="place_order">Place Order</string>
+    <string name="payment">Payment</string>
 </resources>

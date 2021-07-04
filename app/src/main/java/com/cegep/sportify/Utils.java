@@ -13,6 +13,10 @@ public class Utils {
         return getUserReference().child("Address");
     }
 
+    public static DatabaseReference getPaymentReference() {
+        return getUserReference().child("Payment");
+    }
+
     public static DatabaseReference getShoppingCartReference() {
         return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
     }
