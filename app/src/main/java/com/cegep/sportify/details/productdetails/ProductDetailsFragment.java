@@ -17,10 +17,13 @@ import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.R;
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.QuantityFragment;
 import com.cegep.sportify.details.QuantitySelectedListener;
 import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Product;
+import com.cegep.sportify.model.ShoppingCartItem;
 import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -220,6 +223,16 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
 
     @Override
     public void onQuantitySelected(int quantity) {
+        String cartId = Utils.getShoppingCartReference().push().getKey();
 
+        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+        shoppingCartItem.setColor(selectedColor);
+        shoppingCartItem.setSize(selectedSize);
+        shoppingCartItem.setProductId(product.getProductId());
+        shoppingCartItem.setClientId(SportifyApp.user.userId);
+        shoppingCartItem.setCartId(cartId);
+        shoppingCartItem.setQuantity(quantity);
+
+        Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem);
     }
 }
