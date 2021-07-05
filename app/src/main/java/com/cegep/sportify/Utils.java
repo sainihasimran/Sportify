@@ -2,6 +2,7 @@ package com.cegep.sportify;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.UUID;
 
 public class Utils {
 
@@ -31,5 +32,9 @@ public class Utils {
 
     public static FirebaseDatabase getAdminDatabase() {
         return FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+    }
+
+    public static String getUniqueId() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

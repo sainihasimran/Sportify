@@ -3,6 +3,8 @@ package com.cegep.sportify.model;
 import android.content.Context;
 import android.text.TextUtils;
 import com.cegep.sportify.R;
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import java.util.List;
 
 public class ShoppingCartItem {
@@ -171,5 +173,26 @@ public class ShoppingCartItem {
         }
 
         quantity -= 1;
+    }
+
+    public Order toOrder() {
+        Order order = new Order();
+        order.setOrderId(Utils.getUniqueId());
+        order.setCreatedAt(System.currentTimeMillis());
+        order.setProduct(product);
+        order.setEquipment(equipment);
+        order.setQuantity(quantity);
+        order.setSize(size);
+        order.setColor(color);
+        order.setSport(sport);
+        order.setClientId(SportifyApp.user.userId);
+        if (isProduct()) {
+            order.setAdminId(product.getAdminId());
+        } else {
+            order.setAdminId(equipment.getAdminId());
+        }
+        order.setStatus("pending");
+
+        return order;
     }
 }

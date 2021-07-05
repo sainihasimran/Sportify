@@ -25,6 +25,8 @@ public class Product {
 
     private String description;
 
+    private String adminId;
+
     private int xSmallSize = 0;
 
     private int smallSize = 0;
@@ -119,6 +121,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public int getxSmallSize() {

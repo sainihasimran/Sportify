@@ -1,5 +1,6 @@
 package com.cegep.sportify.checkout;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +13,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.R;
+import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.checkout.adapter.ShoppingCartAdapter;
 import com.cegep.sportify.model.Equipment;
+import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
 import com.google.android.gms.tasks.Task;
@@ -81,11 +84,31 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
         progress.show();
 
         Utils.getShoppingCartReference().addListenerForSingleValueEvent(valueEventListener);
+
+        setupCheckoutButton(view);
     }
 
     private void setupRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+    }
+
+    private void setupCheckoutButton(View view) {
+        view.findViewById(R.id.checkout_button).setOnClickListener(v -> {
+            if (shoppingCartAdapter != null && shoppingCartAdapter.getShoppingCartItems() != null && !shoppingCartAdapter.getShoppingCartItems()
+                    .isEmpty()) {
+                List<Order> orders = new ArrayList<>();
+                for (ShoppingCartItem shoppingCartItem : shoppingCartAdapter.getShoppingCartItems()) {
+                    orders.add(shoppingCartItem.toOrder());
+                }
+
+                SportifyApp.orders.clear();
+                SportifyApp.orders.addAll(orders);
+
+                Intent intent = new Intent(requireContext(), AddressActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -99,7 +122,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
     }
 
     private void showShoppingCartItemsList() {
-        shoppingCartAdapter = new ShoppingCartAdapter(requireContext(), shoppingCartItems);
+        shoppingCartAdapter = new ShoppingCartAdapter(requireContext(), shoppingCartItems, this);
         recyclerView.setAdapter(shoppingCartAdapter);
         updateTotalPrice();
     }

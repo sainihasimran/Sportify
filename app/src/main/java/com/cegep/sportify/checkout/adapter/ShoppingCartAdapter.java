@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.R;
+import com.cegep.sportify.checkout.ShoppingCartChangeListener;
 import com.cegep.sportify.model.ShoppingCartItem;
 import java.util.List;
 
@@ -16,9 +17,12 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
 
     private final List<ShoppingCartItem> shoppingCartItems;
 
-    public ShoppingCartAdapter(Context context, List<ShoppingCartItem> shoppingCartItems) {
+    private final ShoppingCartChangeListener shoppingCartChangeListener;
+
+    public ShoppingCartAdapter(Context context, List<ShoppingCartItem> shoppingCartItems, ShoppingCartChangeListener shoppingCartChangeListener) {
         this.context = context;
         this.shoppingCartItems = shoppingCartItems;
+        this.shoppingCartChangeListener = shoppingCartChangeListener;
     }
 
     @NonNull
@@ -26,7 +30,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
     public ShoppingCartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_shopping_cart_item, parent, false);
-        return new ShoppingCartViewHolder(view);
+        return new ShoppingCartViewHolder(view, shoppingCartChangeListener);
     }
 
     @Override
@@ -46,5 +50,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
         }
 
         return totalPrice;
+    }
+
+    public List<ShoppingCartItem> getShoppingCartItems() {
+        return shoppingCartItems;
     }
 }
