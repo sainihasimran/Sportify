@@ -19,6 +19,7 @@ import com.cegep.sportify.MainActivity;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.model.Address;
 import com.cegep.sportify.model.CreditCard;
 import com.cegep.sportify.model.Order;
 import com.google.android.gms.tasks.Task;
@@ -52,6 +53,7 @@ public class PaymentFragment extends Fragment {
 
         setupPaymentDetails(view);
         setupPaymentAmounts(view);
+        setupAddress(view);
         setupPlaceOrderButton(view);
 
         Utils.getPaymentReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -170,6 +172,22 @@ public class PaymentFragment extends Fragment {
         cartTotalTextView.setText("$" + String.format("%.2f", cartTotal));
         taxTextView.setText("$" + String.format("%.2f", taxAmount));
         totalTextView.setText("$" + String.format("%.2f", totalAmount));
+    }
+
+    private void setupAddress(View view) {
+        Address address = SportifyApp.orders.get(0).getAddress();
+
+        TextView fullNameTextView = view.findViewById(R.id.full_name_text);
+        TextView addressLine1TextView = view.findViewById(R.id.address_line_1);
+        TextView addressLine2TextView = view.findViewById(R.id.address_line_2);
+        TextView emailTextView = view.findViewById(R.id.email_text);
+        TextView phoneTextView = view.findViewById(R.id.phone_text);
+
+        fullNameTextView.setText(SportifyApp.user.getFullname());
+        addressLine1TextView.setText(address.getSuiteNumber() + ", " + address.getStreetAddress());
+        addressLine2TextView.setText(address.getCity() + ", " + address.getProvince());
+        emailTextView.setText(SportifyApp.user.email);
+        phoneTextView.setText(address.getPhoneNumber());
     }
 
     private void setupPlaceOrderButton(View view) {
