@@ -14,6 +14,7 @@ import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.model.Address;
+import com.cegep.sportify.model.Order;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -86,11 +87,13 @@ public class ShippingFragment extends Fragment {
     }
 
     private void setupNextButton(View view) {
-        view.findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        view.findViewById(R.id.next_button).setOnClickListener(v -> {
+            for (Order order : SportifyApp.orders) {
+                order.setAddress(address);
             }
+
+            Intent intent = new Intent(requireContext(), PaymentActivity.class);
+            startActivity(intent);
         });
     }
 
