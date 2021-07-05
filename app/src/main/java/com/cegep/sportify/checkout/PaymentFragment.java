@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,9 +21,13 @@ import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.model.CreditCard;
 import com.cegep.sportify.model.Order;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentFragment extends Fragment {
 
@@ -150,7 +155,21 @@ public class PaymentFragment extends Fragment {
     }
 
     private void setupPaymentAmounts(View view) {
+        TextView cartTotalTextView = view.findViewById(R.id.cart_total_text);
+        TextView taxTextView = view.findViewById(R.id.tax_text);
+        TextView totalTextView = view.findViewById(R.id.total_text);
 
+        float cartTotal = 0f;
+        for (Order order : SportifyApp.orders) {
+            cartTotal += order.getPrice();
+        }
+
+        float taxAmount = (cartTotal * 15) / 100;
+        float totalAmount = cartTotal + taxAmount;
+
+        cartTotalTextView.setText("$" + String.format("%.2f", cartTotal));
+        taxTextView.setText("$" + String.format("%.2f", taxAmount));
+        totalTextView.setText("$" + String.format("%.2f", totalAmount));
     }
 
     private void setupPlaceOrderButton(View view) {
@@ -161,23 +180,29 @@ public class PaymentFragment extends Fragment {
                     if (error != null) {
                         Toast.makeText(requireContext(), "Failed to save card details", Toast.LENGTH_SHORT).show();
                     } else {
-                        setPaymentOnOrders();
+                        placeOrders();
                     }
                 });
             } else {
-                setPaymentOnOrders();
+                placeOrders();
             }
         });
     }
 
-    private void setPaymentOnOrders() {
+    private void placeOrders() {
+        List<Task<?>> createOrderTasks = new ArrayList<>();
         for (Order order : SportifyApp.orders) {
             order.setCreditCard(creditCard);
+
+            createOrderTasks.add(Utils.getOrdersRefernece().child(order.getOrderId()).setValue(order));
         }
 
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        Task<List<Task<?>>> createOrdersTask = Tasks.whenAllSuccess(createOrderTasks);
+        createOrdersTask.addOnSuccessListener(tasks -> {
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to place orders", Toast.LENGTH_SHORT).show());
     }
 
     private void setSelection(EditText editText) {

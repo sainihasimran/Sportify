@@ -133,7 +133,7 @@ public class ShoppingCartItem {
     }
 
     public float getTotalPrice() {
-        float price = 0f;
+        float price;
         if (isProduct()) {
             if (product.isOnSale()) {
                 price = product.getSalePrice();
@@ -182,6 +182,7 @@ public class ShoppingCartItem {
         order.setProduct(product);
         order.setEquipment(equipment);
         order.setQuantity(quantity);
+        order.setPrice(getTotalPrice());
         order.setSize(size);
         order.setColor(color);
         order.setSport(sport);
