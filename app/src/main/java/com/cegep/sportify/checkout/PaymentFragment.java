@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import com.cegep.sportify.MainActivity;
 import com.cegep.sportify.R;
@@ -208,6 +209,11 @@ public class PaymentFragment extends Fragment {
     }
 
     private void placeOrders() {
+        AlertDialog progress = new AlertDialog.Builder(requireContext(), R.style.LoadingDialogStyle)
+                .setView(R.layout.item_loading)
+                .setCancelable(false)
+                .show();
+
         List<Task<?>> createOrderTasks = new ArrayList<>();
         for (Order order : SportifyApp.orders) {
             order.setCreditCard(creditCard);
@@ -217,10 +223,17 @@ public class PaymentFragment extends Fragment {
 
         Task<List<Task<?>>> createOrdersTask = Tasks.whenAllSuccess(createOrderTasks);
         createOrdersTask.addOnSuccessListener(tasks -> {
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to place orders", Toast.LENGTH_SHORT).show());
+            Utils.getShoppingCartReference().removeValue((error, ref) -> {
+                progress.dismiss();
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            });
+        }).addOnFailureListener(e -> {
+            e.printStackTrace();
+            progress.dismiss();
+            Toast.makeText(requireContext(), "Failed to place orders", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void setSelection(EditText editText) {

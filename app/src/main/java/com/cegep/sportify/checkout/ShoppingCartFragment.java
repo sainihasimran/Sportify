@@ -104,6 +104,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
 
                 SportifyApp.orders.clear();
                 SportifyApp.orders.addAll(orders);
+                SportifyApp.isBuyMode = false;
 
                 Intent intent = new Intent(requireContext(), ShippingActivity.class);
                 startActivity(intent);

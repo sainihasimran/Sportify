@@ -10,4 +10,6 @@ public class SportifyApp extends MultiDexApplication {
     public static User user = null;
 
     public static List<Order> orders = new ArrayList<>();
+
+    public static boolean isBuyMode = true;
 }

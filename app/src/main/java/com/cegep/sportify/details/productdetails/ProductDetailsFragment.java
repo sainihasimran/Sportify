@@ -229,6 +229,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     @Override
     public void onQuantitySelected(int quantity) {
         if (isBuyMode) {
+            SportifyApp.isBuyMode = true;
             Order order = product.toOrder();
             order.setSize(selectedSize);
             order.setColor(selectedColor);
