@@ -1,5 +1,6 @@
 package com.cegep.sportify.details.productdetails;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,12 +20,16 @@ import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.checkout.ShippingActivity;
 import com.cegep.sportify.details.QuantityFragment;
 import com.cegep.sportify.details.QuantitySelectedListener;
 import com.cegep.sportify.gallery.ImageAdapter;
+import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 public class ProductDetailsFragment extends Fragment implements QuantitySelectedListener {
@@ -223,16 +228,35 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
 
     @Override
     public void onQuantitySelected(int quantity) {
-        String cartId = Utils.getShoppingCartReference().push().getKey();
+        if (isBuyMode) {
+            Order order = product.toOrder();
+            order.setSize(selectedSize);
+            order.setColor(selectedColor);
 
-        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-        shoppingCartItem.setColor(selectedColor);
-        shoppingCartItem.setSize(selectedSize);
-        shoppingCartItem.setProductId(product.getProductId());
-        shoppingCartItem.setClientId(SportifyApp.user.userId);
-        shoppingCartItem.setCartId(cartId);
-        shoppingCartItem.setQuantity(quantity);
 
-        Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem);
+            SportifyApp.orders.clear();
+            SportifyApp.orders.add(order);
+
+            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            startActivity(intent);
+        } else {
+            String cartId = Utils.getShoppingCartReference().push().getKey();
+
+            ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+            shoppingCartItem.setColor(selectedColor);
+            shoppingCartItem.setSize(selectedSize);
+            shoppingCartItem.setProductId(product.getProductId());
+            shoppingCartItem.setClientId(SportifyApp.user.userId);
+            shoppingCartItem.setCartId(cartId);
+            shoppingCartItem.setQuantity(quantity);
+
+            Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem, (error, ref) -> {
+                if (error != null) {
+                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    requireActivity().finish();
+                }
+            });
+        }
     }
 }

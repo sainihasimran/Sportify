@@ -1,5 +1,7 @@
 package com.cegep.sportify.model;
 
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,5 +227,18 @@ public class Product {
 
     public boolean hasColors() {
         return !colors.isEmpty();
+    }
+
+    public Order toOrder() {
+        Order order = new Order();
+        order.setOrderId(Utils.getUniqueId());
+        order.setProduct(this);
+        order.setQuantity(1);
+        order.setPrice(price);
+        order.setClientId(SportifyApp.user.userId);
+        order.setAdminId(adminId);
+        order.setStatus("pending");
+
+        return order;
     }
 }

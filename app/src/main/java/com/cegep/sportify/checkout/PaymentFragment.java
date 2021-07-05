@@ -211,7 +211,7 @@ public class PaymentFragment extends Fragment {
         List<Task<?>> createOrderTasks = new ArrayList<>();
         for (Order order : SportifyApp.orders) {
             order.setCreditCard(creditCard);
-
+            order.setCreatedAt(System.currentTimeMillis());
             createOrderTasks.add(Utils.getOrdersRefernece().child(order.getOrderId()).setValue(order));
         }
 

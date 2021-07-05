@@ -178,7 +178,6 @@ public class ShoppingCartItem {
     public Order toOrder() {
         Order order = new Order();
         order.setOrderId(Utils.getUniqueId());
-        order.setCreatedAt(System.currentTimeMillis());
         order.setProduct(product);
         order.setEquipment(equipment);
         order.setQuantity(quantity);
