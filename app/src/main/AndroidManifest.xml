@@ -16,6 +16,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".details.productdetails.ProductDetailsActivity" />
+        <activity android:name=".details.equipmentdetails.EquipmentDetailsActivity" />
 
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"
