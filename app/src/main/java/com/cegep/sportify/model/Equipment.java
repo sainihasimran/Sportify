@@ -1,5 +1,7 @@
 package com.cegep.sportify.model;
 
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,5 +123,32 @@ public class Equipment {
 
     public boolean isOnSale() {
         return sale > 0;
+    }
+
+    public boolean isOutOfStock() {
+        return getStock() <= 0;
+    }
+
+    public float getFinalPrice() {
+        float price = this.price;
+        if (isOnSale()) {
+            price = getSalePrice();
+        }
+
+        return price;
+    }
+
+    public Order toOrder() {
+        Order order = new Order();
+        order.setOrderId(Utils.getUniqueId());
+        order.setEquipment(this);
+        order.setQuantity(1);
+        order.setPrice(getFinalPrice());
+        order.setClientId(SportifyApp.user.userId);
+        order.setAdminId(adminId);
+        order.setStatus("pending");
+        order.setSport(sport);
+
+        return order;
     }
 }

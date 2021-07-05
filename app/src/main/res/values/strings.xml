@@ -71,4 +71,6 @@
     <string name="payment_details">Payment Details</string>
     <string name="place_order">Place Order</string>
     <string name="payment">Payment</string>
+    <string name="sport">Sport</string>
+    <string name="equipment_details">Equipment Details</string>
 </resources>

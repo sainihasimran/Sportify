@@ -46,7 +46,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
     public float getTotalPrice() {
         float totalPrice = 0f;
         for (ShoppingCartItem shoppingCartItem : shoppingCartItems) {
-            totalPrice += shoppingCartItem.getTotalPrice();
+            totalPrice += shoppingCartItem.getFinalPrice();
         }
 
         return totalPrice;

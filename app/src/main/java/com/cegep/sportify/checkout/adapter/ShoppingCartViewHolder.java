@@ -61,7 +61,7 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         }
 
         itemNameTextView.setText(shoppingCartItem.getName());
-        itemPriceTextView.setText("$" + String.format("%.2f", shoppingCartItem.getTotalPrice()));
+        itemPriceTextView.setText("$" + String.format("%.2f", shoppingCartItem.getFinalPrice()));
         itemSizeTextView.setText(shoppingCartItem.getSizeString(context));
         itemQuantityTextView.setText(String.valueOf(shoppingCartItem.getQuantity()));
 
