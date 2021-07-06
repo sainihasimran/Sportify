@@ -17,6 +17,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardFragment extends Fragment {
 
+    private ProductsListFragment productListFragment;
+
     private boolean isShowingProducts = true;
     public DashboardFragment() {
     }
@@ -30,7 +32,6 @@ public class DashboardFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         showProductsFragment();
 
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
@@ -55,6 +56,11 @@ public class DashboardFragment extends Fragment {
     }
 
     private void showProductsFragment() {
+        productListFragment = new ProductsListFragment();
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, productListFragment)
+                .commit();
     }
 
 }

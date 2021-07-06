@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.cegep.sportify.Adapter.ProductAdapter;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.productdetails.ProductDetailsActivity;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,18 +25,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProductsListFragment extends Fragment {
 
     public static Product selectedProduct = null;
+
     private View emptyView;
+
     private List<Product> products = new ArrayList<>();
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             List<Product> products = new ArrayList<>();
+
+            for (DataSnapshot productDataSnapshot : snapshot.getChildren()) {
+                Product product = productDataSnapshot.getValue(Product.class);
+                products.add(product);
+            }
 
             ProductsListFragment.this.products = products;
             showProductList();
@@ -43,12 +54,12 @@ public class ProductsListFragment extends Fragment {
         @Override
         public void onCancelled(@NonNull DatabaseError error) { }
     };
-    private void showProductList() {
-    }
+
+    private ProductAdapter productAdapter;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_products_list, container, false);
     }
@@ -56,22 +67,44 @@ public class ProductsListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emptyView = view.findViewById(R.id.empty_view);
         setupRecyclerView(view);
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setApplicationId("1:311923457474:android:e27176c6832b9498fd6a5b") // Required for Analytics.
+                .setApiKey("AIzaSyCwk8W_Zm4dX6qhcJyMErRXiTceWPKpbcs") // Required for Auth.
+                .setDatabaseUrl("https://console.firebase.google.com/project/sportify-admin/database/sportify-admin-default-rtdb/data") // Required for RTDB.
+                .build();
+        FirebaseApp.initializeApp(getContext() /* Context */, options, "AdminDB");
+        // Retrieve my other app.
+        FirebaseApp app = FirebaseApp.getInstance("AdminDB");
+        // Get the database for the other app.
+//        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance(app);
+        DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("Products");
+        productsReference.addValueEventListener(valueEventListener);
+
     }
 
+
     private void setupRecyclerView(View view) {
-        ProductAdapter productAdapter= new ProductAdapter(requireContext(), (Product) this.products);
+        productAdapter= new ProductAdapter(requireContext(), (Product) this.products);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(productAdapter);
     }
 
+
     public void onClick(Product obj) {
         selectedProduct = obj;
         Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
         intent.putExtra("product_name", obj.getProductName());
         requireActivity().startActivity(intent);
+    }
+
+    private void showProductList() {
+        Set<Product> Products = new HashSet<>();
+        for (Product product : products) {
+            Products.add(product);
+        }
     }
 }
