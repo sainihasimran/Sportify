@@ -24,6 +24,8 @@ public class Order {
 
     private String adminId;
 
+    private String shoppingCartItemId;
+
     private String status;
 
     private Address address;
@@ -116,6 +118,14 @@ public class Order {
 
     public void setAdminId(String adminId) {
         this.adminId = adminId;
+    }
+
+    public String getShoppingCartItemId() {
+        return shoppingCartItemId;
+    }
+
+    public void setShoppingCartItemId(String shoppingCartItemId) {
+        this.shoppingCartItemId = shoppingCartItemId;
     }
 
     public String getStatus() {

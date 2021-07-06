@@ -99,7 +99,10 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
                     .isEmpty()) {
                 List<Order> orders = new ArrayList<>();
                 for (ShoppingCartItem shoppingCartItem : shoppingCartAdapter.getShoppingCartItems()) {
-                    orders.add(shoppingCartItem.toOrder());
+                    if ((shoppingCartItem.getProduct() != null && !shoppingCartItem.getProduct().isOutOfStock()) || (
+                            shoppingCartItem.getEquipment() != null && !shoppingCartItem.getEquipment().isOutOfStock())) {
+                        orders.add(shoppingCartItem.toOrder());
+                    }
                 }
 
                 SportifyApp.orders.clear();

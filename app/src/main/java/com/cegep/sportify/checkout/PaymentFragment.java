@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -215,20 +216,29 @@ public class PaymentFragment extends Fragment {
                 .show();
 
         List<Task<?>> createOrderTasks = new ArrayList<>();
+        List<Task<?>> removeShoppingCartItems = new ArrayList<>();
         for (Order order : SportifyApp.orders) {
             order.setCreditCard(creditCard);
             order.setCreatedAt(System.currentTimeMillis());
             createOrderTasks.add(Utils.getOrdersRefernece().child(order.getOrderId()).setValue(order));
+
+            if (!TextUtils.isEmpty(order.getShoppingCartItemId())) {
+                removeShoppingCartItems.add(Utils.getShoppingCartReference().child(order.getShoppingCartItemId()).removeValue());
+            }
         }
 
-        Task<List<Task<?>>> createOrdersTask = Tasks.whenAllSuccess(createOrderTasks);
+        Task<?> createOrdersTask = Tasks.whenAllSuccess(createOrderTasks);
+        Task<?> removeShoppingCartItemsTask = Tasks.whenAllSuccess(removeShoppingCartItems);
+
+        if (!removeShoppingCartItems.isEmpty()) {
+            createOrdersTask = createOrdersTask.continueWithTask(task -> removeShoppingCartItemsTask);
+        }
+
         createOrdersTask.addOnSuccessListener(tasks -> {
-            Utils.getShoppingCartReference().removeValue((error, ref) -> {
-                progress.dismiss();
-                Intent intent = new Intent(requireContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            });
+            progress.dismiss();
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }).addOnFailureListener(e -> {
             e.printStackTrace();
             progress.dismiss();

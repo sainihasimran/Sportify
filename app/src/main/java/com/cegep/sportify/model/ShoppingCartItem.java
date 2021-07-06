@@ -186,6 +186,7 @@ public class ShoppingCartItem {
         order.setColor(color);
         order.setSport(sport);
         order.setClientId(SportifyApp.user.userId);
+        order.setShoppingCartItemId(cartId);
         if (isProduct()) {
             order.setAdminId(product.getAdminId());
         } else {
