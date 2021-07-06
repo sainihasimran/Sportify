@@ -55,4 +55,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartViewHo
     public List<ShoppingCartItem> getShoppingCartItems() {
         return shoppingCartItems;
     }
+
+    public void handleItemDeleted(ShoppingCartItem shoppingCartItem) {
+        shoppingCartItems.remove(shoppingCartItem);
+        notifyDataSetChanged();
+    }
 }

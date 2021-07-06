@@ -54,16 +54,6 @@
         app:layout_constraintTop_toBottomOf="@id/item_price"
         tools:text="Size: M" />
 
-    <ImageButton
-        android:id="@+id/delete_button"
-        android:layout_width="@dimen/size_xxl"
-        android:layout_height="@dimen/size_xxl"
-        android:background="@null"
-        android:src="@drawable/ic_delete"
-        android:importantForAccessibility="no"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_price" />
-
     <TextView
         android:id="@+id/item_quantity"
         android:layout_width="wrap_content"
@@ -115,5 +105,15 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/item_image"
         app:layout_constraintTop_toTopOf="@id/item_image" />
+
+    <ImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="@dimen/size_xxl"
+        android:layout_height="@dimen/size_xxl"
+        android:background="@null"
+        android:src="@drawable/ic_delete"
+        android:importantForAccessibility="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_price" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

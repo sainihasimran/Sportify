@@ -7,5 +7,4 @@ public interface ShoppingCartChangeListener {
     void onShoppingCartChanged();
 
     void onShoppingCartItemDeleted(ShoppingCartItem shoppingCartItem);
-
 }

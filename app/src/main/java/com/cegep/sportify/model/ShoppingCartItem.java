@@ -196,4 +196,60 @@ public class ShoppingCartItem {
 
         return order;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ShoppingCartItem that = (ShoppingCartItem) o;
+
+        if (quantity != that.quantity) {
+            return false;
+        }
+        if (cartId != null ? !cartId.equals(that.cartId) : that.cartId != null) {
+            return false;
+        }
+        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) {
+            return false;
+        }
+        if (productId != null ? !productId.equals(that.productId) : that.productId != null) {
+            return false;
+        }
+        if (equipmentId != null ? !equipmentId.equals(that.equipmentId) : that.equipmentId != null) {
+            return false;
+        }
+        if (product != null ? !product.equals(that.product) : that.product != null) {
+            return false;
+        }
+        if (equipment != null ? !equipment.equals(that.equipment) : that.equipment != null) {
+            return false;
+        }
+        if (size != null ? !size.equals(that.size) : that.size != null) {
+            return false;
+        }
+        if (color != null ? !color.equals(that.color) : that.color != null) {
+            return false;
+        }
+        return sport != null ? sport.equals(that.sport) : that.sport == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cartId != null ? cartId.hashCode() : 0;
+        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
+        result = 31 * result + (productId != null ? productId.hashCode() : 0);
+        result = 31 * result + (equipmentId != null ? equipmentId.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (equipment != null ? equipment.hashCode() : 0);
+        result = 31 * result + quantity;
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (sport != null ? sport.hashCode() : 0);
+        return result;
+    }
 }

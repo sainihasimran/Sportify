@@ -37,6 +37,10 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
 
     private RecyclerView recyclerView;
 
+    private View contentContainer;
+
+    private View emptyContainer;
+
     private ShoppingCartAdapter shoppingCartAdapter;
 
     private List<ShoppingCartItem> shoppingCartItems = new ArrayList<>();
@@ -70,6 +74,9 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        contentContainer = view.findViewById(R.id.content_container);
+        emptyContainer = view.findViewById(R.id.empty_container);
 
         totalPriceContainer = view.findViewById(R.id.total_price_container);
 
@@ -123,12 +130,17 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
     @Override
     public void onShoppingCartItemDeleted(ShoppingCartItem shoppingCartItem) {
         Utils.getShoppingCartReference().child(shoppingCartItem.getCartId()).removeValue();
+        shoppingCartAdapter.handleItemDeleted(shoppingCartItem);
+
+        updateContentVisibility();
     }
 
     private void showShoppingCartItemsList() {
         shoppingCartAdapter = new ShoppingCartAdapter(requireContext(), shoppingCartItems, this);
         recyclerView.setAdapter(shoppingCartAdapter);
         updateTotalPrice();
+
+        updateContentVisibility();
     }
 
     private void updateTotalPrice() {
@@ -174,6 +186,16 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
             }
 
             totalPriceContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateContentVisibility() {
+        if (shoppingCartAdapter.getShoppingCartItems() == null || shoppingCartAdapter.getShoppingCartItems().isEmpty()) {
+            emptyContainer.setVisibility(View.VISIBLE);
+            contentContainer.setVisibility(View.GONE);
+        } else {
+            emptyContainer.setVisibility(View.GONE);
+            contentContainer.setVisibility(View.VISIBLE);
         }
     }
 }

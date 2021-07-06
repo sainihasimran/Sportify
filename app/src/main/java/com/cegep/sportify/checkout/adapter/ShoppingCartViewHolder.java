@@ -47,6 +47,11 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
             itemQuantityTextView.setText(String.valueOf(shoppingCartItem.getQuantity()));
             shoppingCartChangeListener.onShoppingCartChanged();
         });
+
+        itemView.findViewById(R.id.delete_button).setOnClickListener(v -> {
+            shoppingCartChangeListener.onShoppingCartItemDeleted(shoppingCartItem);
+            shoppingCartChangeListener.onShoppingCartChanged();
+        });
     }
 
     public void bind(Context context, ShoppingCartItem shoppingCartItem) {
