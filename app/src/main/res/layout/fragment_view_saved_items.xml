@@ -27,6 +27,9 @@
         android:layout_marginRight="16dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
-        tools:visibility="gone" />
+        android:visibility="gone"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/saveditem"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
