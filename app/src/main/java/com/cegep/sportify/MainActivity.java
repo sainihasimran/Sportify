@@ -11,6 +11,8 @@ import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ProductsListFragment productListFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,5 +56,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+        showProductsFragment();
+    }
+    private void showProductsFragment() {
+        productListFragment = new ProductsListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, productListFragment)
+                .commit();
     }
 }

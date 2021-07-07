@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -41,12 +42,10 @@ public class ProductsListFragment extends Fragment {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             List<Product> products = new ArrayList<>();
-
             for (DataSnapshot productDataSnapshot : snapshot.getChildren()) {
                 Product product = productDataSnapshot.getValue(Product.class);
                 products.add(product);
             }
-
             ProductsListFragment.this.products = products;
             showProductList();
         }
@@ -68,25 +67,15 @@ public class ProductsListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(view);
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setApplicationId("1:311923457474:android:e27176c6832b9498fd6a5b") // Required for Analytics.
-                .setApiKey("AIzaSyCwk8W_Zm4dX6qhcJyMErRXiTceWPKpbcs") // Required for Auth.
-                .setDatabaseUrl("https://console.firebase.google.com/project/sportify-admin/database/sportify-admin-default-rtdb/data") // Required for RTDB.
-                .build();
-        FirebaseApp.initializeApp(getContext() /* Context */, options, "AdminDB");
-        // Retrieve my other app.
-        FirebaseApp app = FirebaseApp.getInstance("AdminDB");
-        // Get the database for the other app.
-//        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
-        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance(app);
-        DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("Products");
-        productsReference.addValueEventListener(valueEventListener);
 
+        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+
+        DatabaseReference productsReference = adminappdb.getReference("Products");
+        productsReference.addValueEventListener(valueEventListener);
     }
 
-
     private void setupRecyclerView(View view) {
-        productAdapter= new ProductAdapter(requireContext(), (Product) this.products);
+        productAdapter= new ProductAdapter(requireContext(), this.products);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
@@ -106,5 +95,6 @@ public class ProductsListFragment extends Fragment {
         for (Product product : products) {
             Products.add(product);
         }
+        productAdapter.update(Products);
     }
 }
