@@ -1,4 +1,4 @@
-package com.cegep.sportify;
+package com.cegep.sportify.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cegep.sportify.Adapter.ProductAdapter;
+import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.productdetails.ProductDetailsActivity;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,15 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class ProductsListFragment extends Fragment {
 
     public static Product selectedProduct = null;
-
-    private View emptyView;
 
     private List<Product> products = new ArrayList<>();
 

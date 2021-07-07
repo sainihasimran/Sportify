@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.google.android.material.navigation.NavigationView;
 
