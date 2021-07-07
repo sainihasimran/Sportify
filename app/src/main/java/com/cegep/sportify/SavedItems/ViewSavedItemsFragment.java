@@ -1,32 +1,37 @@
 package com.cegep.sportify.SavedItems;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.cegep.sportify.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ViewSavedItemsFragment extends Fragment {
 
-    private ArrayList<SavedItems> saveditems;
-    RecyclerView recyclerview;
+    ViewSavedEquipmentsFragment viewsavedequipmentsFragment;
+    private ArrayList<SavedItems> savedproducts;
+    RecyclerView productrecyclerview;
     saveditemadapter adapter;
     DatabaseReference dbr;
+    private boolean isShowingProducts = true;
+
+    // userDatabaseReference.child("users").child(userId).child("fav").setValue(productId);
 
     public ViewSavedItemsFragment() {
         // Required empty public constructor
@@ -37,21 +42,69 @@ public class ViewSavedItemsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_saved_items, container, false);
-
-        recyclerview = view.findViewById(R.id.recyclerView);
-
-        dbr = FirebaseDatabase.getInstance().getReference("favorites");
-
-        saveditems = new ArrayList<>();
-
-        adapter = new saveditemadapter(getContext(),saveditems);
-
-        recyclerview.setAdapter(adapter);
-        recyclerview.setVisibility(View.VISIBLE);
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        BottomNavigationView topNavigationView = view.findViewById(R.id.top_navigation);
+        productrecyclerview = view.findViewById(R.id.productrecyclerView);
+        dbr = FirebaseDatabase.getInstance().getReference();
 
+        showProducts();
 
+        topNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.action_product) {
+                isShowingProducts = true;
+                showProducts();
+                return true;
+            }
+
+            if (item.getItemId() == R.id.action_equipment) {
+                isShowingProducts = false;
+                showEquipments();
+                return true;
+            }
+
+            return false;
+        });
+
+    }
+
+    private void showProducts() {
+
+        savedproducts = new ArrayList<>();
+        adapter = new saveditemadapter(getContext(),savedproducts);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //callback method on a database
+        dbr.child("Users").child(uid).child("favoriteProducts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                //fetch all the data
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                    SavedItems sv = dataSnapshot.getValue(SavedItems.class);
+                    savedproducts.add(sv);//add fetched data to list
+                }
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        productrecyclerview.setAdapter(adapter);
+        productrecyclerview.setVisibility(View.VISIBLE);
+    }
+
+    private void showEquipments() {
+        viewsavedequipmentsFragment = new ViewSavedEquipmentsFragment();
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, viewsavedequipmentsFragment)
+                .commit();
+    }
 }

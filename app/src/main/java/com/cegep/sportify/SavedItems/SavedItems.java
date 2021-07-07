@@ -1,10 +1,7 @@
 package com.cegep.sportify.SavedItems;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-
 public class SavedItems {
-    String pricetxt,saletxt,nametxt;
+    String pricetxt,saletxt,nametxt,simgurl,pimgurl;
 
     public String getPricetxt() {
         return pricetxt;
@@ -17,4 +14,5 @@ public class SavedItems {
     public String getNametxt() {
         return nametxt;
     }
+
 }

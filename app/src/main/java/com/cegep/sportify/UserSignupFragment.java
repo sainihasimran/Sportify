@@ -1,32 +1,25 @@
 package com.cegep.sportify;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import com.google.firebase.database.DatabaseReference;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -130,7 +123,6 @@ public class UserSignupFragment extends Fragment {
                                 DatabaseReference userDatabaseReference = DatabaseReference.push();
                                 user.userId = userDatabaseReference.getKey();
                                 userDatabaseReference.setValue(user);
-
                                 SportifyApp.user = user;
 
                                 Intent intent = new Intent(requireActivity(), MainActivity.class);

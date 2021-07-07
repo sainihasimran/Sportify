@@ -1,6 +1,8 @@
 package com.cegep.sportify.SavedItems;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +14,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cegep.sportify.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class saveditemadapter extends RecyclerView.Adapter<saveditemadapter.ViewHolder> {
 
+    //declare variables
     Context context;
     ArrayList<SavedItems> itemlist;
+    DatabaseReference db;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         
         View view = LayoutInflater.from(context).inflate(R.layout.saveditem,parent,false);
-   
         return new ViewHolder(view);
     }
 
+    //constructor
     public saveditemadapter(Context context, ArrayList<SavedItems> itemlist) {
         this.context = context;
         this.itemlist = itemlist;
@@ -40,6 +48,31 @@ public class saveditemadapter extends RecyclerView.Adapter<saveditemadapter.View
         holder.pricetxt.setText(sv.getPricetxt());
         holder.nametxt.setText(sv.getNametxt());
         holder.saletxt.setText(sv.getSaletxt());
+
+        //TODO CHILD VALUE
+        holder.favbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(holder.favbtn.getContext());
+        builder.setTitle("Delete Item");
+        builder.setMessage("Delete....?");
+        builder.setPositiveButton("YES",((dialog, which) -> {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            db =  FirebaseDatabase.getInstance().getReference();
+            db.child("Users").child(uid).child("favoriteProducts")
+           .removeValue();
+        }));
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+
+            }
+        });
     }
 
 
