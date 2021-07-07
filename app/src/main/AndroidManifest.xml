@@ -15,12 +15,10 @@
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".productdetails.ProductDetailsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".CartActivity"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".productdetails.ProductDetailsActivity">
+
         </activity>
 
         <activity
@@ -33,7 +31,13 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Splash">
         </activity>
     </application>
