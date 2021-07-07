@@ -15,20 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cegep.sportify.Adapter.EquipmentsAdapter;
 import com.cegep.sportify.model.Equipment;
+import com.cegep.sportify.model.Product;
+import com.cegep.sportify.productdetails.ProductDetailsActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EquipmentsListFragment extends Fragment{
 
     public static Equipment selectedEquipment = null;
-
-    private View emptyView;
 
     private List<Equipment> equipments = new ArrayList<>();
 
@@ -60,60 +63,28 @@ public class EquipmentsListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emptyView = view.findViewById(R.id.empty_view);
-
         setupRecyclerView(view);
-        Query query = Utils.getEquipmentsReference().orderByChild("adminId").equalTo(SportifyAdminApp.admin.adminId);
-        query.addValueEventListener(valueEventListener);
+        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
 
-        view.findViewById(R.id.add_equipment_button).setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), AddEquipmentActivity.class);
-            requireActivity().startActivity(intent);
-        });
+        DatabaseReference equipmentsReference = adminappdb.getReference("Equipments");
+        equipmentsReference.addValueEventListener(valueEventListener);
+
     }
 
     private void setupRecyclerView(View view) {
-        equipmentsAdapter = new EquipmentsAdapter(requireContext(), this);
-
+        equipmentsAdapter = new EquipmentsAdapter(requireContext(), this.equipments);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(equipmentsAdapter);
     }
 
-    @Override
-    public void onClick(Equipment obj) {
-        selectedEquipment = obj;
-        Intent intent = new Intent(requireContext(), EditEquipmentActivity.class);
-        requireActivity().startActivity(intent);
-    }
-
     private void showEquipmentList() {
-        Set<Equipment> filteredEquipments = new HashSet<>();
+        Set<Equipment> Equipments = new HashSet<>();
         for (Equipment equipment : equipments) {
-            if (equipmentFilter.getSportFilter().equals("All") || equipmentFilter.getSportFilter().equalsIgnoreCase(equipment.getSport())) {
-                filteredEquipments.add(equipment);
-            }
+            Equipments.add(equipment);
         }
+        equipmentsAdapter.update(Equipments);
 
-        if (equipmentFilter.getOutOfStock() != null) {
-            boolean outOfStock = equipmentFilter.getOutOfStock();
-            Iterator<Equipment> iterator = filteredEquipments.iterator();
-            while (iterator.hasNext()) {
-                Equipment equipment = iterator.next();
-                if (equipment.isOutOfStock() != outOfStock) {
-                    iterator.remove();
-                }
-            }
-        }
-
-        emptyView.setVisibility(filteredEquipments.isEmpty() ? View.VISIBLE : View.GONE);
-
-        equipmentsAdapter.update(filteredEquipments);
-    }
-
-    public void handleFilters(EquipmentFilter equipmentFilter) {
-        this.equipmentFilter = equipmentFilter;
-        showEquipmentList();
     }
 }

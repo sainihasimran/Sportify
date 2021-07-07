@@ -7,13 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private ProductsListFragment productListFragment;
+    private EquipmentsListFragment equipmentsListFragment;
+    private boolean isShowingProducts = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +61,36 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
         showProductsFragment();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.action_clothing) {
+                isShowingProducts = true;
+                showProductsFragment();
+                return true;
+            }
+
+            if (item.getItemId() == R.id.action_equipment) {
+                isShowingProducts = false;
+                showEquipmentsFragment();
+                return true;
+            }
+
+            return false;
+        });
     }
+
+    private void showEquipmentsFragment() {
+        equipmentsListFragment = new EquipmentsListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, equipmentsListFragment)
+                .commit();
+    }
+
     private void showProductsFragment() {
         productListFragment = new ProductsListFragment();
         getSupportFragmentManager()
