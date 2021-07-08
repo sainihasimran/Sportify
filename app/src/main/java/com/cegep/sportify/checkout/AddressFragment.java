@@ -147,7 +147,7 @@ public class AddressFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                address.setCity(s.toString());
+                address.setProvince(s.toString());
             }
 
             @Override

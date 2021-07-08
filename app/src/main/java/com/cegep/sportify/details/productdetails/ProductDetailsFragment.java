@@ -1,6 +1,8 @@
 package com.cegep.sportify.details.productdetails;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,6 +30,7 @@ import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -82,23 +85,25 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), product.getImages());
             viewPager.setAdapter(imageAdapter);
             dotsIndicator.setViewPager(viewPager);
+            dotsIndicator.setVisibility(View.VISIBLE);
         }
     }
 
     private void setupProductPrices(View view) {
         TextView priceTextView = view.findViewById(R.id.product_price);
-        TextView saleTextView = view.findViewById(R.id.product_sale_price);
+        TextView originalPrice = view.findViewById(R.id.product_original_price);
 
         priceTextView.setText("$" + String.format("%.2f", product.getPrice()));
 
         if (product.isOnSale()) {
             float salePrice = product.getPrice() - (product.getPrice() * product.getSale()) / 100;
-            String salePriceStr = "$" + String.format(".2f", salePrice);
-            saleTextView.setText(salePriceStr);
-            saleTextView.setPaintFlags(saleTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            saleTextView.setVisibility(View.VISIBLE);
+            String salePriceStr = "$" + String.format("%.2f", salePrice);
+            priceTextView.setText(salePriceStr);
+            originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            originalPrice.setVisibility(View.VISIBLE);
+            originalPrice.setText("$" + String.format("%.2f", product.getPrice()));
         } else {
-            saleTextView.setVisibility(View.GONE);
+            originalPrice.setVisibility(View.GONE);
         }
     }
 
@@ -169,6 +174,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             for (final String color : product.getColors()) {
                 View chip = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
                 chip.setOnClickListener(v -> selectedColor = color);
+                ((Chip) chip.findViewById(R.id.chip)).setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(color)));
                 colorsRadioGroup.addView(chip);
             }
 
@@ -209,12 +215,12 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         }
 
         if (product.hasColors() && TextUtils.isEmpty(selectedColor)) {
-            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!product.isOutOfStock() && TextUtils.isEmpty(selectedSize)) {
-            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -234,6 +240,8 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             Order order = product.toOrder();
             order.setSize(selectedSize);
             order.setColor(selectedColor);
+            order.setQuantity(quantity);
+            order.setPrice(product.getFinalPrice() * quantity);
 
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);
