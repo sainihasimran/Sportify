@@ -12,6 +12,7 @@ import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
+import com.cegep.sportify.checkout.ShoppingCartActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ProductsListFragment productListFragment;
     private EquipmentsListFragment equipmentsListFragment;
     private boolean isShowingProducts = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 showFiltersFragment();
                 return true;
             } else if (item.getItemId() == R.id.action_search) {
-
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
                 return true;
-            }
-            else if (item.getItemId() == R.id.action_cart) {
-
+            } else if (item.getItemId() == R.id.action_cart) {
+                Intent intent = new Intent(getApplicationContext(), ShoppingCartActivity.class);
+                startActivity(intent);
                 return true;
             }
             return false;
@@ -62,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-
 
         showProductsFragment();
 

@@ -1,5 +1,7 @@
 package com.cegep.sportify.model;
 
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,8 @@ public class Product {
     private String productName;
 
     private float price = -1f;
+
+    private float salePrice;
 
     private String sport;
 
@@ -22,6 +26,8 @@ public class Product {
     private String subCategory;
 
     private String description;
+
+    private String adminId;
 
     private int xSmallSize = 0;
 
@@ -61,6 +67,14 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public float getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(float salePrice) {
+        this.salePrice = salePrice;
     }
 
     public String getSport() {
@@ -109,6 +123,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public int getxSmallSize() {
@@ -205,5 +227,27 @@ public class Product {
 
     public boolean hasColors() {
         return !colors.isEmpty();
+    }
+
+    public float getFinalPrice() {
+        float price = this.price;
+        if (isOnSale()) {
+            price = getSalePrice();
+        }
+
+        return price;
+    }
+
+    public Order toOrder() {
+        Order order = new Order();
+        order.setOrderId(Utils.getUniqueId());
+        order.setProduct(this);
+        order.setQuantity(1);
+        order.setPrice(getFinalPrice());
+        order.setClientId(SportifyApp.user.userId);
+        order.setAdminId(adminId);
+        order.setStatus("pending");
+
+        return order;
     }
 }

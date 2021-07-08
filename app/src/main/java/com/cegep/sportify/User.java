@@ -27,4 +27,8 @@ public class User {
         this.dob = dob;
 
     }
+
+    public String getFullname() {
+        return firstname + " " + lastname;
+    }
 }

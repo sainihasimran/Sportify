@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_l">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:importantForAccessibility="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_m"
+        android:layout_marginLeft="@dimen/size_m"
+        android:layout_marginTop="@dimen/size_m"
+        android:layout_marginEnd="@dimen/size_l"
+        android:layout_marginRight="@dimen/size_l"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="LE Light Bulb, 15W A19 E26 LED Bulb 100W Equivalent, Non-dimmable 1500lm Daylight White Light Bulb, 6 Packs" />
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:textAppearance="?textAppearanceBody1"
+        app:layout_constraintStart_toStartOf="@id/item_name"
+        app:layout_constraintTop_toBottomOf="@id/item_name"
+        tools:text="$23.94" />
+
+    <TextView
+        android:id="@+id/item_size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_s"
+        android:textAppearance="?textAppearanceBody1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/item_name"
+        app:layout_constraintTop_toBottomOf="@id/item_price"
+        tools:text="Size: M" />
+
+    <TextView
+        android:id="@+id/item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_s"
+        android:includeFontPadding="false"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintBottom_toBottomOf="@id/item_decrement_quantity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/item_name"
+        app:layout_constraintTop_toTopOf="@id/item_decrement_quantity"
+        tools:text="5" />
+
+    <ImageButton
+        android:id="@+id/item_decrement_quantity"
+        android:layout_width="@dimen/size_xl"
+        android:layout_height="@dimen/size_xl"
+        android:background="@drawable/ciruclar_bg"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_quantity"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="@id/item_name"
+        app:layout_constraintTop_toBottomOf="@id/item_size"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <ImageButton
+        android:id="@+id/item_increment_quantity"
+        android:layout_width="@dimen/size_xl"
+        android:layout_height="@dimen/size_xl"
+        android:background="@drawable/ciruclar_bg"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="@id/item_decrement_quantity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toEndOf="@id/item_quantity"
+        app:layout_constraintTop_toTopOf="@id/item_decrement_quantity" />
+
+    <TextView
+        android:id="@+id/out_of_stock_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#cccbcbcb"
+        android:gravity="center"
+        android:text="@string/out_of_stock"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/item_image"
+        app:layout_constraintTop_toTopOf="@id/item_image" />
+
+    <ImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="@dimen/size_xxl"
+        android:layout_height="@dimen/size_xxl"
+        android:background="@null"
+        android:src="@drawable/ic_delete"
+        android:importantForAccessibility="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_price" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

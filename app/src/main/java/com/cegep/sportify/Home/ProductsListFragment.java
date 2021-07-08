@@ -2,33 +2,31 @@ package com.cegep.sportify.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.cegep.sportify.Adapter.ProductAdapter;
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
+import com.cegep.sportify.Utils;
+import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Product;
-import com.cegep.sportify.productdetails.ProductDetailsActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProductsListFragment extends Fragment {
+public class ProductsListFragment extends Fragment implements ProductListItemClickListener {
 
     public static Product selectedProduct = null;
 
@@ -47,7 +45,8 @@ public class ProductsListFragment extends Fragment {
         }
 
         @Override
-        public void onCancelled(@NonNull DatabaseError error) { }
+        public void onCancelled(@NonNull DatabaseError error) {
+        }
     };
 
     private ProductAdapter productAdapter;
@@ -64,26 +63,18 @@ public class ProductsListFragment extends Fragment {
 
         setupRecyclerView(view);
 
-        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+        FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
         DatabaseReference productsReference = adminappdb.getReference("Products");
         productsReference.addValueEventListener(valueEventListener);
     }
 
     private void setupRecyclerView(View view) {
-        productAdapter= new ProductAdapter(requireContext(), this.products);
+        productAdapter = new ProductAdapter(requireContext(), this.products, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(productAdapter);
-    }
-
-
-    public void onClick(Product obj) {
-        selectedProduct = obj;
-        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
-        intent.putExtra("product_name", obj.getProductName());
-        requireActivity().startActivity(intent);
     }
 
     private void showProductList() {
@@ -92,5 +83,12 @@ public class ProductsListFragment extends Fragment {
             Products.add(product);
         }
         productAdapter.update(Products);
+    }
+
+    @Override
+    public void onProductClicked(Product product) {
+        selectedProduct = product;
+        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        startActivity(intent);
     }
 }

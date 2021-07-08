@@ -1,11 +1,8 @@
 package com.cegep.sportify.model;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.cegep.sportify.R;
-
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,18 +34,6 @@ public class Equipment {
 
     }
 
-    public Equipment(Equipment other) {
-        this.equipmentId = other.equipmentId;
-        this.equipmentName = other.equipmentName;
-        this.price = other.price;
-        this.sale = other.sale;
-        this.stock = other.stock;
-        this.createdAt = other.createdAt;
-        this.sport = other.sport;
-        this.description = other.description;
-        this.images = other.images;
-    }
-
     public String getEquipmentId() {
         return equipmentId;
     }
@@ -62,7 +47,7 @@ public class Equipment {
     }
 
     public void setEquipmentName(String equipmentName) {
-        this.equipmentName = equipmentName.trim();
+        this.equipmentName = equipmentName;
     }
 
     public float getPrice() {
@@ -89,10 +74,6 @@ public class Equipment {
         this.sale = sale;
     }
 
-    public String getSport() {
-        return sport;
-    }
-
     public int getStock() {
         return stock;
     }
@@ -109,8 +90,12 @@ public class Equipment {
         this.createdAt = createdAt;
     }
 
+    public String getSport() {
+        return sport;
+    }
+
     public void setSport(String sport) {
-        this.sport = sport.trim();
+        this.sport = sport;
     }
 
     public String getDescription() {
@@ -137,19 +122,34 @@ public class Equipment {
         this.images = images;
     }
 
-    public void setEquipmentPrice(String priceStr) {
-        try {
-            setPrice(Float.parseFloat(priceStr));
-        }
-        catch (NumberFormatException e) {
-        }
+    public boolean isOnSale() {
+        return sale > 0;
     }
 
     public boolean isOutOfStock() {
         return getStock() <= 0;
     }
 
-    public boolean isOnSale() {
-        return sale > 0;
+    public float getFinalPrice() {
+        float price = this.price;
+        if (isOnSale()) {
+            price = getSalePrice();
+        }
+
+        return price;
+    }
+
+    public Order toOrder() {
+        Order order = new Order();
+        order.setOrderId(Utils.getUniqueId());
+        order.setEquipment(this);
+        order.setQuantity(1);
+        order.setPrice(getFinalPrice());
+        order.setClientId(SportifyApp.user.userId);
+        order.setAdminId(adminId);
+        order.setStatus("pending");
+        order.setSport(sport);
+
+        return order;
     }
 }
