@@ -45,6 +45,7 @@
         <activity android:name=".checkout.AddressActivity" />
         <activity android:name=".checkout.ShippingActivity" />
         <activity android:name=".checkout.PaymentActivity" />
+        <activity android:name=".SearchActivity" />
     </application>
 
 </manifest>
