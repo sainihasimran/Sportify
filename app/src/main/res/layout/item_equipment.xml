@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/size_l"
+    android:layout_marginLeft="@dimen/size_l"
+    android:layout_marginTop="@dimen/size_l"
+    app:elevation="@dimen/size_l">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_m">
+
+        <ImageView
+            android:id="@+id/equipment_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:importantForAccessibility="no"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/out_of_stock_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#cccbcbcb"
+            android:gravity="center"
+            android:text="@string/out_of_stock"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/equipment_image"
+            app:layout_constraintEnd_toEndOf="@id/equipment_image"
+            app:layout_constraintStart_toStartOf="@id/equipment_image"
+            app:layout_constraintTop_toTopOf="@id/equipment_image"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/sale_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_m"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_sale_bg"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sale_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_m"
+            android:gravity="center"
+            android:textAppearance="?textAppearanceCaption"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/sale_bg"
+            app:layout_constraintEnd_toEndOf="@id/sale_bg"
+            app:layout_constraintStart_toStartOf="@id/sale_bg"
+            app:layout_constraintTop_toTopOf="@id/sale_bg"
+            tools:text="20%\noff" />
+
+        <TextView
+            android:id="@+id/equipment_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_l"
+            android:layout_marginLeft="@dimen/size_l"
+            android:layout_marginTop="@dimen/size_m"
+            android:layout_marginEnd="@dimen/size_l"
+            android:layout_marginRight="@dimen/size_l"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/equipment_image"
+            tools:text="LE LED Light Bulbs" />
+
+        <TextView
+            android:id="@+id/equipment_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_s"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/equipment_name"
+            app:layout_constraintStart_toStartOf="@id/equipment_name"
+            app:layout_constraintTop_toBottomOf="@id/equipment_name"
+            tools:text="$25.99" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

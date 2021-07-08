@@ -14,24 +14,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
+
+        <activity android:exported="true" android:name=".details.productdetails.ProductDetailsActivity" />
+        <activity android:exported="true" android:name=".details.equipmentdetails.EquipmentDetailsActivity" />
+
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"
             android:exported="true" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".OrderActivity" />
-        <activity android:name=".ProfileActivity" />
+
+        <activity android:exported="true" android:name=".SignUpActivity" />
+        <activity android:exported="true" android:name=".SettingsActivity" />
+        <activity android:exported="true" android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Splash">
+
+        <activity android:exported="true"
+            android:name=".MainActivity"
+            android:launchMode="singleTop" />
+
+        <activity android:exported="true" android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:exported="true" android:name=".checkout.ShoppingCartActivity" />
+        <activity android:exported="true" android:name=".checkout.AddressActivity" />
+        <activity android:exported="true" android:name=".checkout.ShippingActivity" />
+        <activity android:exported="true" android:name=".checkout.PaymentActivity" />
+        <activity android:exported="true" android:name=".SearchActivity" />
     </application>
 
 </manifest>

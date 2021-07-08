@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bordercolor">#03A9F4</color>
     <color name="buttonbg">#FFC107</color>
+
+    <color name="grey">#cbcbcb</color>
+    <color name="red">#da0600</color>
+    <color name="green">#008f0a</color>
+    <color name="faded_red">#d9534f</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
