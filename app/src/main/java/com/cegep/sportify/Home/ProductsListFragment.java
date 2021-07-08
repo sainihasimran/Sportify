@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.Adapter.ProductAdapter;
 import com.cegep.sportify.R;
+import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Product;
 import com.google.firebase.database.DataSnapshot;
@@ -61,7 +62,7 @@ public class ProductsListFragment extends Fragment {
 
         setupRecyclerView(view);
 
-        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+        FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
         DatabaseReference productsReference = adminappdb.getReference("Products");
         productsReference.addValueEventListener(valueEventListener);

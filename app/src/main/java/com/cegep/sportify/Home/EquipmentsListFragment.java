@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.Adapter.EquipmentsAdapter;
 import com.cegep.sportify.R;
+import com.cegep.sportify.Utils;
 import com.cegep.sportify.model.Equipment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,7 +58,7 @@ public class EquipmentsListFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(view);
-        FirebaseDatabase adminappdb = FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+        FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
         DatabaseReference equipmentsReference = adminappdb.getReference("Equipments");
         equipmentsReference.addValueEventListener(valueEventListener);

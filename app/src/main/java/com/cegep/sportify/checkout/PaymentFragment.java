@@ -220,7 +220,7 @@ public class PaymentFragment extends Fragment {
         for (Order order : SportifyApp.orders) {
             order.setCreditCard(creditCard);
             order.setCreatedAt(System.currentTimeMillis());
-            createOrderTasks.add(Utils.getOrdersRefernece().child(order.getOrderId()).setValue(order));
+            createOrderTasks.add(Utils.getOrdersReference().child(order.getOrderId()).setValue(order));
 
             if (!TextUtils.isEmpty(order.getShoppingCartItemId())) {
                 removeShoppingCartItems.add(Utils.getShoppingCartReference().child(order.getShoppingCartItemId()).removeValue());

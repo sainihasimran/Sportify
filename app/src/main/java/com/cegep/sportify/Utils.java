@@ -1,5 +1,6 @@
 package com.cegep.sportify;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.UUID;
@@ -7,7 +8,7 @@ import java.util.UUID;
 public class Utils {
 
     public static DatabaseReference getUserReference() {
-        return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId);
+        return getClientDatabase().getReference("Users").child(SportifyApp.user.userId);
     }
 
     public static DatabaseReference getAddressReference() {
@@ -18,12 +19,12 @@ public class Utils {
         return getUserReference().child("Payment");
     }
 
-    public static DatabaseReference getOrdersRefernece() {
-        return FirebaseDatabase.getInstance().getReference("Orders");
+    public static DatabaseReference getOrdersReference() {
+        return getClientDatabase().getReference("Orders");
     }
 
     public static DatabaseReference getShoppingCartReference() {
-        return FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
+        return getClientDatabase().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
     }
 
     public static DatabaseReference getProductReference(String productId) {
@@ -35,7 +36,11 @@ public class Utils {
     }
 
     public static FirebaseDatabase getAdminDatabase() {
-        return FirebaseDatabase.getInstance("https://sportify-admin-default-rtdb.firebaseio.com/");
+        return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE));
+    }
+
+    public static FirebaseDatabase getClientDatabase() {
+        return FirebaseDatabase.getInstance();
     }
 
     public static String getUniqueId() {
