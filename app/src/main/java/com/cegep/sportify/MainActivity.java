@@ -23,13 +23,20 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.profile) {
+            if (item.getItemId() == R.id.orders) {
                 drawerLayout.closeDrawer(Gravity.LEFT);
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
                 startActivity(intent);
                 return true;
-            }
+            } else if
+                (item.getItemId() == R.id.profile) {
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
             return false;
         });
+
     }
 }
