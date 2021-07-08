@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.cegep.sportify.Home.EquipmentFilterFragment;
 import com.cegep.sportify.Home.EquipmentsListFragment;
+import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,16 +32,14 @@ public class MainActivity extends AppCompatActivity {
         topAppBar.inflateMenu(R.menu.menu_home);
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_filter) {
-
+                showFiltersFragment();
                 return true;
             } else if (item.getItemId() == R.id.action_search) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intent);
+
                 return true;
             }
             else if (item.getItemId() == R.id.action_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-                startActivity(intent);
+
                 return true;
             }
             return false;
@@ -81,6 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    private void showFiltersFragment() {
+        BottomSheetDialogFragment filterFragment;
+        if (isShowingProducts) {
+            filterFragment = new ProductFilterFragment();
+        } else {
+            filterFragment = new EquipmentFilterFragment();
+        }
+        filterFragment.setTargetFragment(productListFragment, 0);
+        filterFragment.show(getSupportFragmentManager(), null);
     }
 
     private void showEquipmentsFragment() {
