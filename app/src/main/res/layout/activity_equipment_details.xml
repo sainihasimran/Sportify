@@ -25,7 +25,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
-        android:name="com.cegep.sportify.productdetails.ProductDetailsFragment"
+        android:name="com.cegep.sportify.details.equipmentdetails.EquipmentDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".details.productdetails.ProductDetailsActivity" />

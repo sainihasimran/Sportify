@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.Adapter.ProductAdapter;
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
@@ -25,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProductsListFragment extends Fragment {
+public class ProductsListFragment extends Fragment implements ProductListItemClickListener {
 
     public static Product selectedProduct = null;
 
@@ -69,19 +70,11 @@ public class ProductsListFragment extends Fragment {
     }
 
     private void setupRecyclerView(View view) {
-        productAdapter = new ProductAdapter(requireContext(), this.products);
+        productAdapter = new ProductAdapter(requireContext(), this.products, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(productAdapter);
-    }
-
-
-    public void onClick(Product obj) {
-        selectedProduct = obj;
-        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
-        intent.putExtra("product_name", obj.getProductName());
-        requireActivity().startActivity(intent);
     }
 
     private void showProductList() {
@@ -90,5 +83,12 @@ public class ProductsListFragment extends Fragment {
             Products.add(product);
         }
         productAdapter.update(Products);
+    }
+
+    @Override
+    public void onProductClicked(Product product) {
+        selectedProduct = product;
+        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        startActivity(intent);
     }
 }

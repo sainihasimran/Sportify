@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cegep.sportify.EquipmentListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Equipment;
 
@@ -23,8 +24,14 @@ class EquipmentViewHolder extends RecyclerView.ViewHolder {
 
     private Equipment equipment;
 
-    public EquipmentViewHolder(@NonNull View itemView) {
+    public EquipmentViewHolder(@NonNull View itemView, EquipmentListItemClickListener equipmentListItemClickListener) {
         super(itemView);
+
+        itemView.setOnClickListener(v -> {
+            if (equipment != null) {
+                equipmentListItemClickListener.onEquipmentClicked(equipment);
+            }
+        });
 
         equipmentImageView = itemView.findViewById(R.id.equipment_image);
         equipmentNameTextView = itemView.findViewById(R.id.equipment_name);

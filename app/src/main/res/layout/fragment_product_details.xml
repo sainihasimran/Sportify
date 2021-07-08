@@ -288,21 +288,13 @@
             tools:visibility="visible" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/color_chip_group"
+            android:id="@+id/colors_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_l"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/available_colors_label"
             tools:visibility="visible" />
-
-        <RadioButton
-            android:id="@+id/colors_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/available_colors_label" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/colors_barrier"

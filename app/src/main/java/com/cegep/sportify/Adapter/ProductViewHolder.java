@@ -5,10 +5,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
 
@@ -25,8 +27,16 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
 
     private Product product;
 
-    public ProductViewHolder(@NonNull View itemView) {
+    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener) {
         super(itemView);
+
+        itemView.setOnClickListener(v -> {
+            if (product != null) {
+                productListItemClickListener.onProductClicked(product);
+            } else {
+                Toast.makeText(itemView.getContext(), "Product is null", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         productImageView = itemView.findViewById(R.id.product_image);
         productNameTextView = itemView.findViewById(R.id.product_name);

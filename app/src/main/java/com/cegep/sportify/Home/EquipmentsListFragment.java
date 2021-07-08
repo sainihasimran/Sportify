@@ -1,5 +1,6 @@
 package com.cegep.sportify.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.Adapter.EquipmentsAdapter;
+import com.cegep.sportify.EquipmentListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EquipmentsListFragment extends Fragment{
+public class EquipmentsListFragment extends Fragment implements EquipmentListItemClickListener {
 
     public static Equipment selectedEquipment = null;
 
@@ -66,7 +69,7 @@ public class EquipmentsListFragment extends Fragment{
     }
 
     private void setupRecyclerView(View view) {
-        equipmentsAdapter = new EquipmentsAdapter(requireContext(), this.equipments);
+        equipmentsAdapter = new EquipmentsAdapter(requireContext(), this.equipments, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
@@ -80,5 +83,12 @@ public class EquipmentsListFragment extends Fragment{
         }
         equipmentsAdapter.update(Equipments);
 
+    }
+
+    @Override
+    public void onEquipmentClicked(Equipment equipment) {
+        selectedEquipment = equipment;
+        Intent intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
+        startActivity(intent);
     }
 }

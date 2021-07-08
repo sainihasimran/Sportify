@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
@@ -49,6 +50,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.product = ProductsListFragment.selectedProduct;
 
         setupProductName(view);
         setupProductImages(view);
@@ -69,7 +71,6 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     private void setupProductImages(View view) {
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         WormDotsIndicator dotsIndicator = view.findViewById(R.id.dots_indicator);
-        dotsIndicator.setViewPager(viewPager);
         Group noImagesGroup = view.findViewById(R.id.no_images_group);
 
         if (product.getImages().isEmpty()) {
@@ -80,6 +81,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
 
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), product.getImages());
             viewPager.setAdapter(imageAdapter);
+            dotsIndicator.setViewPager(viewPager);
         }
     }
 
@@ -87,7 +89,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         TextView priceTextView = view.findViewById(R.id.product_price);
         TextView saleTextView = view.findViewById(R.id.product_sale_price);
 
-        priceTextView.setText("$" + String.format(".2f", product.getPrice()));
+        priceTextView.setText("$" + String.format("%.2f", product.getPrice()));
 
         if (product.isOnSale()) {
             float salePrice = product.getPrice() - (product.getPrice() * product.getSale()) / 100;

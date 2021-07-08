@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
@@ -41,6 +42,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.equipment = EquipmentsListFragment.selectedEquipment;
 
         setupEquipmentName(view);
         setupEquipmentImages(view);
@@ -53,14 +55,13 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
     }
 
     private void setupEquipmentName(View view) {
-        TextView textView = view.findViewById(R.id.product_title_text);
+        TextView textView = view.findViewById(R.id.equipment_title_text);
         textView.setText(equipment.getEquipmentName());
     }
 
     private void setupEquipmentImages(View view) {
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         WormDotsIndicator dotsIndicator = view.findViewById(R.id.dots_indicator);
-        dotsIndicator.setViewPager(viewPager);
         Group noImagesGroup = view.findViewById(R.id.no_images_group);
 
         if (equipment.getImages().isEmpty()) {
@@ -71,14 +72,15 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
 
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), equipment.getImages());
             viewPager.setAdapter(imageAdapter);
+            dotsIndicator.setViewPager(viewPager);
         }
     }
 
     private void setupEquipmentPrices(View view) {
-        TextView priceTextView = view.findViewById(R.id.product_price);
-        TextView saleTextView = view.findViewById(R.id.product_sale_price);
+        TextView priceTextView = view.findViewById(R.id.equipment_price);
+        TextView saleTextView = view.findViewById(R.id.equipment_sale_price);
 
-        priceTextView.setText("$" + String.format(".2f", equipment.getPrice()));
+        priceTextView.setText("$" + String.format("%.2f", equipment.getPrice()));
 
         if (equipment.isOnSale()) {
             float salePrice = equipment.getPrice() - (equipment.getPrice() * equipment.getSale()) / 100;
@@ -108,7 +110,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
     }
 
     private void setupEquipmentDescription(View view) {
-        TextView descriptionTextView = view.findViewById(R.id.product_description);
+        TextView descriptionTextView = view.findViewById(R.id.equipment_description);
         descriptionTextView.setText(equipment.getDescription());
     }
 
