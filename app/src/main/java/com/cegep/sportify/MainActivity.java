@@ -88,11 +88,14 @@ public class MainActivity extends AppCompatActivity {
         BottomSheetDialogFragment filterFragment;
         if (isShowingProducts) {
             filterFragment = new ProductFilterFragment();
+            filterFragment.setTargetFragment(productListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
         } else {
             filterFragment = new EquipmentFilterFragment();
+            filterFragment.setTargetFragment(equipmentsListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
         }
-        filterFragment.setTargetFragment(productListFragment, 0);
-        filterFragment.show(getSupportFragmentManager(), null);
+
     }
 
     private void showEquipmentsFragment() {
