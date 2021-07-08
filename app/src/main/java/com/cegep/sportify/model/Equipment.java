@@ -1,5 +1,6 @@
 package com.cegep.sportify.model;
 
+
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import java.util.ArrayList;
