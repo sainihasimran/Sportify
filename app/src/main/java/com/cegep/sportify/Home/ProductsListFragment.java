@@ -1,6 +1,5 @@
 package com.cegep.sportify.Home;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,13 +82,12 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         recyclerView.setAdapter(productAdapter);
     }
 
-    @SuppressLint("LongLogTag")
     private void showProductList() {
         Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {
-            String filterCategory = "Outerwear";//productFilter.getCategoryFilter();
-            String filterSubCategory = "Women's";//productFilter.getSubCategoryFilter();
-            Log.d("111111111111111111111111111111111111111",productFilter.getCategoryFilter());
+            String filterCategory = productFilter.getCategoryFilter();
+            String filterSubCategory = productFilter.getSubCategoryFilter();
+           Log.d("11111111111111111111111",productFilter.getCategoryFilter());
             if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
                 if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
                     filteredProducts.add(product);
@@ -102,6 +100,16 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
             while (iterator.hasNext()) {
                 Product product = iterator.next();
                 if (product.isOutOfStock() != outOfStock) {
+                    iterator.remove();
+                }
+            }
+        }
+        if (productFilter.getOnSale() != null) {
+            boolean onSaleFilter = productFilter.getOnSale();
+            Iterator<Product> iterator = filteredProducts.iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (product.isOnSale() != onSaleFilter) {
                     iterator.remove();
                 }
             }

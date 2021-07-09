@@ -8,6 +8,8 @@ public class ProductFilter {
 
     private Boolean outOfStock = null;
 
+    private Boolean onSale = null;
+
     public String getCategoryFilter() {
         return categoryFilter;
     }
@@ -30,5 +32,13 @@ public class ProductFilter {
 
     public void setOutOfStock(Boolean outOfStock) {
         this.outOfStock = outOfStock;
+    }
+
+    public Boolean getOnSale() {
+        return onSale;
+    }
+
+    public void setOnSale(Boolean onSale) {
+        this.onSale = onSale;
     }
 }

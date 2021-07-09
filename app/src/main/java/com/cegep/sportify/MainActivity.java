@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.cegep.sportify.Home.EquipmentFilterFragment;
+import com.cegep.sportify.Home.EquipmentFilterListener;
 import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductFilterListener;
@@ -20,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements ProductFilterListener {
+public class MainActivity extends AppCompatActivity implements ProductFilterListener, EquipmentFilterListener {
 
     private ProductsListFragment productListFragment;
     private EquipmentsListFragment equipmentsListFragment;
@@ -89,6 +90,22 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
         });
     }
 
+    private void showEquipmentsFragment() {
+        equipmentsListFragment = new EquipmentsListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, equipmentsListFragment)
+                .commit();
+    }
+
+    private void showProductsFragment() {
+        productListFragment = new ProductsListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, productListFragment)
+                .commit();
+    }
+
     private void showFiltersFragment() {
         BottomSheetDialogFragment filterFragment;
         if (isShowingProducts) {
@@ -112,23 +129,5 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
         if (equipmentsListFragment != null) {
             equipmentsListFragment.handleFilters(filter);
         }
-    }
-
-
-
-    private void showEquipmentsFragment() {
-        equipmentsListFragment = new EquipmentsListFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, equipmentsListFragment)
-                .commit();
-    }
-
-    private void showProductsFragment() {
-        productListFragment = new ProductsListFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, productListFragment)
-                .commit();
     }
 }
