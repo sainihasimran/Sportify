@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.Home.ProductsListFragment;
@@ -172,10 +174,16 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         if (product.hasColors()) {
             LayoutInflater inflater = LayoutInflater.from(requireContext());
             for (final String color : product.getColors()) {
-                View chip = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
-                chip.setOnClickListener(v -> selectedColor = color);
-                ((Chip) chip.findViewById(R.id.chip)).setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(color)));
-                colorsRadioGroup.addView(chip);
+                View chipView = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
+                Chip chip = chipView.findViewById(R.id.chip);
+                chip.setId(ViewCompat.generateViewId());
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(color)));
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        selectedColor = color;
+                    }
+                });
+                colorsRadioGroup.addView(chipView);
             }
 
             colorsRadioGroup.setVisibility(View.VISIBLE);
@@ -184,6 +192,8 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             colorsRadioGroup.setVisibility(View.GONE);
             noColorsTextView.setVisibility(View.VISIBLE);
         }
+
+        colorsRadioGroup.setSingleSelection(true);
     }
 
     private void setupAddToCart(View view) {
