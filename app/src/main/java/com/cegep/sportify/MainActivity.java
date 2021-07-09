@@ -13,6 +13,7 @@ import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
+import com.cegep.sportify.model.ProductFilter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -97,8 +98,15 @@ public class MainActivity extends AppCompatActivity {
             filterFragment.setTargetFragment(equipmentsListFragment, 0);
             filterFragment.show(getSupportFragmentManager(), null);
         }
-
     }
+
+    public void onProductFilterSelected(ProductFilter filter) {
+        if (productListFragment != null) {
+            productListFragment.handleFilters(filter);
+        }
+    }
+
+
 
     private void showEquipmentsFragment() {
         equipmentsListFragment = new EquipmentsListFragment();
