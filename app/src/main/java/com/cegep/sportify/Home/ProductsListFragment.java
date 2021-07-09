@@ -1,7 +1,9 @@
 package com.cegep.sportify.Home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +83,13 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         recyclerView.setAdapter(productAdapter);
     }
 
+    @SuppressLint("LongLogTag")
     private void showProductList() {
         Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {
             String filterCategory = "Outerwear";//productFilter.getCategoryFilter();
             String filterSubCategory = "Women's";//productFilter.getSubCategoryFilter();
+            Log.d("111111111111111111111111111111111111111",productFilter.getCategoryFilter());
             if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
                 if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
                     filteredProducts.add(product);
