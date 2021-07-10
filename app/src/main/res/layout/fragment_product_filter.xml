@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toStartOf="@id/sub_category_label"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filters_label" />
+        app:layout_constraintTop_toBottomOf="@id/apply_button" />
 
     <TextView
         android:id="@+id/sub_category_label"
@@ -242,9 +242,8 @@
         android:id="@+id/apply_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_l"
         android:text="Apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/favorite_chooser" />
+        app:layout_constraintTop_toTopOf="@id/filters_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

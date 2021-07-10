@@ -67,12 +67,7 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
                 startActivity(intent);
                 return true;
             }
-            if (item.getItemId() == R.id.savedItems) {
-                drawerLayout.closeDrawer(Gravity.LEFT);
-                Intent intent = new Intent(MainActivity.this, ViewSaveditemsActivity.class);
-                startActivity(intent);
-                return true;
-            }
+
             return false;
         });
 

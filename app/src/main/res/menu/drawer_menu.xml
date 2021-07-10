@@ -7,7 +7,7 @@
             android:id="@+id/orders"
             android:icon="@drawable/yourorders"
             android:title="@string/orders" />
-        
+
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_user"
