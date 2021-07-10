@@ -1,6 +1,8 @@
 package com.cegep.sportify.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 public class ProductsListFragment extends Fragment implements ProductListItemClickListener {
 
@@ -36,6 +39,8 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     private List<Product> products = new ArrayList<>();
 
     private ProductFilter productFilter = new ProductFilter();
+
+    private String adminID;
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -83,17 +88,25 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     }
 
     private void showProductList() {
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        adminID = sharedPref.getString("adminid", "All");
+
         Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {
             String filterCategory = productFilter.getCategoryFilter();
             String filterSubCategory = productFilter.getSubCategoryFilter();
-           Log.d("11111111111111111111111",productFilter.getCategoryFilter());
+            String filterSale = productFilter.getBrandFilter();
+
             if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
                 if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
-                    filteredProducts.add(product);
+                    if (filterSale.equals("All") || adminID.equals(product.getAdminId())) {
+                        filteredProducts.add(product);
+                    }
                 }
             }
         }
+
         if (productFilter.getOutOfStock() != null) {
             boolean outOfStock = productFilter.getOutOfStock();
             Iterator<Product> iterator = filteredProducts.iterator();
@@ -127,5 +140,10 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         selectedProduct = product;
         Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
         startActivity(intent);
+    }
+
+    public void setAdminID(String adminID)
+    {
+        this.adminID = adminID;
     }
 }

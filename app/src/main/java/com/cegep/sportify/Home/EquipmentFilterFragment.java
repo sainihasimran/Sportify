@@ -1,6 +1,8 @@
 package com.cegep.sportify.Home;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.Spinner;
 
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.model.Brands;
 import com.cegep.sportify.model.EquipmentFilter;
 import com.cegep.sportify.model.SportWithTeams;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -43,9 +46,52 @@ public class EquipmentFilterFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupSportChooser(view);
+        setupBrandSpinner(view);
         setupOnSaleChooser(view);
         setupOutOfStockChooser(view);
         setupApplyButtonClick(view);
+    }
+
+    private void setupBrandSpinner(View view) {
+        Spinner brandsChooser = view.findViewById(R.id.brand_chooser);
+        final List<String> brands = new ArrayList<>();
+        List<Brands> brandsList = new ArrayList<>();
+        Utils.getbrandReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                brands.add(0, "All");
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    Brands brand = childSnapshot.getValue(Brands.class);
+                    String name = "" + childSnapshot.child("brandname").getValue();
+                    String adminID = "" + childSnapshot.child("adminId").getValue();
+                    brand.setBrand(name);
+                    brand.setAdminID(adminID);
+                    brandsList.add(brand);
+                    brands.add(Character.toUpperCase(name.charAt(0)) + name.substring(1));
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, brands);
+                brandsChooser.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        brandsChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                equipmentFilter.setBrandFilter(brands.get(position));
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                if (position>0)
+                    editor.putString("adminid", brandsList.get(position-1).getAdminID());
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setupSportChooser(View view) {

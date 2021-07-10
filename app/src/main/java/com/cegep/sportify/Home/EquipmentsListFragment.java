@@ -1,6 +1,8 @@
 package com.cegep.sportify.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,8 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     public static Equipment selectedEquipment = null;
 
     private List<Equipment> equipments = new ArrayList<>();
+
+    private String adminID;
 
     private EquipmentFilter equipmentFilter = new EquipmentFilter();
 
@@ -82,10 +86,17 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     }
 
     private void showEquipmentList() {
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        adminID = sharedPref.getString("adminid", "All");
+
         Set<Equipment> filteredEquipments = new HashSet<>();
         for (Equipment equipment : equipments) {
+            String filterSale = equipmentFilter.getBrandFilter();
             if (equipmentFilter.getSportFilter().equals("All") || equipmentFilter.getSportFilter().equalsIgnoreCase(equipment.getSport())) {
-                filteredEquipments.add(equipment);
+                if(equipmentFilter.getBrandFilter().equals("All") || adminID.equals(equipment.getAdminId())) {
+                    filteredEquipments.add(equipment);
+                }
             }
         }
 
