@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -112,6 +113,11 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
                     }
                 }
 
+                if (orders.isEmpty()) {
+                    Toast.makeText(requireActivity(), "No products to order", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 SportifyApp.orders.clear();
                 SportifyApp.orders.addAll(orders);
                 SportifyApp.isBuyMode = false;
@@ -125,6 +131,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
     @Override
     public void onShoppingCartChanged() {
         updateTotalPrice();
+        shoppingCartAdapter.refresh();
     }
 
     @Override

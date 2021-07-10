@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -60,7 +61,11 @@ class EquipmentViewHolder extends RecyclerView.ViewHolder {
         }
 
         equipmentNameTextView.setText(equipment.getEquipmentName());
-        equipmentPriceTextView.setText("$" + equipment.getPrice());
+        if (equipment.isOnSale()) {
+            equipmentPriceTextView.setText("$" + String.format("%.2f", equipment.getSalePrice()));
+        } else {
+            equipmentPriceTextView.setText("$" + String.format("%.2f", equipment.getPrice()));
+        }
 
         boolean isOutOfStock = equipment.isOutOfStock();
         if (equipment.getSale() > 0 && !isOutOfStock) {

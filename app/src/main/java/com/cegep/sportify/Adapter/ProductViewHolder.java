@@ -65,7 +65,11 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
         }
 
         productNameTextView.setText(product.getProductName());
-        productPriceTextView.setText("$" + product.getPrice());
+        if (product.isOnSale()) {
+            productPriceTextView.setText("$" + String.format("%.2f", product.getSalePrice()));
+        } else {
+            productPriceTextView.setText("$" + String.format("%.2f", product.getPrice()));
+        }
 
         boolean isOutOfStock = product.isOutOfStock();
         if (product.getSale() > 0 && !isOutOfStock) {

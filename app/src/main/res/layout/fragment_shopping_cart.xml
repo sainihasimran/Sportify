@@ -79,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/shopping_cart_empty_text"
+        android:visibility="gone"
         app:drawableTopCompat="@drawable/ic_empty_shopping_cart" />
 
 </FrameLayout>

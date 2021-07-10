@@ -91,7 +91,7 @@
             tools:text="$23.99" />
 
         <TextView
-            android:id="@+id/product_sale_price"
+            android:id="@+id/product_original_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/size_s"
@@ -113,7 +113,7 @@
             android:textAppearance="?textAppearanceBody2"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@id/product_price"
-            app:layout_constraintEnd_toStartOf="@id/product_sale_price" />
+            app:layout_constraintEnd_toStartOf="@id/product_original_price" />
 
         <TextView
             android:id="@+id/stock_text"
@@ -294,6 +294,8 @@
             android:layout_marginTop="@dimen/size_l"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/available_colors_label"
+            app:selectionRequired="true"
+            app:singleSelection="true"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -301,7 +303,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="no_colors_text,available_colors_label" />
+            app:constraint_referenced_ids="no_colors_text,available_colors_label,colors_group" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_to_cart_button"

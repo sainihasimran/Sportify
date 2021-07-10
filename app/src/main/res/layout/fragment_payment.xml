@@ -70,7 +70,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
                     android:maxLength="4" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -207,7 +206,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/size_l"
             android:paddingBottom="@dimen/size_m"
-            android:visibility="gone"
             tools:visibility="visible">
 
             <TextView
@@ -263,6 +261,7 @@
             android:id="@+id/place_order_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_xl"
             android:layout_marginBottom="@dimen/size_l"
             android:text="@string/place_order" />
 
