@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/size_l">
@@ -81,7 +82,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_m"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/On_sale_lable">
+        app:layout_constraintTop_toBottomOf="@id/On_sale_lable"
+        tools:layout_editor_absoluteX="16dp">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/on_sale_none_button"
@@ -115,15 +117,13 @@
         android:id="@+id/out_of_stock_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Out_of_stock"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@id/filters_label"
-        app:layout_constraintTop_toBottomOf="@id/category_chooser" />
+        app:layout_constraintStart_toStartOf="@+id/On_sale_lable"
+        app:layout_constraintTop_toBottomOf="@+id/on_sale_chooser" />
 
     <RadioGroup
         android:id="@+id/out_of_stock_chooser"

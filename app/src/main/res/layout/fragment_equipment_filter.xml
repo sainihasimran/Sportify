@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/size_l">
@@ -25,12 +26,13 @@
         android:id="@+id/sport_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_l"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
         android:gravity="center"
         android:text="Sport"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filters_label" />
 
@@ -38,17 +40,72 @@
         android:id="@+id/sport_chooser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_s"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="@id/sport_label"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sport_label" />
+
+    <TextView
+        android:id="@+id/On_sale_lable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="On_Sale"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/filters_label"
+        app:layout_constraintTop_toBottomOf="@id/sport_chooser" />
+
+    <RadioGroup
+        android:id="@+id/on_sale_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/On_sale_lable"
+        tools:layout_editor_absoluteX="16dp">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/on_sale_none_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="None"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/on_sale_yes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Yes"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/on_sale_no_button"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No"
+            app:buttonTint="@color/radio_button_tint" />
+
+    </RadioGroup>
 
     <TextView
         android:id="@+id/out_of_stock_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="92dp"
         android:gravity="center"
         android:text="@string/out_of_stock"
         android:textAppearance="?textAppearanceSubtitle2"

@@ -17,6 +17,7 @@ import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.EquipmentFilter;
+import com.cegep.sportify.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,6 +88,18 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 filteredEquipments.add(equipment);
             }
         }
+
+        if (equipmentFilter.getOnSale() != null) {
+            boolean onSaleFilter = equipmentFilter.getOnSale();
+            Iterator<Equipment> iterator = filteredEquipments.iterator();
+            while (iterator.hasNext()) {
+                Equipment equipment = iterator.next();
+                if (equipment.isOnSale() != onSaleFilter) {
+                    iterator.remove();
+                }
+            }
+        }
+
 
         if (equipmentFilter.getOutOfStock() != null) {
             boolean outOfStock = equipmentFilter.getOutOfStock();

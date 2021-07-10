@@ -6,6 +6,8 @@ public class EquipmentFilter {
 
     private Boolean outOfStock = null;
 
+    private Boolean onSale = null;
+
     public String getSportFilter() {
         return sportFilter;
     }
@@ -21,4 +23,8 @@ public class EquipmentFilter {
     public void setOutOfStock(Boolean outOfStock) {
         this.outOfStock = outOfStock;
     }
+
+    public Boolean getOnSale() { return onSale; }
+
+    public void setOnSale(Boolean onSale) { this.onSale = onSale; }
 }

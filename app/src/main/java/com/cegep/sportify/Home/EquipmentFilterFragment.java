@@ -43,6 +43,7 @@ public class EquipmentFilterFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupSportChooser(view);
+        setupOnSaleChooser(view);
         setupOutOfStockChooser(view);
         setupApplyButtonClick(view);
     }
@@ -84,6 +85,19 @@ public class EquipmentFilterFragment extends BottomSheetDialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+    }
+
+    private void setupOnSaleChooser(View view) {
+        RadioGroup radioGroup = view.findViewById(R.id.on_sale_chooser);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.on_sale_none_button) {
+                equipmentFilter.setOnSale(null);
+            } else if (checkedId == R.id.on_sale_yes_button) {
+                equipmentFilter.setOnSale(true);
+            } else if (checkedId == R.id.on_sale_no_button) {
+                equipmentFilter.setOnSale(false);
             }
         });
     }

@@ -76,20 +76,21 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
         });
     }
 
-    private void setupOutOfStockChooser(View view) {
+    private void setupOnSaleChooser(View view) {
         RadioGroup radioGroup = view.findViewById(R.id.on_sale_chooser);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.out_of_stock_none_button) {
-                productFilter.setOutOfStock(null);
-            } else if (checkedId == R.id.out_of_stock_yes_button) {
-                productFilter.setOutOfStock(true);
-            } else if (checkedId == R.id.out_of_stock_no_button) {
-                productFilter.setOutOfStock(false);
+            if (checkedId == R.id.on_sale_none_button) {
+                productFilter.setOnSale(null);
+            } else if (checkedId == R.id.on_sale_yes_button) {
+                productFilter.setOnSale(true);
+            } else if (checkedId == R.id.on_sale_no_button) {
+                productFilter.setOnSale(false);
             }
         });
     }
 
-    private void setupOnSaleChooser(View view) {
+
+    private void setupOutOfStockChooser(View view) {
         RadioGroup radioGroup = view.findViewById(R.id.out_of_stock_chooser);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.out_of_stock_none_button) {
