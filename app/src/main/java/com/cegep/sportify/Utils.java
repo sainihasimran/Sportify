@@ -20,7 +20,7 @@ public class Utils {
     }
 
     public static DatabaseReference getOrdersReference() {
-        return getUserReference().child("Orders");
+        return getClientDatabase().getReference("Orders");
     }
 
     public static DatabaseReference getShoppingCartReference() {
