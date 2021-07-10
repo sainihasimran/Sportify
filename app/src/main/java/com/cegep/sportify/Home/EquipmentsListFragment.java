@@ -16,6 +16,8 @@ import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
 import com.cegep.sportify.model.Equipment;
+import com.cegep.sportify.model.EquipmentFilter;
+import com.cegep.sportify.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +34,8 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     public static Equipment selectedEquipment = null;
 
     private List<Equipment> equipments = new ArrayList<>();
+
+    private EquipmentFilter equipmentFilter = new EquipmentFilter();
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -77,12 +82,41 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     }
 
     private void showEquipmentList() {
-        Set<Equipment> Equipments = new HashSet<>();
+        Set<Equipment> filteredEquipments = new HashSet<>();
         for (Equipment equipment : equipments) {
-            Equipments.add(equipment);
+            if (equipmentFilter.getSportFilter().equals("All") || equipmentFilter.getSportFilter().equalsIgnoreCase(equipment.getSport())) {
+                filteredEquipments.add(equipment);
+            }
         }
-        equipmentsAdapter.update(Equipments);
 
+        if (equipmentFilter.getOnSale() != null) {
+            boolean onSaleFilter = equipmentFilter.getOnSale();
+            Iterator<Equipment> iterator = filteredEquipments.iterator();
+            while (iterator.hasNext()) {
+                Equipment equipment = iterator.next();
+                if (equipment.isOnSale() != onSaleFilter) {
+                    iterator.remove();
+                }
+            }
+        }
+
+
+        if (equipmentFilter.getOutOfStock() != null) {
+            boolean outOfStock = equipmentFilter.getOutOfStock();
+            Iterator<Equipment> iterator = filteredEquipments.iterator();
+            while (iterator.hasNext()) {
+                Equipment equipment = iterator.next();
+                if (equipment.isOutOfStock() != outOfStock) {
+                    iterator.remove();
+                }
+            }
+        }
+        equipmentsAdapter.update(filteredEquipments);
+    }
+
+    public void handleFilters(EquipmentFilter equipmentFilter) {
+        this.equipmentFilter = equipmentFilter;
+        showEquipmentList();
     }
 
     @Override
