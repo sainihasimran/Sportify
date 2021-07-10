@@ -90,8 +90,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     private void showProductList() {
 
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        //String defaultValue = getResources().getString(Integer.valueOf("myid"));
-        adminID = sharedPref.getString("myid", "All");
+        adminID = sharedPref.getString("adminid", "All");
 
         Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {

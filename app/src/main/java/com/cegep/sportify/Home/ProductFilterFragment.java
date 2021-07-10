@@ -86,7 +86,7 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 if (position>0)
-                    editor.putString("myid", brandsList.get(position-1).getAdminID());
+                    editor.putString("adminid", brandsList.get(position-1).getAdminID());
                 editor.apply();
             }
             @Override

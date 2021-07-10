@@ -66,15 +66,15 @@
         android:id="@+id/brand_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="328dp"
+        android:layout_marginRight="328dp"
         android:gravity="center"
         android:text="Brand"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/category_chooser" />
 
     <androidx.appcompat.widget.AppCompatSpinner
