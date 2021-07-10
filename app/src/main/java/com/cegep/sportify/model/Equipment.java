@@ -143,8 +143,6 @@ public class Equipment {
         Order order = new Order();
         order.setOrderId(Utils.getUniqueId());
         order.setEquipment(this);
-        order.setQuantity(1);
-        order.setPrice(getFinalPrice());
         order.setClientId(SportifyApp.user.userId);
         order.setAdminId(adminId);
         order.setStatus("pending");

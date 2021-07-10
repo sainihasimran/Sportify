@@ -75,23 +75,26 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), equipment.getImages());
             viewPager.setAdapter(imageAdapter);
             dotsIndicator.setViewPager(viewPager);
+            dotsIndicator.setVisibility(View.VISIBLE);
         }
     }
 
     private void setupEquipmentPrices(View view) {
         TextView priceTextView = view.findViewById(R.id.equipment_price);
-        TextView saleTextView = view.findViewById(R.id.equipment_sale_price);
+        TextView originalPrice = view.findViewById(R.id.equipment_original_price);
 
         priceTextView.setText("$" + String.format("%.2f", equipment.getPrice()));
 
         if (equipment.isOnSale()) {
             float salePrice = equipment.getPrice() - (equipment.getPrice() * equipment.getSale()) / 100;
-            String salePriceStr = "$" + String.format(".2f", salePrice);
-            saleTextView.setText(salePriceStr);
-            saleTextView.setPaintFlags(saleTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            saleTextView.setVisibility(View.VISIBLE);
+            String salePriceStr = "$" + String.format("%.2f", salePrice);
+            priceTextView.setText(salePriceStr);
+            originalPrice.setText(salePriceStr);
+            originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            originalPrice.setVisibility(View.VISIBLE);
+            originalPrice.setText("$" + String.format("%.2f", equipment.getPrice()));
         } else {
-            saleTextView.setVisibility(View.GONE);
+            originalPrice.setVisibility(View.GONE);
         }
     }
 
@@ -163,6 +166,8 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
         if (isBuyMode) {
             SportifyApp.isBuyMode = true;
             Order order = equipment.toOrder();
+            order.setQuantity(quantity);
+            order.setPrice(equipment.getFinalPrice() * quantity);
 
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);

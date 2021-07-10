@@ -15,25 +15,26 @@
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".details.productdetails.ProductDetailsActivity" />
-        <activity android:name=".details.equipmentdetails.EquipmentDetailsActivity" />
+        <activity android:exported="true" android:name=".details.productdetails.ProductDetailsActivity" />
+        <activity android:exported="true" android:name=".details.equipmentdetails.EquipmentDetailsActivity" />
 
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"
             android:exported="true" />
 
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:exported="true" android:name=".SignUpActivity" />
+        <activity android:exported="true" android:name=".SettingsActivity" />
+        <activity android:exported="true" android:name=".OrderActivity" />
+        <activity android:exported="true" android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
 
-        <activity
+        <activity android:exported="true"
             android:name=".MainActivity"
             android:launchMode="singleTop" />
 
-        <activity android:name=".Splash">
+        <activity android:exported="true" android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,11 +42,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".checkout.ShoppingCartActivity" />
-        <activity android:name=".checkout.AddressActivity" />
-        <activity android:name=".checkout.ShippingActivity" />
-        <activity android:name=".checkout.PaymentActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity android:exported="true" android:name=".checkout.ShoppingCartActivity" />
+        <activity android:exported="true" android:name=".checkout.AddressActivity" />
+        <activity android:exported="true" android:name=".checkout.ShippingActivity" />
+        <activity android:exported="true" android:name=".checkout.PaymentActivity" />
+        <activity android:exported="true" android:name=".SearchActivity" />
     </application>
 
 </manifest>

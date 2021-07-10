@@ -1,7 +1,10 @@
 package com.cegep.sportify.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Product;
+import com.cegep.sportify.model.ProductFilter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,14 +27,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 public class ProductsListFragment extends Fragment implements ProductListItemClickListener {
 
     public static Product selectedProduct = null;
 
     private List<Product> products = new ArrayList<>();
+
+    private ProductFilter productFilter = new ProductFilter();
+
+    private String adminID;
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -78,11 +88,51 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     }
 
     private void showProductList() {
-        Set<Product> Products = new HashSet<>();
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        adminID = sharedPref.getString("adminid", "All");
+
+        Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {
-            Products.add(product);
+            String filterCategory = productFilter.getCategoryFilter();
+            String filterSubCategory = productFilter.getSubCategoryFilter();
+            String filterSale = productFilter.getBrandFilter();
+
+            if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
+                if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
+                    if (filterSale.equals("All") || adminID.equals(product.getAdminId())) {
+                        filteredProducts.add(product);
+                    }
+                }
+            }
         }
-        productAdapter.update(Products);
+
+        if (productFilter.getOutOfStock() != null) {
+            boolean outOfStock = productFilter.getOutOfStock();
+            Iterator<Product> iterator = filteredProducts.iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (product.isOutOfStock() != outOfStock) {
+                    iterator.remove();
+                }
+            }
+        }
+        if (productFilter.getOnSale() != null) {
+            boolean onSaleFilter = productFilter.getOnSale();
+            Iterator<Product> iterator = filteredProducts.iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (product.isOnSale() != onSaleFilter) {
+                    iterator.remove();
+                }
+            }
+        }
+        productAdapter.update(filteredProducts);
+    }
+
+    public void handleFilters(ProductFilter productFilter) {
+        this.productFilter = productFilter;
+        showProductList();
     }
 
     @Override
@@ -90,5 +140,10 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         selectedProduct = product;
         Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
         startActivity(intent);
+    }
+
+    public void setAdminID(String adminID)
+    {
+        this.adminID = adminID;
     }
 }

@@ -8,16 +8,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.cegep.sportify.Home.EquipmentFilterFragment;
+import com.cegep.sportify.Home.EquipmentFilterListener;
 import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductFilterFragment;
+import com.cegep.sportify.Home.ProductFilterListener;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
+import com.cegep.sportify.model.EquipmentFilter;
+import com.cegep.sportify.model.ProductFilter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductFilterListener, EquipmentFilterListener {
 
     private ProductsListFragment productListFragment;
     private EquipmentsListFragment equipmentsListFragment;
@@ -51,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.orders) {
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(intent);
+                return true;
+            }
             if (item.getItemId() == R.id.profile) {
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -86,20 +96,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showFiltersFragment() {
-        BottomSheetDialogFragment filterFragment;
-        if (isShowingProducts) {
-            filterFragment = new ProductFilterFragment();
-            filterFragment.setTargetFragment(productListFragment, 0);
-            filterFragment.show(getSupportFragmentManager(), null);
-        } else {
-            filterFragment = new EquipmentFilterFragment();
-            filterFragment.setTargetFragment(equipmentsListFragment, 0);
-            filterFragment.show(getSupportFragmentManager(), null);
-        }
-
-    }
-
     private void showEquipmentsFragment() {
         equipmentsListFragment = new EquipmentsListFragment();
         getSupportFragmentManager()
@@ -114,5 +110,30 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.container, productListFragment)
                 .commit();
+    }
+
+    private void showFiltersFragment() {
+        BottomSheetDialogFragment filterFragment;
+        if (isShowingProducts) {
+            filterFragment = new ProductFilterFragment();
+            filterFragment.setTargetFragment(productListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
+        } else {
+            filterFragment = new EquipmentFilterFragment();
+            filterFragment.setTargetFragment(equipmentsListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
+        }
+    }
+
+    public void onProductFilterSelected(ProductFilter filter) {
+        if (productListFragment != null) {
+            productListFragment.handleFilters(filter);
+        }
+    }
+
+    public void onEquipmentFilterSelected(EquipmentFilter filter) {
+        if (equipmentsListFragment != null) {
+            equipmentsListFragment.handleFilters(filter);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.cegep.sportify.details.productdetails;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.Home.ProductsListFragment;
@@ -29,6 +33,7 @@ import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -84,23 +89,25 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), product.getImages());
             viewPager.setAdapter(imageAdapter);
             dotsIndicator.setViewPager(viewPager);
+            dotsIndicator.setVisibility(View.VISIBLE);
         }
     }
 
     private void setupProductPrices(View view) {
         TextView priceTextView = view.findViewById(R.id.product_price);
-        TextView saleTextView = view.findViewById(R.id.product_sale_price);
+        TextView originalPrice = view.findViewById(R.id.product_original_price);
 
         priceTextView.setText("$" + String.format("%.2f", product.getPrice()));
 
         if (product.isOnSale()) {
             float salePrice = product.getPrice() - (product.getPrice() * product.getSale()) / 100;
-            String salePriceStr = "$" + String.format(".2f", salePrice);
-            saleTextView.setText(salePriceStr);
-            saleTextView.setPaintFlags(saleTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            saleTextView.setVisibility(View.VISIBLE);
+            String salePriceStr = "$" + String.format("%.2f", salePrice);
+            priceTextView.setText(salePriceStr);
+            originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            originalPrice.setVisibility(View.VISIBLE);
+            originalPrice.setText("$" + String.format("%.2f", product.getPrice()));
         } else {
-            saleTextView.setVisibility(View.GONE);
+            originalPrice.setVisibility(View.GONE);
         }
     }
 
@@ -169,9 +176,16 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         if (product.hasColors()) {
             LayoutInflater inflater = LayoutInflater.from(requireContext());
             for (final String color : product.getColors()) {
-                View chip = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
-                chip.setOnClickListener(v -> selectedColor = color);
-                colorsRadioGroup.addView(chip);
+                View chipView = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
+                Chip chip = chipView.findViewById(R.id.chip);
+                chip.setId(ViewCompat.generateViewId());
+                chip.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(color)));
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        selectedColor = color;
+                    }
+                });
+                colorsRadioGroup.addView(chipView);
             }
 
             colorsRadioGroup.setVisibility(View.VISIBLE);
@@ -180,6 +194,8 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             colorsRadioGroup.setVisibility(View.GONE);
             noColorsTextView.setVisibility(View.VISIBLE);
         }
+
+        colorsRadioGroup.setSingleSelection(true);
     }
 
     private void setupAddToCart(View view) {
@@ -211,12 +227,12 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         }
 
         if (product.hasColors() && TextUtils.isEmpty(selectedColor)) {
-            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!product.isOutOfStock() && TextUtils.isEmpty(selectedSize)) {
-            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -236,6 +252,8 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             Order order = product.toOrder();
             order.setSize(selectedSize);
             order.setColor(selectedColor);
+            order.setQuantity(quantity);
+            order.setPrice(product.getFinalPrice() * quantity);
 
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);

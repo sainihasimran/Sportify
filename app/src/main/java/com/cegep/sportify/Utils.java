@@ -38,6 +38,13 @@ public class Utils {
     public static FirebaseDatabase getAdminDatabase() {
         return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE));
     }
+    public static DatabaseReference getSportWithTeamsReference() {
+        return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE)).getReference("SportWithTeams");
+    }
+
+    public static DatabaseReference getbrandReference() {
+        return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE)).getReference("Admin");
+    }
 
     public static FirebaseDatabase getClientDatabase() {
         return FirebaseDatabase.getInstance();
