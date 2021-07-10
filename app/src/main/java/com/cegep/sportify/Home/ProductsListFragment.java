@@ -20,8 +20,8 @@ import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ProductFilter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +37,8 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
     private ProductFilter productFilter = new ProductFilter();
 
+    private List<String> favoriteProducts = new ArrayList<>();
+
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -51,6 +53,22 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
+        }
+    };
+
+    private final ValueEventListener favoriteListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ProductsListFragment.this.favoriteProducts = (List<String>) snapshot.getValue();
+            if (ProductsListFragment.this.favoriteProducts == null) {
+                ProductsListFragment.this.favoriteProducts = new ArrayList<>();
+            }
+            showProductList();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
         }
     };
 
@@ -70,8 +88,10 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
-        DatabaseReference productsReference = adminappdb.getReference("Products");
+        Query productsReference = adminappdb.getReference("Products").orderByChild("createdAt");
         productsReference.addValueEventListener(valueEventListener);
+
+        Utils.getFavoriteProductsReference().addValueEventListener(favoriteListener);
     }
 
     private void setupRecyclerView(View view) {
@@ -114,7 +134,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
                 }
             }
         }
-        productAdapter.update(filteredProducts);
+        productAdapter.update(filteredProducts, favoriteProducts);
     }
 
     public void handleFilters(ProductFilter productFilter) {
@@ -127,5 +147,15 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         selectedProduct = product;
         Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFavoriteButtonClicked(Product product, boolean favorite) {
+        if (favorite) {
+            favoriteProducts.add(product.getProductId());
+        } else {
+            favoriteProducts.remove(product.getProductId());
+        }
+        Utils.getFavoriteProductsReference().setValue(favoriteProducts);
     }
 }
