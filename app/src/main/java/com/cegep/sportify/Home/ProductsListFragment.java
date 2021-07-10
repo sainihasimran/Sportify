@@ -1,8 +1,9 @@
 package com.cegep.sportify.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,9 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     private ProductFilter productFilter = new ProductFilter();
 
     private List<String> favoriteProducts = new ArrayList<>();
+
+    private String adminID;
+
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -103,17 +107,25 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     }
 
     private void showProductList() {
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        adminID = sharedPref.getString("adminid", "All");
+
         Set<Product> filteredProducts = new HashSet<>();
         for (Product product : products) {
             String filterCategory = productFilter.getCategoryFilter();
             String filterSubCategory = productFilter.getSubCategoryFilter();
-           Log.d("11111111111111111111111",productFilter.getCategoryFilter());
+            String filterSale = productFilter.getBrandFilter();
+
             if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
                 if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
-                    filteredProducts.add(product);
+                    if (filterSale.equals("All") || adminID.equals(product.getAdminId())) {
+                        filteredProducts.add(product);
+                    }
                 }
             }
         }
+
         if (productFilter.getOutOfStock() != null) {
             boolean outOfStock = productFilter.getOutOfStock();
             Iterator<Product> iterator = filteredProducts.iterator();
@@ -157,5 +169,9 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
             favoriteProducts.remove(product.getProductId());
         }
         Utils.getFavoriteProductsReference().setValue(favoriteProducts);
+    }
+
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
     }
 }

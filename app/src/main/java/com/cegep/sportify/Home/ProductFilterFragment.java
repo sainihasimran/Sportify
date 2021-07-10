@@ -1,6 +1,8 @@
 package com.cegep.sportify.Home;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,11 +17,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import java.util.prefs.Preferences;
 
 import com.cegep.sportify.Constants;
 import com.cegep.sportify.R;
+import com.cegep.sportify.Utils;
+import com.cegep.sportify.model.Brands;
+import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ProductFilter;
+import com.cegep.sportify.model.SportWithTeams;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +37,7 @@ import java.util.List;
 
 public class ProductFilterFragment extends BottomSheetDialogFragment {
     private final ProductFilter productFilter = new ProductFilter();
-    @Override
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -38,10 +48,54 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupCategoriesSpinner(view);
         setupSubCategoriesSpinner(view);
+        setupBrandSpinner(view);
         setupOutOfStockChooser(view);
         setupOnSaleChooser(view);
         setupApplyButtonClick(view);
     }
+
+    private void setupBrandSpinner(View view) {
+        Spinner brandsChooser = view.findViewById(R.id.brand_chooser);
+        final List<String> brands = new ArrayList<>();
+        List<Brands> brandsList = new ArrayList<>();
+        Utils.getbrandReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                brands.add(0, "All");
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    Brands brand = childSnapshot.getValue(Brands.class);
+                    String name = "" + childSnapshot.child("brandname").getValue();
+                    String adminID = "" + childSnapshot.child("adminId").getValue();
+                    brand.setBrand(name);
+                    brand.setAdminID(adminID);
+                    brandsList.add(brand);
+                    brands.add(Character.toUpperCase(name.charAt(0)) + name.substring(1));
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, brands);
+                brandsChooser.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        brandsChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                productFilter.setBrandFilter(brands.get(position));
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                if (position>0)
+                    editor.putString("adminid", brandsList.get(position-1).getAdminID());
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     private void setupCategoriesSpinner(View view) {
         List<String> categories = new ArrayList<>(Arrays.asList(Constants.CATEGORIES));
         categories.add(0, "All");

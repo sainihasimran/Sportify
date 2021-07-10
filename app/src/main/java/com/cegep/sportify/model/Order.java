@@ -1,5 +1,7 @@
 package com.cegep.sportify.model;
 
+import java.util.List;
+
 public class Order {
 
     private String orderId;
@@ -31,6 +33,7 @@ public class Order {
     private Address address;
 
     private CreditCard creditCard;
+    private List<String> images;
 
     public String getOrderId() {
         return orderId;
@@ -151,4 +154,11 @@ public class Order {
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
     }
-}
+
+    public  List<String> getImages() { return images;
+    }
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+    }
+

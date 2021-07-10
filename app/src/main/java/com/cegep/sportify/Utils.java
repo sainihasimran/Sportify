@@ -50,6 +50,10 @@ public class Utils {
         return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE)).getReference("SportWithTeams");
     }
 
+    public static DatabaseReference getbrandReference() {
+        return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE)).getReference("Admin");
+    }
+
     public static FirebaseDatabase getClientDatabase() {
         return FirebaseDatabase.getInstance();
     }

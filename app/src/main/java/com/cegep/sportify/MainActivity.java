@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.orders) {
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(intent);
+                return true;
+            }
             if (item.getItemId() == R.id.profile) {
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
