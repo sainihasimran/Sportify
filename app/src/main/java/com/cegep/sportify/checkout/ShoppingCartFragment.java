@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -161,7 +162,9 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
         protected List<ShoppingCartItem> doInBackground(List<ShoppingCartItem>... lists) {
             List<ShoppingCartItem> shoppingCartItems = lists[0];
             try {
-                for (ShoppingCartItem shoppingCartItem : shoppingCartItems) {
+                Iterator<ShoppingCartItem> iterator = shoppingCartItems.iterator();
+                while (iterator.hasNext()) {
+                    ShoppingCartItem shoppingCartItem = iterator.next();
                     if (shoppingCartItem.isProduct()) {
                         Task<DataSnapshot> fetchProductTask = Utils.getProductReference(shoppingCartItem.getProductId()).get();
                         DataSnapshot productDataSnapshot = Tasks.await(fetchProductTask);
@@ -172,6 +175,10 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
                         DataSnapshot equipmentDataSnapshot = Tasks.await(fetchEquipmentTask);
                         Equipment equipment = equipmentDataSnapshot.getValue(Equipment.class);
                         shoppingCartItem.setEquipment(equipment);
+                    }
+
+                    if (shoppingCartItem.getProduct() == null && shoppingCartItem.getEquipment() == null) {
+                        iterator.remove();
                     }
                 }
             } catch (InterruptedException | ExecutionException e) {
