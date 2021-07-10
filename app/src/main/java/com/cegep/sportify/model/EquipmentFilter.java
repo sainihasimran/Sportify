@@ -4,6 +4,8 @@ public class EquipmentFilter {
 
     private String sportFilter = "All";
 
+    private String brandFilter = "All";
+
     private Boolean outOfStock = null;
 
     private Boolean onSale = null;
@@ -14,6 +16,14 @@ public class EquipmentFilter {
 
     public void setSportFilter(String sportFilter) {
         this.sportFilter = sportFilter;
+    }
+
+    public String getBrandFilter() {
+        return brandFilter;
+    }
+
+    public void setBrandFilter(String brandFilter) {
+        this.brandFilter = brandFilter;
     }
 
     public Boolean getOutOfStock() {

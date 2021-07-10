@@ -6,6 +6,8 @@ public class ProductFilter {
 
     private String subCategoryFilter = "All";
 
+    private String brandFilter = "All";
+
     private Boolean outOfStock = null;
 
     private Boolean onSale = null;
@@ -24,6 +26,14 @@ public class ProductFilter {
 
     public void setSubCategoryFilter(String subCategoryFilter) {
         this.subCategoryFilter = subCategoryFilter;
+    }
+
+    public String getBrandFilter() {
+        return brandFilter;
+    }
+
+    public void setBrandFilter(String brandFilter) {
+        this.brandFilter = brandFilter;
     }
 
     public Boolean getOutOfStock() {

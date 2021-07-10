@@ -45,7 +45,7 @@ public class Utils {
     public static DatabaseReference getbrandReference() {
         return FirebaseDatabase.getInstance(FirebaseApp.getInstance(SportifyApp.ADMIN_FIREBASE)).getReference("Admin");
     }
-    
+
     public static FirebaseDatabase getClientDatabase() {
         return FirebaseDatabase.getInstance();
     }
