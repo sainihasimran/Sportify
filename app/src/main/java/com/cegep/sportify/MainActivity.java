@@ -6,14 +6,22 @@ import android.view.Gravity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.cegep.sportify.Home.EquipmentFilterFragment;
+import com.cegep.sportify.Home.EquipmentFilterListener;
 import com.cegep.sportify.Home.EquipmentsListFragment;
+import com.cegep.sportify.Home.ProductFilterFragment;
+import com.cegep.sportify.Home.ProductFilterListener;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
+import com.cegep.sportify.model.EquipmentFilter;
+import com.cegep.sportify.model.ProductFilter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductFilterListener, EquipmentFilterListener {
 
     private ProductsListFragment productListFragment;
     private EquipmentsListFragment equipmentsListFragment;
@@ -30,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         topAppBar.inflateMenu(R.menu.menu_home);
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_filter) {
-
+                showFiltersFragment();
                 return true;
             } else if (item.getItemId() == R.id.action_search) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -96,5 +104,30 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.container, productListFragment)
                 .commit();
+    }
+
+    private void showFiltersFragment() {
+        BottomSheetDialogFragment filterFragment;
+        if (isShowingProducts) {
+            filterFragment = new ProductFilterFragment();
+            filterFragment.setTargetFragment(productListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
+        } else {
+            filterFragment = new EquipmentFilterFragment();
+            filterFragment.setTargetFragment(equipmentsListFragment, 0);
+            filterFragment.show(getSupportFragmentManager(), null);
+        }
+    }
+
+    public void onProductFilterSelected(ProductFilter filter) {
+        if (productListFragment != null) {
+            productListFragment.handleFilters(filter);
+        }
+    }
+
+    public void onEquipmentFilterSelected(EquipmentFilter filter) {
+        if (equipmentsListFragment != null) {
+            equipmentsListFragment.handleFilters(filter);
+        }
     }
 }
