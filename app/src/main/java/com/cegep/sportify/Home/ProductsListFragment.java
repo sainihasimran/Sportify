@@ -98,7 +98,6 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
             String filterSubCategory = productFilter.getSubCategoryFilter();
             String filterSale = productFilter.getBrandFilter();
 
-           Log.d("11111111111111111111111",productFilter.getCategoryFilter());
             if (filterCategory.equals("All") || filterCategory.equals(product.getCategory())) {
                 if (filterSubCategory.equals("All") || filterSubCategory.equals(product.getSubCategory())) {
                     if (filterSale.equals("All") || adminID.equals(product.getAdminId())) {
