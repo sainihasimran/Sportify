@@ -1,5 +1,6 @@
 package com.cegep.sportify.Home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.EquipmentFilter;
+import com.cegep.sportify.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -106,8 +108,12 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     }
 
     private void showEquipmentList() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         adminID = sharedPref.getString("adminid", "All");
 
         Set<Equipment> filteredEquipments = new HashSet<>();
@@ -141,6 +147,24 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 }
             }
         }
+
+        if (equipmentFilter.getFavorite() != null) {
+            boolean favoriteFilter = equipmentFilter.getFavorite();
+            Iterator<Equipment> iterator = filteredEquipments.iterator();
+            while (iterator.hasNext()) {
+                Equipment equipment = iterator.next();
+                if (favoriteFilter) {
+                    if (!favoriteEquipments.contains(equipment.getEquipmentId())) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (favoriteEquipments.contains(equipment.getEquipmentId())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
         equipmentsAdapter.update(filteredEquipments, favoriteEquipments);
     }
 

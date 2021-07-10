@@ -1,5 +1,6 @@
 package com.cegep.sportify.Home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -107,8 +108,12 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     }
 
     private void showProductList() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         adminID = sharedPref.getString("adminid", "All");
 
         Set<Product> filteredProducts = new HashSet<>();
@@ -146,6 +151,24 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
                 }
             }
         }
+
+        if (productFilter.getFavorite() != null) {
+            boolean favoriteFilter = productFilter.getFavorite();
+            Iterator<Product> iterator = filteredProducts.iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (favoriteFilter) {
+                    if (!favoriteProducts.contains(product.getProductId())) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (favoriteProducts.contains(product.getProductId())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
         productAdapter.update(filteredProducts, favoriteProducts);
     }
 

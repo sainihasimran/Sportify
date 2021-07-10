@@ -24,6 +24,7 @@
         android:text="Category"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/sub_category_label"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +35,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Sub_category"
+        android:text="Sub Category"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/category_label"
         app:layout_constraintTop_toTopOf="@id/category_label" />
@@ -92,13 +94,12 @@
         android:id="@+id/On_sale_lable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="76dp"
         android:gravity="center"
-        android:text="On_Sale"
+        android:text="On Sale"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/filters_label"
         app:layout_constraintTop_toBottomOf="@id/category_chooser" />
 
@@ -145,9 +146,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="Out_of_stock"
+        android:text="Out Of Stock"
         android:textAppearance="?textAppearanceSubtitle2"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/On_sale_lable"
         app:layout_constraintTop_toBottomOf="@+id/on_sale_chooser" />
 
@@ -187,6 +189,55 @@
 
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/favorite_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/favorites"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/out_of_stock_chooser"
+        app:layout_constraintTop_toBottomOf="@+id/out_of_stock_chooser" />
+
+    <RadioGroup
+        android:id="@+id/favorite_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/favorite_label">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/favorite_none_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="None"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/favorite_yes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Yes"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/favorite_no_button"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No"
+            app:buttonTint="@color/radio_button_tint" />
+
+    </RadioGroup>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/apply_button"
         android:layout_width="wrap_content"
@@ -194,6 +245,6 @@
         android:layout_marginTop="@dimen/size_l"
         android:text="Apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/out_of_stock_chooser" />
+        app:layout_constraintTop_toBottomOf="@id/favorite_chooser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

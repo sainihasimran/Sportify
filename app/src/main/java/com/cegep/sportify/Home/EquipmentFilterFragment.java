@@ -50,6 +50,7 @@ public class EquipmentFilterFragment extends BottomSheetDialogFragment {
         setupOnSaleChooser(view);
         setupOutOfStockChooser(view);
         setupApplyButtonClick(view);
+        setupFavoriteChooser(view);
     }
 
     private void setupBrandSpinner(View view) {
@@ -157,6 +158,19 @@ public class EquipmentFilterFragment extends BottomSheetDialogFragment {
                 equipmentFilter.setOutOfStock(true);
             } else if (checkedId == R.id.out_of_stock_no_button) {
                 equipmentFilter.setOutOfStock(false);
+            }
+        });
+    }
+
+    private void setupFavoriteChooser(View view) {
+        RadioGroup radioGroup = view.findViewById(R.id.favorite_chooser);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.favorite_none_button) {
+                equipmentFilter.setFavorite(null);
+            } else if (checkedId == R.id.favorite_yes_button) {
+                equipmentFilter.setFavorite(true);
+            } else if (checkedId == R.id.favorite_no_button) {
+                equipmentFilter.setFavorite(false);
             }
         });
     }
