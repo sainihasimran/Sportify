@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size_l">
+
+    <TextView
+        android:id="@+id/filters_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filters"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/sport_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_l"
+        android:gravity="center"
+        android:text="Sport"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filters_label" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/sport_chooser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_s"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="@id/sport_label"
+        app:layout_constraintTop_toBottomOf="@id/sport_label" />
+
+    <TextView
+        android:id="@+id/out_of_stock_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/out_of_stock"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/filters_label"
+        app:layout_constraintTop_toBottomOf="@id/sport_chooser" />
+
+    <RadioGroup
+        android:id="@+id/out_of_stock_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_m"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/out_of_stock_label">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/out_of_stock_none_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="None"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/out_of_stock_yes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Yes"
+            app:buttonTint="@color/radio_button_tint" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/out_of_stock_no_button"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No"
+            app:buttonTint="@color/radio_button_tint" />
+
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/apply_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_l"
+        android:text="Apply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/out_of_stock_chooser" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

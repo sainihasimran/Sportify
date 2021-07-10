@@ -1,5 +1,6 @@
 package com.cegep.sportify.SavedItems;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cegep.sportify.EquipmentListItemClickListener;
 import com.cegep.sportify.R;
+import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
+import com.cegep.sportify.model.Equipment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,12 +24,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ViewSavedEquipmentsFragment extends Fragment {
+public class ViewSavedEquipmentsFragment extends Fragment implements EquipmentListItemClickListener {
 
     private ArrayList<SavedItems> savedequipments;
     RecyclerView recyclerview;
     savedequipmentAdapter eqadapter;
     DatabaseReference dbr;
+
+    public static Equipment selectedEquipment = null;
 
     public ViewSavedEquipmentsFragment() {
         // Required empty public constructor
@@ -71,5 +77,11 @@ public class ViewSavedEquipmentsFragment extends Fragment {
         recyclerview.setAdapter(eqadapter);
         recyclerview.setVisibility(View.VISIBLE);
 
+    }
+
+    public void onEquipmentClicked(Equipment equipment) {
+        selectedEquipment = equipment;
+        Intent intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
+        startActivity(intent);
     }
 }

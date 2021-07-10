@@ -49,7 +49,6 @@ public class saveditemadapter extends RecyclerView.Adapter<saveditemadapter.View
         holder.nametxt.setText(sv.getNametxt());
         holder.saletxt.setText(sv.getSaletxt());
 
-        //TODO CHILD VALUE
         holder.favbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

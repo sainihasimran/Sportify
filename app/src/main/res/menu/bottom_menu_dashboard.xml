@@ -5,7 +5,7 @@
         android:id="@+id/action_clothing"
         android:enabled="true"
         android:icon="@drawable/ic_clothing"
-        android:title="Cloathing" />
+        android:title="Clothing" />
 
     <item
         android:id="@+id/action_equipment"

@@ -9,4 +9,12 @@
         <item name="cornerSize">100%</item>
         <item name="cornerRadius">2dp</item>
     </style>
+
+    <style name="LoadingDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="colorAccent">?colorPrimary</item>
+    </style>
+
 </resources>

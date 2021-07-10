@@ -5,11 +5,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,15 +35,23 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView outOfStockOverlay;
 
-    Button fav_product_btn;
+    private Button fav_product_btn;
 
     private DatabaseReference databaseReference;
 
     private Product product;
     ArrayList<String> value = new ArrayList<String>();
 
-    public ProductViewHolder(@NonNull View itemView) {
+    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener) {
         super(itemView);
+
+        itemView.setOnClickListener(v -> {
+            if (product != null) {
+                productListItemClickListener.onProductClicked(product);
+            } else {
+                Toast.makeText(itemView.getContext(), "Product is null", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         productImageView = itemView.findViewById(R.id.product_image);
         productNameTextView = itemView.findViewById(R.id.product_name);
@@ -104,13 +114,15 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference favref = databaseReference.child("Users").child(uid).child("favoriteProducts");
+        //.push();
+        //favref.setValue(pId);
 
         favref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(value.indexOf(Integer.parseInt(pId.toString())) == -1 ) {
-
+                if(value.indexOf(pId) == -1 ) {
+                    fav_product_btn.setBackgroundResource(R.drawable.saveproducts);
                     if (dataSnapshot.getValue() == null) {
                         value.add(pId);
                     } else {

@@ -1,5 +1,6 @@
 package com.cegep.sportify.SavedItems;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
+import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
+import com.cegep.sportify.model.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,16 +26,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class ViewSavedItemsFragment extends Fragment {
+public class ViewSavedItemsFragment extends Fragment implements ProductListItemClickListener {
+
+    public static Product selectedProduct = null;
 
     ViewSavedEquipmentsFragment viewsavedequipmentsFragment;
     private ArrayList<SavedItems> savedproducts;
     RecyclerView productrecyclerview;
+    private View emptyView;
     saveditemadapter adapter;
     DatabaseReference dbr;
     private boolean isShowingProducts = true;
-
-    // userDatabaseReference.child("users").child(userId).child("fav").setValue(productId);
 
     public ViewSavedItemsFragment() {
         // Required empty public constructor
@@ -40,6 +45,7 @@ public class ViewSavedItemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_saved_items, container, false);
         return view;
@@ -49,12 +55,13 @@ public class ViewSavedItemsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyView = view.findViewById(R.id.empty_view);
+
         BottomNavigationView topNavigationView = view.findViewById(R.id.top_navigation);
         productrecyclerview = view.findViewById(R.id.productrecyclerView);
         dbr = FirebaseDatabase.getInstance().getReference();
 
         showProducts();
-
         topNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.action_product) {
                 isShowingProducts = true;
@@ -78,6 +85,7 @@ public class ViewSavedItemsFragment extends Fragment {
         savedproducts = new ArrayList<>();
         adapter = new saveditemadapter(getContext(),savedproducts);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         //callback method on a database
         dbr.child("Users").child(uid).child("favoriteProducts").addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,5 +114,11 @@ public class ViewSavedItemsFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.container, viewsavedequipmentsFragment)
                 .commit();
+    }
+
+    public void onProductClicked(Product product) {
+        selectedProduct = product;
+        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        startActivity(intent);
     }
 }

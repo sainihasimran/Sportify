@@ -1,7 +1,9 @@
-package com.cegep.sportify.productdetails;
+package com.cegep.sportify.details.productdetails;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +11,36 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.R;
+import com.cegep.sportify.SavedItems.ViewSavedItemsFragment;
+import com.cegep.sportify.SportifyApp;
+import com.cegep.sportify.Utils;
+import com.cegep.sportify.checkout.ShippingActivity;
+import com.cegep.sportify.details.QuantityFragment;
+import com.cegep.sportify.details.QuantitySelectedListener;
 import com.cegep.sportify.gallery.ImageAdapter;
+import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
+import com.cegep.sportify.model.ShoppingCartItem;
+import com.google.android.material.chip.ChipGroup;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
-public class ProductDetailsFragment extends Fragment {
+public class ProductDetailsFragment extends Fragment implements QuantitySelectedListener {
 
     private Product product;
 
     private String selectedSize;
+
+    private String selectedColor;
+
+    private boolean isBuyMode = false;
 
     @Nullable
     @Override
@@ -34,6 +51,8 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.product = ProductsListFragment.selectedProduct;
+        this.product = ViewSavedItemsFragment.selectedProduct;
 
         setupProductName(view);
         setupProductImages(view);
@@ -54,7 +73,6 @@ public class ProductDetailsFragment extends Fragment {
     private void setupProductImages(View view) {
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         WormDotsIndicator dotsIndicator = view.findViewById(R.id.dots_indicator);
-        dotsIndicator.setViewPager(viewPager);
         Group noImagesGroup = view.findViewById(R.id.no_images_group);
 
         if (product.getImages().isEmpty()) {
@@ -65,6 +83,7 @@ public class ProductDetailsFragment extends Fragment {
 
             ImageAdapter imageAdapter = new ImageAdapter(getChildFragmentManager(), product.getImages());
             viewPager.setAdapter(imageAdapter);
+            dotsIndicator.setViewPager(viewPager);
         }
     }
 
@@ -72,7 +91,7 @@ public class ProductDetailsFragment extends Fragment {
         TextView priceTextView = view.findViewById(R.id.product_price);
         TextView saleTextView = view.findViewById(R.id.product_sale_price);
 
-        priceTextView.setText("$" + String.format(".2f", product.getPrice()));
+        priceTextView.setText("$" + String.format("%.2f", product.getPrice()));
 
         if (product.isOnSale()) {
             float salePrice = product.getPrice() - (product.getPrice() * product.getSale()) / 100;
@@ -145,9 +164,16 @@ public class ProductDetailsFragment extends Fragment {
     }
 
     private void setupProductColors(View view) {
-        RadioGroup colorsRadioGroup = view.findViewById(R.id.colors_group);
+        ChipGroup colorsRadioGroup = view.findViewById(R.id.colors_group);
         TextView noColorsTextView = view.findViewById(R.id.no_colors_text);
         if (product.hasColors()) {
+            LayoutInflater inflater = LayoutInflater.from(requireContext());
+            for (final String color : product.getColors()) {
+                View chip = inflater.inflate(R.layout.color_selectable_chip, colorsRadioGroup, false);
+                chip.setOnClickListener(v -> selectedColor = color);
+                colorsRadioGroup.addView(chip);
+            }
+
             colorsRadioGroup.setVisibility(View.VISIBLE);
             noColorsTextView.setVisibility(View.GONE);
         } else {
@@ -159,10 +185,10 @@ public class ProductDetailsFragment extends Fragment {
     private void setupAddToCart(View view) {
         Button addToCartButton = view.findViewById(R.id.add_to_cart_button);
         addToCartButton.setEnabled(!product.isOutOfStock());
-        addToCartButton.findViewById(R.id.add_to_cart_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        addToCartButton.findViewById(R.id.add_to_cart_button).setOnClickListener(v -> {
+            if (isProductValid()) {
+                showQuantityFragment();
+                isBuyMode = false;
             }
         });
     }
@@ -170,11 +196,70 @@ public class ProductDetailsFragment extends Fragment {
     private void setupBuyNow(View view) {
         Button buyNowButton = view.findViewById(R.id.buy_now_button);
         buyNowButton.setEnabled(!product.isOutOfStock());
-        buyNowButton.findViewById(R.id.buy_now_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        buyNowButton.findViewById(R.id.buy_now_button).setOnClickListener(v -> {
+            if (isProductValid()) {
+                showQuantityFragment();
+                isBuyMode = true;
             }
         });
+    }
+
+    private boolean isProductValid() {
+        if (product.isOutOfStock()) {
+            Toast.makeText(requireContext(), "Currently out of stock. Please check back at a later time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (product.hasColors() && TextUtils.isEmpty(selectedColor)) {
+            Toast.makeText(requireContext(), "Please select a product size", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!product.isOutOfStock() && TextUtils.isEmpty(selectedSize)) {
+            Toast.makeText(requireContext(), "Please select a color", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showQuantityFragment() {
+        QuantityFragment quantityFragment = new QuantityFragment();
+        quantityFragment.setTargetFragment(ProductDetailsFragment.this, 0);
+        quantityFragment.show(getParentFragmentManager(), null);
+    }
+
+    @Override
+    public void onQuantitySelected(int quantity) {
+        if (isBuyMode) {
+            SportifyApp.isBuyMode = true;
+            Order order = product.toOrder();
+            order.setSize(selectedSize);
+            order.setColor(selectedColor);
+
+            SportifyApp.orders.clear();
+            SportifyApp.orders.add(order);
+
+            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            startActivity(intent);
+        } else {
+            String cartId = Utils.getShoppingCartReference().push().getKey();
+
+            ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+            shoppingCartItem.setColor(selectedColor);
+            shoppingCartItem.setSize(selectedSize);
+            shoppingCartItem.setProductId(product.getProductId());
+            shoppingCartItem.setClientId(SportifyApp.user.userId);
+            shoppingCartItem.setCartId(cartId);
+            shoppingCartItem.setQuantity(quantity);
+
+            Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem, (error, ref) -> {
+                if (error != null) {
+                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    requireActivity().finish();
+                }
+            });
+        }
     }
 }
