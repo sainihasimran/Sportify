@@ -86,4 +86,7 @@
     <string name="accepted">Accepted</string>
     <string name="cancelled">Cancelled</string>
     <string name="favorites">Favorites</string>
+
+    <string name="empty_products_msg">No products available</string>
+    <string name="empty_equipments_msg">No Equipments available</string>
 </resources>

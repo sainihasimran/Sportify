@@ -43,6 +43,8 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
     private String adminID;
 
+    private View emptyView;
+
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -53,7 +55,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
                 products.add(product);
             }
             ProductsListFragment.this.products = products;
-            showProductList();
+            showProductList(true);
         }
 
         @Override
@@ -68,7 +70,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
             if (ProductsListFragment.this.favoriteProducts == null) {
                 ProductsListFragment.this.favoriteProducts = new ArrayList<>();
             }
-            showProductList();
+            showProductList(false);
         }
 
         @Override
@@ -89,6 +91,8 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyView = view.findViewById(R.id.empty_view);
+
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
@@ -107,7 +111,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         recyclerView.setAdapter(productAdapter);
     }
 
-    private void showProductList() {
+    private void showProductList(boolean fromProductList) {
         Activity activity = getActivity();
         if (activity == null) {
             return;
@@ -169,12 +173,14 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
             }
         }
 
+        emptyView.setVisibility((fromProductList && filteredProducts.isEmpty()) ? View.VISIBLE : View.GONE);
+
         productAdapter.update(filteredProducts, favoriteProducts);
     }
 
     public void handleFilters(ProductFilter productFilter) {
         this.productFilter = productFilter;
-        showProductList();
+        showProductList(true);
     }
 
     @Override

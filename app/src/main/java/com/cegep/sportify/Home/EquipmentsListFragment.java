@@ -36,6 +36,8 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
 
     public static Equipment selectedEquipment = null;
 
+    private View emptyView;
+
     private List<Equipment> equipments = new ArrayList<>();
 
     private String adminID;
@@ -53,7 +55,7 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 equipments.add(equipment);
             }
             EquipmentsListFragment.this.equipments = equipments;
-            showEquipmentList();
+            showEquipmentList(true);
         }
 
         @Override
@@ -69,7 +71,7 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 EquipmentsListFragment.this.favoriteEquipments = new ArrayList<>();
             }
 
-            showEquipmentList();
+            showEquipmentList(false);
         }
 
         @Override
@@ -90,6 +92,9 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyView = view.findViewById(R.id.empty_view);
+
+
         setupRecyclerView(view);
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
@@ -107,7 +112,7 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
         recyclerView.setAdapter(equipmentsAdapter);
     }
 
-    private void showEquipmentList() {
+    private void showEquipmentList(boolean fromEquipmentList) {
         Activity activity = getActivity();
         if (activity == null) {
             return;
@@ -165,12 +170,15 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
             }
         }
 
+        emptyView.setVisibility((fromEquipmentList && filteredEquipments.isEmpty()) ? View.VISIBLE : View.GONE);
+
+
         equipmentsAdapter.update(filteredEquipments, favoriteEquipments);
     }
 
     public void handleFilters(EquipmentFilter equipmentFilter) {
         this.equipmentFilter = equipmentFilter;
-        showEquipmentList();
+        showEquipmentList(true);
     }
 
     @Override
