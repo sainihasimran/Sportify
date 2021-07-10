@@ -63,12 +63,38 @@
         app:layout_constraintTop_toTopOf="@id/category_chooser" />
 
     <TextView
+        android:id="@+id/brand_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="Brand"
+        android:textAppearance="?textAppearanceSubtitle2"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category_chooser" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/brand_chooser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_s"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/category_label"
+        app:layout_constraintTop_toBottomOf="@id/brand_label" />
+
+    <TextView
         android:id="@+id/On_sale_lable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="68dp"
         android:gravity="center"
         android:text="On_Sale"
         android:textAppearance="?textAppearanceSubtitle2"

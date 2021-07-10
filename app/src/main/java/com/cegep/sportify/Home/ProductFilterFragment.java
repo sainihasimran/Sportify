@@ -18,8 +18,13 @@ import android.widget.Spinner;
 
 import com.cegep.sportify.Constants;
 import com.cegep.sportify.R;
+import com.cegep.sportify.Utils;
 import com.cegep.sportify.model.ProductFilter;
+import com.cegep.sportify.model.SportWithTeams;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +43,53 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupCategoriesSpinner(view);
         setupSubCategoriesSpinner(view);
+        setupBrandSpinner(view);
         setupOutOfStockChooser(view);
         setupOnSaleChooser(view);
         setupApplyButtonClick(view);
     }
+
+    private void setupBrandSpinner(View view) {
+        Spinner brandChooser = view.findViewById(R.id.brand_chooser);
+        final List<String> brand = new ArrayList<>();
+        Utils.getSportWithTeamsReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<SportWithTeams> sportWithTeamsList = new ArrayList<>();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    SportWithTeams sportWithTeams = childSnapshot.getValue(SportWithTeams.class);
+                    sportWithTeamsList.add(sportWithTeams);
+                }
+
+                for (SportWithTeams sportWithTeams : sportWithTeamsList) {
+                    String remoteSport = sportWithTeams.getSport();
+                    sports.add(Character.toUpperCase(remoteSport.charAt(0)) + remoteSport.substring(1));
+                }
+
+                sports.add(0, "All");
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, sports);
+                sportsChooser.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        sportsChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                equipmentFilter.setSportFilter(sports.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     private void setupCategoriesSpinner(View view) {
         List<String> categories = new ArrayList<>(Arrays.asList(Constants.CATEGORIES));
         categories.add(0, "All");
