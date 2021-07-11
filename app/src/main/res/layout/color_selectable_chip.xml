@@ -2,12 +2,13 @@
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chip"
     style="@style/Widget.MaterialComponents.Chip.Choice"
-    android:layout_width="wrap_content"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     app:checkedIcon="@drawable/ic_circular_check"
+    app:checkedIconVisible="true"
     app:chipCornerRadius="@dimen/size_s"
     app:chipStrokeColor="@color/black"
     app:chipStrokeWidth="1dp"
-    tools:checked="true"
-    tools:layout_width="200dp" />
+    tools:checked="true" />

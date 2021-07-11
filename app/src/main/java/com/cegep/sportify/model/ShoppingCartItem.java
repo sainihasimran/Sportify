@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
+import com.google.firebase.database.Exclude;
 import java.util.List;
 
 public class ShoppingCartItem {
@@ -109,6 +110,7 @@ public class ShoppingCartItem {
         this.sport = sport;
     }
 
+    @Exclude
     public String getImage() {
         List<String> images = null;
         if (product != null) {
@@ -124,6 +126,7 @@ public class ShoppingCartItem {
         return images.get(0);
     }
 
+    @Exclude
     public String getName() {
         if (isProduct()) {
             return product.getProductName();
@@ -132,6 +135,7 @@ public class ShoppingCartItem {
         }
     }
 
+    @Exclude
     public float getFinalPrice() {
         float price;
         if (isProduct()) {
@@ -151,6 +155,7 @@ public class ShoppingCartItem {
         return quantity * price;
     }
 
+    @Exclude
     public String getSizeString(Context context) {
         if (isProduct()) {
             return context.getString(R.string.shopping_cart_size, size);
@@ -159,14 +164,17 @@ public class ShoppingCartItem {
         }
     }
 
+    @Exclude
     public boolean isProduct() {
         return !TextUtils.isEmpty(productId);
     }
 
+    @Exclude
     public void incrementQuantity() {
         quantity += 1;
     }
 
+    @Exclude
     public void decrementQuantity() {
         if (quantity == 1) {
             return;
@@ -175,6 +183,7 @@ public class ShoppingCartItem {
         quantity -= 1;
     }
 
+    @Exclude
     public Order toOrder() {
         Order order = new Order();
         order.setOrderId(Utils.getUniqueId());

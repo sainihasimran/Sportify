@@ -70,10 +70,18 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         itemSizeTextView.setText(shoppingCartItem.getSizeString(context));
         itemQuantityTextView.setText(String.valueOf(shoppingCartItem.getQuantity()));
 
-        if (shoppingCartItem.getProduct().isOutOfStock()) {
-            outOfStockOverlay.setVisibility(View.VISIBLE);
+        if (shoppingCartItem.getProduct() != null) {
+            if (shoppingCartItem.getProduct().isOutOfStock()) {
+                outOfStockOverlay.setVisibility(View.VISIBLE);
+            } else {
+                outOfStockOverlay.setVisibility(View.GONE);
+            }
         } else {
-            outOfStockOverlay.setVisibility(View.GONE);
+            if (shoppingCartItem.getEquipment().isOutOfStock()) {
+                outOfStockOverlay.setVisibility(View.VISIBLE);
+            } else {
+                outOfStockOverlay.setVisibility(View.GONE);
+            }
         }
     }
 }
