@@ -4,7 +4,7 @@ import com.cegep.sportify.model.ShoppingCartItem;
 
 public interface ShoppingCartChangeListener {
 
-    void onShoppingCartChanged();
+    void onShoppingCartChanged(ShoppingCartItem shoppingCartItem, boolean fromDelete);
 
     void onShoppingCartItemDeleted(ShoppingCartItem shoppingCartItem);
 }

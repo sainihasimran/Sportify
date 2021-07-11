@@ -1,10 +1,10 @@
 package com.cegep.sportify.Home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +22,14 @@ import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ProductFilter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 public class ProductsListFragment extends Fragment implements ProductListItemClickListener {
 
@@ -40,7 +39,12 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
     private ProductFilter productFilter = new ProductFilter();
 
+    private List<String> favoriteProducts = new ArrayList<>();
+
     private String adminID;
+
+    private View emptyView;
+
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -51,11 +55,27 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
                 products.add(product);
             }
             ProductsListFragment.this.products = products;
-            showProductList();
+            showProductList(true);
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
+        }
+    };
+
+    private final ValueEventListener favoriteListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ProductsListFragment.this.favoriteProducts = (List<String>) snapshot.getValue();
+            if (ProductsListFragment.this.favoriteProducts == null) {
+                ProductsListFragment.this.favoriteProducts = new ArrayList<>();
+            }
+            showProductList(false);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
         }
     };
 
@@ -71,12 +91,16 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyView = view.findViewById(R.id.empty_view);
+
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
-        DatabaseReference productsReference = adminappdb.getReference("Products");
+        Query productsReference = adminappdb.getReference("Products").orderByChild("createdAt");
         productsReference.addValueEventListener(valueEventListener);
+
+        Utils.getFavoriteProductsReference().addValueEventListener(favoriteListener);
     }
 
     private void setupRecyclerView(View view) {
@@ -87,9 +111,13 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         recyclerView.setAdapter(productAdapter);
     }
 
-    private void showProductList() {
+    private void showProductList(boolean fromProductList) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         adminID = sharedPref.getString("adminid", "All");
 
         Set<Product> filteredProducts = new HashSet<>();
@@ -127,12 +155,32 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
                 }
             }
         }
-        productAdapter.update(filteredProducts);
+
+        if (productFilter.getFavorite() != null) {
+            boolean favoriteFilter = productFilter.getFavorite();
+            Iterator<Product> iterator = filteredProducts.iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (favoriteFilter) {
+                    if (!favoriteProducts.contains(product.getProductId())) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (favoriteProducts.contains(product.getProductId())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        emptyView.setVisibility((fromProductList && filteredProducts.isEmpty()) ? View.VISIBLE : View.GONE);
+
+        productAdapter.update(filteredProducts, favoriteProducts);
     }
 
     public void handleFilters(ProductFilter productFilter) {
         this.productFilter = productFilter;
-        showProductList();
+        showProductList(true);
     }
 
     @Override
@@ -142,8 +190,17 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         startActivity(intent);
     }
 
-    public void setAdminID(String adminID)
-    {
+    @Override
+    public void onFavoriteButtonClicked(Product product, boolean favorite) {
+        if (favorite) {
+            favoriteProducts.add(product.getProductId());
+        } else {
+            favoriteProducts.remove(product.getProductId());
+        }
+        Utils.getFavoriteProductsReference().setValue(favoriteProducts);
+    }
+
+    public void setAdminID(String adminID) {
         this.adminID = adminID;
     }
 }

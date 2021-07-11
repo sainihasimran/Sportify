@@ -6,4 +6,5 @@ public interface ProductListItemClickListener {
 
     void onProductClicked(Product product);
 
+    void onFavoriteButtonClicked(Product product, boolean favorite);
 }

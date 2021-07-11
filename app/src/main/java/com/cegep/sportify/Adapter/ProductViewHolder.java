@@ -2,6 +2,7 @@ package com.cegep.sportify.Adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
+import java.util.List;
 
 class ProductViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,10 +27,17 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView outOfStockOverlay;
 
+    private final ImageButton favoriteButton;
+
     private Product product;
 
-    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener) {
+    private final List<String> favoriteProducts;
+
+    private boolean favorite;
+
+    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener, List<String> favoriteProducts) {
         super(itemView);
+        this.favoriteProducts = favoriteProducts;
 
         itemView.setOnClickListener(v -> {
             if (product != null) {
@@ -44,10 +53,14 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
         saleBgImageView = itemView.findViewById(R.id.sale_bg);
         saleTextView = itemView.findViewById(R.id.sale_text);
         outOfStockOverlay = itemView.findViewById(R.id.out_of_stock_overlay);
+        favoriteButton = itemView.findViewById(R.id.favorite_button);
+
+        favoriteButton.setOnClickListener(v -> productListItemClickListener.onFavoriteButtonClicked(product, !favorite));
     }
 
     void bind(Product product, Context context) {
         this.product = product;
+        this.favorite = favoriteProducts.contains(product.getProductId());
 
         if (product.getImages() != null && !product.getImages().isEmpty()) {
             Glide.with(context)
@@ -86,5 +99,7 @@ class ProductViewHolder extends RecyclerView.ViewHolder {
         } else {
             outOfStockOverlay.setVisibility(View.GONE);
         }
+
+        favoriteButton.setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
     }
 }
