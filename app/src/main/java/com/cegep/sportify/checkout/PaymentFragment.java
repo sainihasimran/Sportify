@@ -194,17 +194,19 @@ public class PaymentFragment extends Fragment {
 
     private void setupPlaceOrderButton(View view) {
         view.findViewById(R.id.place_order_button).setOnClickListener(v -> {
-            boolean saveCardDetails = saveCardDetailsCheckBox.isChecked();
-            if (saveCardDetails) {
-                Utils.getPaymentReference().setValue(creditCard, (error, ref) -> {
-                    if (error != null) {
-                        Toast.makeText(requireContext(), "Failed to save card details", Toast.LENGTH_SHORT).show();
-                    } else {
-                        placeOrders();
-                    }
-                });
-            } else {
-                placeOrders();
+            if (creditCard.isValid(requireContext())) {
+                boolean saveCardDetails = saveCardDetailsCheckBox.isChecked();
+                if (saveCardDetails) {
+                    Utils.getPaymentReference().setValue(creditCard, (error, ref) -> {
+                        if (error != null) {
+                            Toast.makeText(requireContext(), "Failed to save card details", Toast.LENGTH_SHORT).show();
+                        } else {
+                            placeOrders();
+                        }
+                    });
+                } else {
+                    placeOrders();
+                }
             }
         });
     }
