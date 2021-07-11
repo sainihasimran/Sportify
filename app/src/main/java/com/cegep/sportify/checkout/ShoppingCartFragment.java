@@ -130,9 +130,12 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
     }
 
     @Override
-    public void onShoppingCartChanged() {
+    public void onShoppingCartChanged(ShoppingCartItem shoppingCartItem, boolean fromDelete) {
         updateTotalPrice();
         shoppingCartAdapter.refresh();
+        if (!fromDelete) {
+            Utils.getShoppingCartReference().child(shoppingCartItem.getCartId()).setValue(shoppingCartItem);
+        }
     }
 
     @Override
