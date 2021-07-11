@@ -35,6 +35,9 @@ import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 public class ProductDetailsFragment extends Fragment implements QuantitySelectedListener {
@@ -261,23 +264,54 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             Intent intent = new Intent(requireContext(), ShippingActivity.class);
             startActivity(intent);
         } else {
-            String cartId = Utils.getShoppingCartReference().push().getKey();
+            Utils.getShoppingCartReference().orderByChild("productId").equalTo(product.getProductId()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            boolean isNewShoppingCartItem = true;
+                            ShoppingCartItem shoppingCartItem = null;
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                shoppingCartItem = child.getValue(ShoppingCartItem.class);
+                                if (shoppingCartItem == null) {
+                                    continue;
+                                }
 
-            ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-            shoppingCartItem.setColor(selectedColor);
-            shoppingCartItem.setSize(selectedSize);
-            shoppingCartItem.setProductId(product.getProductId());
-            shoppingCartItem.setClientId(SportifyApp.user.userId);
-            shoppingCartItem.setCartId(cartId);
-            shoppingCartItem.setQuantity(quantity);
+                                boolean isColorSame = selectedColor.equals(shoppingCartItem.getColor());
+                                boolean isSizeSame = selectedSize.equals(shoppingCartItem.getSize());
+                                if (isColorSame && isSizeSame) {
+                                    shoppingCartItem.setQuantity(quantity + shoppingCartItem.getQuantity());
+                                    isNewShoppingCartItem = false;
+                                    break;
+                                }
+                            }
 
-            Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem, (error, ref) -> {
-                if (error != null) {
-                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
-                } else {
-                    requireActivity().finish();
-                }
-            });
+
+                            if (shoppingCartItem == null || isNewShoppingCartItem) {
+                                String cartId = Utils.getShoppingCartReference().push().getKey();
+
+                                shoppingCartItem = new ShoppingCartItem();
+                                shoppingCartItem.setColor(selectedColor);
+                                shoppingCartItem.setSize(selectedSize);
+                                shoppingCartItem.setProductId(product.getProductId());
+                                shoppingCartItem.setClientId(SportifyApp.user.userId);
+                                shoppingCartItem.setCartId(cartId);
+                                shoppingCartItem.setQuantity(quantity);
+                            }
+
+                            Utils.getShoppingCartReference().child(shoppingCartItem.getCartId()).setValue(shoppingCartItem, (error, ref) -> {
+                                if (error != null) {
+                                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    requireActivity().finish();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         }
     }
 }

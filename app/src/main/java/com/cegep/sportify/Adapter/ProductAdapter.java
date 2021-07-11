@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +21,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
 
     private final ProductListItemClickListener productListItemClickListener;
 
+    private List<String> favoriteProducts = new ArrayList<>();
+
     public ProductAdapter(Context context, List<Product> products, ProductListItemClickListener itemClickListener) {
         this.context = context;
         this.products = products;
@@ -33,12 +33,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_product, parent, false);
-        return new ProductViewHolder(view, productListItemClickListener);
+        return new ProductViewHolder(view, productListItemClickListener, favoriteProducts);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-       holder.bind(products.get(position), context);
+        holder.bind(products.get(position), context);
     }
 
     @Override
@@ -46,10 +46,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         return products.size();
     }
 
-    public void update(Collection<Product> products) {
+    public void update(Collection<Product> products, List<String> favoriteProducts) {
         this.products.clear();
         this.products.addAll(products);
+
+        this.favoriteProducts.clear();
+        this.favoriteProducts.addAll(favoriteProducts);
         notifyDataSetChanged();
     }
-
 }

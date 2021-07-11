@@ -39,18 +39,18 @@ public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
         itemView.findViewById(R.id.item_increment_quantity).setOnClickListener(v -> {
             shoppingCartItem.incrementQuantity();
             itemQuantityTextView.setText(String.valueOf(shoppingCartItem.getQuantity()));
-            shoppingCartChangeListener.onShoppingCartChanged();
+            shoppingCartChangeListener.onShoppingCartChanged(shoppingCartItem, false);
         });
 
         itemView.findViewById(R.id.item_decrement_quantity).setOnClickListener(v -> {
             shoppingCartItem.decrementQuantity();
             itemQuantityTextView.setText(String.valueOf(shoppingCartItem.getQuantity()));
-            shoppingCartChangeListener.onShoppingCartChanged();
+            shoppingCartChangeListener.onShoppingCartChanged(shoppingCartItem, false);
         });
 
         itemView.findViewById(R.id.delete_button).setOnClickListener(v -> {
             shoppingCartChangeListener.onShoppingCartItemDeleted(shoppingCartItem);
-            shoppingCartChangeListener.onShoppingCartChanged();
+            shoppingCartChangeListener.onShoppingCartChanged(shoppingCartItem, true);
         });
     }
 

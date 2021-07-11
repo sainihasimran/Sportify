@@ -9,11 +9,6 @@
             android:title="@string/orders" />
 
         <item
-            android:id="@+id/savedItems"
-            android:icon="@drawable/saveditems"
-            android:title="@string/saved_items" />
-
-        <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_user"
             android:title="@string/my_profile" />

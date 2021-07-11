@@ -26,6 +26,9 @@ import com.cegep.sportify.gallery.ImageAdapter;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.ShoppingCartItem;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 public class EquipmentDetailsFragment extends Fragment implements QuantitySelectedListener {
@@ -175,22 +178,42 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
             Intent intent = new Intent(requireContext(), ShippingActivity.class);
             startActivity(intent);
         } else {
-            String cartId = Utils.getShoppingCartReference().push().getKey();
+            Utils.getShoppingCartReference().orderByChild("equipmentId").equalTo(equipment.getEquipmentId()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ShoppingCartItem shoppingCartItem = null;
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                shoppingCartItem = child.getValue(ShoppingCartItem.class);
+                            }
 
-            ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-            shoppingCartItem.setSport(equipment.getSport());
-            shoppingCartItem.setEquipmentId(equipment.getEquipmentId());
-            shoppingCartItem.setClientId(SportifyApp.user.userId);
-            shoppingCartItem.setCartId(cartId);
-            shoppingCartItem.setQuantity(quantity);
+                            if (shoppingCartItem == null) {
+                                String cartId = Utils.getShoppingCartReference().push().getKey();
 
-            Utils.getShoppingCartReference().child(cartId).setValue(shoppingCartItem, (error, ref) -> {
-                if (error != null) {
-                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
-                } else {
-                    requireActivity().finish();
-                }
-            });
+                                shoppingCartItem = new ShoppingCartItem();
+                                shoppingCartItem.setSport(equipment.getSport());
+                                shoppingCartItem.setEquipmentId(equipment.getEquipmentId());
+                                shoppingCartItem.setClientId(SportifyApp.user.userId);
+                                shoppingCartItem.setCartId(cartId);
+                                shoppingCartItem.setQuantity(quantity);
+                            } else {
+                                shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() + quantity);
+                            }
+
+                            Utils.getShoppingCartReference().child(shoppingCartItem.getCartId()).setValue(shoppingCartItem, (error, ref) -> {
+                                if (error != null) {
+                                    Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    requireActivity().finish();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         }
     }
 }

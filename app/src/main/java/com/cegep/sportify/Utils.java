@@ -23,6 +23,14 @@ public class Utils {
         return getClientDatabase().getReference("Orders");
     }
 
+    public static DatabaseReference getFavoriteProductsReference() {
+        return getUserReference().child("favoriteProducts");
+    }
+
+    public static DatabaseReference getFavoriteEquipmentsReference() {
+        return getUserReference().child("favoriteEquipments");
+    }
+
     public static DatabaseReference getShoppingCartReference() {
         return getClientDatabase().getReference("Users").child(SportifyApp.user.userId).child("ShoppingCart");
     }

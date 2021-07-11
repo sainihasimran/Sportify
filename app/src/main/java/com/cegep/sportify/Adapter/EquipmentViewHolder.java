@@ -2,7 +2,7 @@ package com.cegep.sportify.Adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +14,6 @@ import com.bumptech.glide.Glide;
 import com.cegep.sportify.EquipmentListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Equipment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
 class EquipmentViewHolder extends RecyclerView.ViewHolder {
@@ -32,13 +24,18 @@ class EquipmentViewHolder extends RecyclerView.ViewHolder {
     private final ImageView saleBgImageView;
     private final TextView saleTextView;
     private final TextView outOfStockOverlay;
-    private Button fav_equipment_btn;
+
+    private final ImageButton favoriteButton;
 
     private Equipment equipment;
-    ArrayList<String> list = new ArrayList<String>();
 
-    public EquipmentViewHolder(@NonNull View itemView, EquipmentListItemClickListener equipmentListItemClickListener) {
+    private final List<String> favoriteEquipments;
+
+    private boolean favorite;
+
+    public EquipmentViewHolder(@NonNull View itemView, EquipmentListItemClickListener equipmentListItemClickListener, List<String> favoriteEquipments) {
         super(itemView);
+        this.favoriteEquipments = favoriteEquipments;
 
         itemView.setOnClickListener(v -> {
             if (equipment != null) {
@@ -52,11 +49,14 @@ class EquipmentViewHolder extends RecyclerView.ViewHolder {
         saleBgImageView = itemView.findViewById(R.id.sale_bg);
         saleTextView = itemView.findViewById(R.id.sale_text);
         outOfStockOverlay = itemView.findViewById(R.id.out_of_stock_overlay);
-        fav_equipment_btn = itemView.findViewById(R.id.faveqbutton);
+        favoriteButton = itemView.findViewById(R.id.favorite_button);
+
+        favoriteButton.setOnClickListener(v -> equipmentListItemClickListener.onFavoriteButtonClicked(equipment, !favorite));
     }
 
     void bind(Equipment equipment, Context context) {
         this.equipment = equipment;
+        this.favorite = favoriteEquipments.contains(equipment.getEquipmentId());
 
         if (equipment.getImages() != null && !equipment.getImages().isEmpty()) {
             Glide.with(context)
@@ -96,47 +96,6 @@ class EquipmentViewHolder extends RecyclerView.ViewHolder {
             outOfStockOverlay.setVisibility(View.GONE);
         }
 
-        fav_equipment_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadList();
-            }
-        });
+        favoriteButton.setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
     }
-
-    private void uploadList() {
-
-        String equipId = equipment.getEquipmentId();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference favref = databaseReference.child("Users").child(uid).child("favoriteEquipments");
-
-        favref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (list.indexOf(equipId) == -1) {
-
-                    if (dataSnapshot.getValue() == null) {
-                        list.add(equipId);
-                    } else {
-                        if (dataSnapshot.getValue() instanceof List && ((List) dataSnapshot.getValue()).size() > 0 && ((List) dataSnapshot.getValue()).get(0) instanceof String) {
-                            list = (ArrayList<String>) dataSnapshot.getValue();
-                            list.add(equipId);
-                        }
-                    }
-                    favref.setValue(list);
-                } else {
-                    list.remove(equipId);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
 }

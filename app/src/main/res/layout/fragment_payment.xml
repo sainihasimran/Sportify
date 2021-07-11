@@ -47,6 +47,7 @@
                 android:id="@+id/card_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789"
                 android:imeOptions="actionNext"
                 android:inputType="number" />
 
@@ -69,6 +70,7 @@
                     android:id="@+id/expiry_date_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="0123456789"
                     android:imeOptions="actionNext"
                     android:maxLength="4" />
 
@@ -91,6 +93,7 @@
                     android:id="@+id/cvv_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="0123456789"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="3" />

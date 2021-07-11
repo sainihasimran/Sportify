@@ -2,11 +2,11 @@ package com.cegep.sportify.Adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,19 +14,11 @@ import com.bumptech.glide.Glide;
 import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProductViewHolder extends RecyclerView.ViewHolder {
+class ProductViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView productImageView;
+    private final ImageView productImageView;
     private final TextView productNameTextView;
     private final TextView productPriceTextView;
 
@@ -35,15 +27,17 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView outOfStockOverlay;
 
-    private Button fav_product_btn;
-
-    private DatabaseReference databaseReference;
+    private final ImageButton favoriteButton;
 
     private Product product;
-    ArrayList<String> value = new ArrayList<String>();
 
-    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener) {
+    private final List<String> favoriteProducts;
+
+    private boolean favorite;
+
+    public ProductViewHolder(@NonNull View itemView, ProductListItemClickListener productListItemClickListener, List<String> favoriteProducts) {
         super(itemView);
+        this.favoriteProducts = favoriteProducts;
 
         itemView.setOnClickListener(v -> {
             if (product != null) {
@@ -59,11 +53,14 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         saleBgImageView = itemView.findViewById(R.id.sale_bg);
         saleTextView = itemView.findViewById(R.id.sale_text);
         outOfStockOverlay = itemView.findViewById(R.id.out_of_stock_overlay);
-        fav_product_btn = itemView.findViewById(R.id.fav_product_btn);
+        favoriteButton = itemView.findViewById(R.id.favorite_button);
+
+        favoriteButton.setOnClickListener(v -> productListItemClickListener.onFavoriteButtonClicked(product, !favorite));
     }
 
     void bind(Product product, Context context) {
         this.product = product;
+        this.favorite = favoriteProducts.contains(product.getProductId());
 
         if (product.getImages() != null && !product.getImages().isEmpty()) {
             Glide.with(context)
@@ -99,55 +96,10 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
 
         if (isOutOfStock) {
             outOfStockOverlay.setVisibility(View.VISIBLE);
-            fav_product_btn.setEnabled(false);
         } else {
             outOfStockOverlay.setVisibility(View.GONE);
         }
 
-        fav_product_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadList();
-            }
-        });
+        favoriteButton.setImageResource(favorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
     }
-
-    private void uploadList() {
-
-       String pId = product.getProductId();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference favref = databaseReference.child("Users").child(uid).child("favoriteProducts");
-        //.push();
-        //favref.setValue(pId);
-
-        favref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if(value.indexOf(pId) == -1 ) {
-                    fav_product_btn.setBackgroundResource(R.drawable.saveproducts);
-                    if (dataSnapshot.getValue() == null) {
-                        value.add(pId);
-                    } else {
-                        if (dataSnapshot.getValue() instanceof List && ((List) dataSnapshot.getValue()).size() > 0 && ((List) dataSnapshot.getValue()).get(0) instanceof String) {
-                            value = (ArrayList<String>) dataSnapshot.getValue();
-                            value.add(pId);
-                        }
-                    }
-                    favref.setValue(value);
-                }
-                else{
-                    value.remove(pId);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-            }
-    }
-
+}
