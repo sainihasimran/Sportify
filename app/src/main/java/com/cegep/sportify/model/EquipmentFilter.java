@@ -10,6 +10,8 @@ public class EquipmentFilter {
 
     private Boolean onSale = null;
 
+    private Boolean favorite = null;
+
     public String getSportFilter() {
         return sportFilter;
     }
@@ -37,4 +39,12 @@ public class EquipmentFilter {
     public Boolean getOnSale() { return onSale; }
 
     public void setOnSale(Boolean onSale) { this.onSale = onSale; }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
+    }
 }

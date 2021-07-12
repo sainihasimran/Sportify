@@ -82,4 +82,11 @@
     <string name="equipment_details">Equipment Details</string>
     <string name="shopping_cart_empty_text">Shopping Cart Empty</string>
 
+    <string name="pending">Pending</string>
+    <string name="accepted">Accepted</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="favorites">Favorites</string>
+
+    <string name="empty_products_msg">No products available</string>
+    <string name="empty_equipments_msg">No Equipments available</string>
 </resources>

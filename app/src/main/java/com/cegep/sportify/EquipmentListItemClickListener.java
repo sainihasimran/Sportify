@@ -6,4 +6,6 @@ public interface EquipmentListItemClickListener {
 
     void onEquipmentClicked(Equipment equipment);
 
+    void onFavoriteButtonClicked(Equipment equipment, boolean favorite);
+
 }

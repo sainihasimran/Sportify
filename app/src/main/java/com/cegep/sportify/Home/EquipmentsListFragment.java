@@ -1,5 +1,6 @@
 package com.cegep.sportify.Home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,8 +23,8 @@ import com.cegep.sportify.model.EquipmentFilter;
 import com.cegep.sportify.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,11 +36,15 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
 
     public static Equipment selectedEquipment = null;
 
+    private View emptyView;
+
     private List<Equipment> equipments = new ArrayList<>();
 
     private String adminID;
 
     private EquipmentFilter equipmentFilter = new EquipmentFilter();
+
+    private List<String> favoriteEquipments = new ArrayList<>();
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -50,13 +55,31 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 equipments.add(equipment);
             }
             EquipmentsListFragment.this.equipments = equipments;
-            showEquipmentList();
+            showEquipmentList(true);
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
         }
     };
+
+    private final ValueEventListener favoriteListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            EquipmentsListFragment.this.favoriteEquipments = (List<String>) snapshot.getValue();
+            if (EquipmentsListFragment.this.favoriteEquipments == null) {
+                EquipmentsListFragment.this.favoriteEquipments = new ArrayList<>();
+            }
+
+            showEquipmentList(false);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    };
+
     private EquipmentsAdapter equipmentsAdapter;
 
     @Nullable
@@ -69,12 +92,16 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyView = view.findViewById(R.id.empty_view);
+
+
         setupRecyclerView(view);
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
 
-        DatabaseReference equipmentsReference = adminappdb.getReference("Equipments");
+        Query equipmentsReference = adminappdb.getReference("Equipments").orderByChild("createdAt");
         equipmentsReference.addValueEventListener(valueEventListener);
 
+        Utils.getFavoriteEquipmentsReference().addValueEventListener(favoriteListener);
     }
 
     private void setupRecyclerView(View view) {
@@ -85,9 +112,13 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
         recyclerView.setAdapter(equipmentsAdapter);
     }
 
-    private void showEquipmentList() {
+    private void showEquipmentList(boolean fromEquipmentList) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         adminID = sharedPref.getString("adminid", "All");
 
         Set<Equipment> filteredEquipments = new HashSet<>();
@@ -111,7 +142,6 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
             }
         }
 
-
         if (equipmentFilter.getOutOfStock() != null) {
             boolean outOfStock = equipmentFilter.getOutOfStock();
             Iterator<Equipment> iterator = filteredEquipments.iterator();
@@ -122,12 +152,33 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
                 }
             }
         }
-        equipmentsAdapter.update(filteredEquipments);
+
+        if (equipmentFilter.getFavorite() != null) {
+            boolean favoriteFilter = equipmentFilter.getFavorite();
+            Iterator<Equipment> iterator = filteredEquipments.iterator();
+            while (iterator.hasNext()) {
+                Equipment equipment = iterator.next();
+                if (favoriteFilter) {
+                    if (!favoriteEquipments.contains(equipment.getEquipmentId())) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (favoriteEquipments.contains(equipment.getEquipmentId())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        emptyView.setVisibility((fromEquipmentList && filteredEquipments.isEmpty()) ? View.VISIBLE : View.GONE);
+
+
+        equipmentsAdapter.update(filteredEquipments, favoriteEquipments);
     }
 
     public void handleFilters(EquipmentFilter equipmentFilter) {
         this.equipmentFilter = equipmentFilter;
-        showEquipmentList();
+        showEquipmentList(true);
     }
 
     @Override
@@ -135,5 +186,16 @@ public class EquipmentsListFragment extends Fragment implements EquipmentListIte
         selectedEquipment = equipment;
         Intent intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFavoriteButtonClicked(Equipment equipment, boolean favorite) {
+        if (favorite) {
+            favoriteEquipments.add(equipment.getEquipmentId());
+        } else {
+            favoriteEquipments.remove(equipment.getEquipmentId());
+        }
+
+        Utils.getFavoriteEquipmentsReference().setValue(favoriteEquipments);
     }
 }

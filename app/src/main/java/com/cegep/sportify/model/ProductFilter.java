@@ -12,6 +12,8 @@ public class ProductFilter {
 
     private Boolean onSale = null;
 
+    private Boolean favorite = null;
+
     public String getCategoryFilter() {
         return categoryFilter;
     }
@@ -50,5 +52,13 @@ public class ProductFilter {
 
     public void setOnSale(Boolean onSale) {
         this.onSale = onSale;
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 }
