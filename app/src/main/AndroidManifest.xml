@@ -26,6 +26,7 @@
         <activity android:exported="true" android:name=".SettingsActivity" />
         <activity android:exported="true" android:name=".OrderActivity" />
         <activity android:exported="true" android:name=".ProfileActivity" />
+        <activity android:exported="true" android:name=".SavedAddressActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
