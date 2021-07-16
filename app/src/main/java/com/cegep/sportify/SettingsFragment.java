@@ -41,6 +41,11 @@ public class SettingsFragment extends Fragment {
             requireActivity().startActivity(intent);
         });
 
+        view.findViewById(R.id.reset_password_text).setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), ResetPasswordActivity.class);
+            requireActivity().startActivity(intent);
+        });
+
 
         Button button = view.findViewById(R.id.sign_out_button);
         button.setOnClickListener(new View.OnClickListener() {

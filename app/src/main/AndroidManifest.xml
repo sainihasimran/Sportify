@@ -28,6 +28,7 @@
         <activity android:exported="true" android:name=".ProfileActivity" />
         <activity android:exported="true" android:name=".SavedAddressActivity" />
         <activity android:exported="true" android:name=".SavedCardActivity" />
+        <activity android:exported="true" android:name=".ResetPasswordActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
