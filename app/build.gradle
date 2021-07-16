@@ -61,4 +61,6 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation 'com.google.firebase:firebase-database:20.0.0'
+
+    implementation 'com.airbnb.android:lottie:3.7.1'
 }

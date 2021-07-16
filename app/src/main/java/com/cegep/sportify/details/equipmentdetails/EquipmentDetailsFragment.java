@@ -202,6 +202,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
                                 if (error != null) {
                                     Toast.makeText(requireContext(), "Failed to add product to shopping cart", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    SportifyApp.equipmentAddedInShoppingCart = true;
                                     requireActivity().finish();
                                 }
                             });

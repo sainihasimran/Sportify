@@ -19,6 +19,10 @@ public class SportifyApp extends MultiDexApplication {
 
     public static boolean isBuyMode = true;
 
+    public static boolean productAddedInShoppingCart = false;
+
+    public static boolean equipmentAddedInShoppingCart = false;
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -1,5 +1,9 @@
 package com.cegep.sportify.checkout;
 
+import android.animation.Animator;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +13,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import com.airbnb.lottie.LottieAnimationView;
 import com.cegep.sportify.MainActivity;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
@@ -26,6 +33,7 @@ import com.cegep.sportify.model.CreditCard;
 import com.cegep.sportify.model.Order;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -38,6 +46,8 @@ public class PaymentFragment extends Fragment {
     private EditText cardNumberEditText;
     private EditText expiryEditText;
     private EditText cvvEditText;
+
+    private LottieAnimationView lottieAnimationView;
 
     private final CreditCard creditCard = new CreditCard();
     private CheckBox saveCardDetailsCheckBox;
@@ -52,6 +62,8 @@ public class PaymentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        lottieAnimationView = view.findViewById(R.id.lottie_animation_view);
 
         setupPaymentDetails(view);
         setupPaymentAmounts(view);
@@ -194,6 +206,12 @@ public class PaymentFragment extends Fragment {
 
     private void setupPlaceOrderButton(View view) {
         view.findViewById(R.id.place_order_button).setOnClickListener(v -> {
+            View currentFocusedView = view.findFocus();
+            Activity activity = getActivity();
+            if (currentFocusedView != null && activity != null) {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            }
             if (creditCard.isValid(requireContext())) {
                 boolean saveCardDetails = saveCardDetailsCheckBox.isChecked();
                 if (saveCardDetails) {
@@ -238,14 +256,48 @@ public class PaymentFragment extends Fragment {
 
         createOrdersTask.addOnSuccessListener(tasks -> {
             progress.dismiss();
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            onOrderPlacedSuccessfully();
         }).addOnFailureListener(e -> {
             e.printStackTrace();
             progress.dismiss();
             Toast.makeText(requireContext(), "Failed to place orders", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void onOrderPlacedSuccessfully() {
+        lottieAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Order confirmation")
+                        .setMessage("Yay! Your order was successfully placed")
+                        .setPositiveButton("OK", null)
+                        .setCancelable(false)
+                        .setOnDismissListener(dialog -> {
+                            Intent intent = new Intent(requireContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        })
+                        .show();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        lottieAnimationView.playAnimation();
     }
 
     private void setSelection(EditText editText) {
