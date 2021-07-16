@@ -3,7 +3,10 @@ package com.cegep.sportify;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -89,6 +92,14 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
 
             return false;
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        SearchView search = findViewById(R.id.action_search);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void showEquipmentsFragment() {
