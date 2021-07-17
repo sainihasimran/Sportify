@@ -23,6 +23,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
         android:name="com.cegep.sportify.SearchFragment"
