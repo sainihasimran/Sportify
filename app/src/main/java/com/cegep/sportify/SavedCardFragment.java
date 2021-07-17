@@ -159,6 +159,7 @@ public class SavedCardFragment extends Fragment {
                         Toast.makeText(requireContext(), "Failed to save card details", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(requireContext(), "Saved Card details Successfully", Toast.LENGTH_SHORT).show();
+                        requireActivity().finish();
                     }
                 });
             }
