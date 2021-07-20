@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Selection;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ public class ResetPasswordFragment extends Fragment {
     }
 
     Button reset_password_btn;
+    private EditText email_input;
+
 
     FirebaseAuth fauth;
 
@@ -64,6 +67,13 @@ public class ResetPasswordFragment extends Fragment {
 
 
         reset_password_btn = view.findViewById(R.id.reset_password_btn);
+        email_input = view.findViewById(R.id.email_input);
+
+        view.findViewById(R.id.reset_password_btn).setOnClickListener(v -> resetpassword());
+
+        email_input.setText(user.email);
+
+        setSelection(email_input);
 
 
         fauth = FirebaseAuth.getInstance();
@@ -73,42 +83,32 @@ public class ResetPasswordFragment extends Fragment {
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-
-        reset_password_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText resetmail = new EditText(view.getContext());
-                AlertDialog.Builder forgotpassword = new AlertDialog.Builder(view.getContext());
-                forgotpassword.setTitle("Reset Password?");
-                forgotpassword.setMessage("Enter Your Email To Receive Reset Link.");
-                forgotpassword.setView(resetmail);
-
-                forgotpassword.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        String mail = resetmail.getText().toString();
-                        fauth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(requireContext(), "Reset Link Sent To Your Email.", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(requireContext(), "Error: Reset Link is Not Sent." + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-                forgotpassword.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-
-                    }
-                });
-                forgotpassword.create().show();
-            }
-        });
     }
-}
+
+    private void setSelection(EditText email_input) {
+        Selection.setSelection(email_input.getText(), email_input.length());
+    }
+
+
+    private void resetpassword() {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(SportifyApp.user.userId);
+        userReference.setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String mail = email_input.getText().toString();
+                fauth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(requireContext(), "Reset Link Sent To Your Email.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(requireContext(), "Error: Reset Link is Not Sent." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+                requireActivity().finish();
+            });
+
+        }
+    }
