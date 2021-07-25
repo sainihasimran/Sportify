@@ -89,4 +89,9 @@
 
     <string name="empty_products_msg">No products available</string>
     <string name="empty_equipments_msg">No Equipments available</string>
+
+    <string name="mapbox_access_token">pk.eyJ1Ijoic2FpbmloYXJzaW1yYW4iLCJhIjoiY2tyaW53ZW1yMGNyeDJ6cXJrYnlyZ2E0NCJ9.Ayuegm9VBfyvTX8ufg00jA</string>
+    <string name="search_address">Search Address</string>
+
+    <string name="empty_search_results">No addresses found</string>
 </resources>

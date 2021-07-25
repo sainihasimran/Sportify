@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".SportifyApp"
@@ -15,26 +16,41 @@
         android:theme="@style/Theme.Sportify"
         android:usesCleartextTraffic="true">
 
-        <activity android:exported="true" android:name=".details.productdetails.ProductDetailsActivity" />
-        <activity android:exported="true" android:name=".details.equipmentdetails.EquipmentDetailsActivity" />
+        <activity
+            android:name=".details.productdetails.ProductDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".details.equipmentdetails.EquipmentDetailsActivity"
+            android:exported="true" />
 
         <activity
             android:name=".SavedItems.ViewSaveditemsActivity"
             android:exported="true" />
 
-        <activity android:exported="true" android:name=".SignUpActivity" />
-        <activity android:exported="true" android:name=".SettingsActivity" />
-        <activity android:exported="true" android:name=".OrderActivity" />
-        <activity android:exported="true" android:name=".ProfileActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".OrderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
 
-        <activity android:exported="true"
+        <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop" />
 
-        <activity android:exported="true" android:name=".Splash">
+        <activity
+            android:name=".Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,11 +58,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:exported="true" android:name=".checkout.ShoppingCartActivity" />
-        <activity android:exported="true" android:name=".checkout.AddressActivity" />
-        <activity android:exported="true" android:name=".checkout.ShippingActivity" />
-        <activity android:exported="true" android:name=".checkout.PaymentActivity" />
-        <activity android:exported="true" android:name=".SearchActivity" />
+        <activity
+            android:name=".checkout.ShoppingCartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".checkout.AddressActivity"
+            android:exported="true" />
+        <activity
+            android:name=".checkout.ShippingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".checkout.PaymentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SearchAddressActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
