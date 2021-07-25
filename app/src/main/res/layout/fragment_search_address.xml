@@ -5,18 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/search_input"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/size_l"
         android:layout_marginTop="@dimen/size_l"
         android:hint="@string/address"
-        android:importantForAutofill="no"
-        android:inputType="textPostalAddress"
+        app:boxBackgroundColor="?android:windowBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="textPostalAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -25,7 +33,7 @@
         android:layout_marginTop="@dimen/size_s"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_input"
+        app:layout_constraintTop_toBottomOf="@id/search_layout"
         tools:listitem="@layout/item_address" />
 
     <TextView

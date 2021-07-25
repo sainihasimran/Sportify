@@ -19,6 +19,7 @@ import com.cegep.sportify.model.Address;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.mapbox.search.result.SearchSuggestion;
 
 public class AddressFragment extends Fragment {
 
@@ -54,19 +55,7 @@ public class AddressFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Address address = snapshot.getValue(Address.class);
                 if (address != null) {
-                    suiteNumberEditText.setText(address.getSuiteNumber());
-                    streetAddressEditText.setText(address.getStreetAddress());
-                    cityEditText.setText(address.getCity());
-                    provinceEditText.setText(address.getProvince());
-                    postalCodeEditText.setText(address.getPostalCode());
-                    phoneNumberEditText.setText(address.getPhoneNumber());
-
-                    setSelection(suiteNumberEditText);
-                    setSelection(streetAddressEditText);
-                    setSelection(cityEditText);
-                    setSelection(provinceEditText);
-                    setSelection(postalCodeEditText);
-                    setSelection(phoneNumberEditText);
+                    setupAddress(address);
                 }
             }
 
@@ -215,5 +204,35 @@ public class AddressFragment extends Fragment {
 
     private void setSelection(EditText editText) {
         Selection.setSelection(editText.getText(), editText.length());
+    }
+
+    public void handleSearchSelection(SearchSuggestion searchSuggestion) {
+        if (searchSuggestion == null) {
+            return;
+        }
+
+        Address address = new Address();
+        address.setSuiteNumber(searchSuggestion.getAddress().getHouseNumber());
+        address.setStreetAddress(searchSuggestion.getAddress().getStreet());
+        address.setCity(searchSuggestion.getAddress().getPlace());
+        address.setProvince(searchSuggestion.getAddress().getRegion());
+        address.setPostalCode(searchSuggestion.getAddress().getPostcode());
+        setupAddress(address);
+    }
+
+    private void setupAddress(Address address) {
+        suiteNumberEditText.setText(address.getSuiteNumber());
+        streetAddressEditText.setText(address.getStreetAddress());
+        cityEditText.setText(address.getCity());
+        provinceEditText.setText(address.getProvince());
+        postalCodeEditText.setText(address.getPostalCode());
+        phoneNumberEditText.setText(address.getPhoneNumber());
+
+        setSelection(suiteNumberEditText);
+        setSelection(streetAddressEditText);
+        setSelection(cityEditText);
+        setSelection(provinceEditText);
+        setSelection(postalCodeEditText);
+        setSelection(phoneNumberEditText);
     }
 }

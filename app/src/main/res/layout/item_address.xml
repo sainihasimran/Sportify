@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
     android:paddingTop="@dimen/size_l">
 
     <ImageView
@@ -11,9 +12,8 @@
         android:layout_width="@dimen/size_xl"
         android:layout_height="@dimen/size_xl"
         android:layout_marginStart="@dimen/size_l"
-        android:background="@drawable/ic_location_search"
         android:importantForAccessibility="no"
-        android:src="@drawable/ic_search"
+        android:src="@drawable/ic_location_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,9 +54,8 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:layout_marginTop="@dimen/size_l"
-        android:alpha="0.5"
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/address_line_1"
