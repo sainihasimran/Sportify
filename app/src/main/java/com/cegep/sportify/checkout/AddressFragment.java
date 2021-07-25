@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.mapbox.search.result.SearchSuggestion;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddressFragment extends Fragment {
 
+    private EditText nameEditText;
     private EditText suiteNumberEditText;
     private EditText streetAddressEditText;
     private EditText cityEditText;
@@ -30,7 +34,34 @@ public class AddressFragment extends Fragment {
     private EditText postalCodeEditText;
     private EditText phoneNumberEditText;
 
+    private String addressId;
+
     private final Address address = new Address();
+
+    private List<Address> addressList = new ArrayList<>();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Utils.getAddressReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Address> addressList = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Address address = child.getValue(Address.class);
+                    addressList.add(address);
+                }
+
+                AddressFragment.this.addressList = addressList;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -42,6 +73,7 @@ public class AddressFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupNameEditText(view);
         setupSuiteNumberEditText(view);
         setupStreetAddressEditText(view);
         setupCityEditText(view);
@@ -49,18 +81,23 @@ public class AddressFragment extends Fragment {
         setupPostalCodeEditText(view);
         setupPhoneNumberEditText(view);
         setupSaveButton(view);
+    }
 
-        Utils.getAddressReference().addListenerForSingleValueEvent(new ValueEventListener() {
+    private void setupNameEditText(View view) {
+        nameEditText = view.findViewById(R.id.name_input);
+        nameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Address address = snapshot.getValue(Address.class);
-                if (address != null) {
-                    setupAddress(address);
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                address.setName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -190,7 +227,20 @@ public class AddressFragment extends Fragment {
     private void setupSaveButton(View view) {
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
             if (address.isValid(requireContext())) {
-                Utils.getAddressReference().setValue(address, (error, ref) -> {
+                if (addressList.contains(address)) {
+                    Toast.makeText(requireContext(), "Address already exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String addressId;
+                if (!TextUtils.isEmpty(AddressFragment.this.addressId)) {
+                    addressId = AddressFragment.this.addressId;
+                } else {
+                    addressId = Utils.getAddressReference().push().getKey();
+                }
+
+                address.setId(addressId);
+                Utils.getAddressReference().child(addressId).setValue(address, (error, ref) -> {
                     if (error != null) {
                         Toast.makeText(requireContext(), "Failed to save address", Toast.LENGTH_SHORT).show();
                     } else {
@@ -206,21 +256,47 @@ public class AddressFragment extends Fragment {
         Selection.setSelection(editText.getText(), editText.length());
     }
 
+    public void handleAddressId(@Nullable String addressId) {
+        if (TextUtils.isEmpty(addressId)) {
+            return;
+        }
+
+        this.addressId = addressId;
+
+        Utils.getAddressReference().child(addressId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Address address = snapshot.getValue(Address.class);
+                if (address != null) {
+                    setupAddress(address);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void handleSearchSelection(SearchSuggestion searchSuggestion) {
         if (searchSuggestion == null) {
             return;
         }
 
         Address address = new Address();
+        address.setName(nameEditText.getText().toString());
         address.setSuiteNumber(searchSuggestion.getAddress().getHouseNumber());
         address.setStreetAddress(searchSuggestion.getAddress().getStreet());
         address.setCity(searchSuggestion.getAddress().getPlace());
         address.setProvince(searchSuggestion.getAddress().getRegion());
         address.setPostalCode(searchSuggestion.getAddress().getPostcode());
+        address.setPhoneNumber(phoneNumberEditText.getText().toString());
         setupAddress(address);
     }
 
     private void setupAddress(Address address) {
+        nameEditText.setText(address.getName());
         suiteNumberEditText.setText(address.getSuiteNumber());
         streetAddressEditText.setText(address.getStreetAddress());
         cityEditText.setText(address.getCity());
@@ -228,6 +304,7 @@ public class AddressFragment extends Fragment {
         postalCodeEditText.setText(address.getPostalCode());
         phoneNumberEditText.setText(address.getPhoneNumber());
 
+        setSelection(nameEditText);
         setSelection(suiteNumberEditText);
         setSelection(streetAddressEditText);
         setSelection(cityEditText);

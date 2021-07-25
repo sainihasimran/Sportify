@@ -60,7 +60,7 @@
     <string name="save_address_hint">Use this address for future deliveries</string>
     <string name="save">Save</string>
     <string name="address">Address</string>
-    <string name="no_addresses_text">No addresses found</string>
+    <string name="no_addresses_text">No addresses found.\n\nTap \'+\' icon in the top-right corner to\nadd a new address</string>
     <string name="add_address">Add Address</string>
     <string name="delivery">Delivery</string>
     <string name="edit">Edit</string>
@@ -94,4 +94,12 @@
     <string name="search_address">Search Address</string>
 
     <string name="empty_search_results">No addresses found</string>
+
+    <string name="name">Name</string>
+    <string name="delete">Delete</string>
+
+    <string name="delete_address_title">Delete</string>
+    <string name="delete_address_message">Are you sure your want to delete this address?</string>
+
+    <string name="cancel">Cancel</string>
 </resources>

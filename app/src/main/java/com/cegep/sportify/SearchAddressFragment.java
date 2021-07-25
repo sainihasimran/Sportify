@@ -80,6 +80,7 @@ public class SearchAddressFragment extends Fragment implements SearchAddressItem
 
                 adapter.updateList(Collections.emptyList());
             } else {
+                emptyContainer.setVisibility(View.GONE);
                 adapter.updateList(suggestions);
             }
         }

@@ -1,11 +1,11 @@
 package com.cegep.sportify;
 
 import android.text.TextUtils;
+import com.cegep.sportify.model.Address;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mapbox.search.result.SearchAddress;
-import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class Utils {
     }
 
     public static DatabaseReference getAddressReference() {
-        return getUserReference().child("Address");
+        return getUserReference().child("Addresses");
     }
 
     public static DatabaseReference getPaymentReference() {
@@ -122,5 +122,13 @@ public class Utils {
         }
 
         return searchAddress.getPostcode();
+    }
+
+    public static String getAddressLine1(Address address) {
+        return address.getSuiteNumber() + ", " + address.getStreetAddress();
+    }
+
+    public static String getAddressLine2(Address address) {
+        return address.getCity() + ", " + address.getProvince();
     }
 }

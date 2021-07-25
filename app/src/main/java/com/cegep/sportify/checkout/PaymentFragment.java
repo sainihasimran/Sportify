@@ -3,7 +3,6 @@ package com.cegep.sportify.checkout;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -194,13 +193,13 @@ public class PaymentFragment extends Fragment {
         TextView fullNameTextView = view.findViewById(R.id.full_name_text);
         TextView addressLine1TextView = view.findViewById(R.id.address_line_1);
         TextView addressLine2TextView = view.findViewById(R.id.address_line_2);
-        TextView emailTextView = view.findViewById(R.id.email_text);
+        TextView postalCodeTextView = view.findViewById(R.id.postal_code_text);
         TextView phoneTextView = view.findViewById(R.id.phone_text);
 
-        fullNameTextView.setText(SportifyApp.user.getFullname());
-        addressLine1TextView.setText(address.getSuiteNumber() + ", " + address.getStreetAddress());
-        addressLine2TextView.setText(address.getCity() + ", " + address.getProvince());
-        emailTextView.setText(SportifyApp.user.email);
+        fullNameTextView.setText(address.getName());
+        addressLine1TextView.setText(Utils.getAddressLine1(address));
+        addressLine2TextView.setText(Utils.getAddressLine2(address));
+        postalCodeTextView.setText(address.getPostalCode());
         phoneTextView.setText(address.getPhoneNumber());
     }
 

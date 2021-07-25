@@ -14,12 +14,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/size_l"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/size_l">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:text="@string/payment_header"
                 android:textAppearance="?textAppearanceSubtitle2"
                 android:textSize="18sp" />
@@ -28,6 +29,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:layout_marginTop="@dimen/size_l"
                 android:hint="@string/name_on_card">
 
@@ -44,6 +46,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:layout_marginTop="@dimen/size_l"
                 android:hint="@string/card_number">
 
@@ -60,6 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -110,154 +114,193 @@
                 android:id="@+id/save_card_details_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:layout_marginTop="@dimen/size_m"
                 android:text="@string/save_card_text"
                 app:buttonTint="@color/checkbox_tint" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner_bg"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/size_l"
-                android:paddingBottom="@dimen/size_m">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_l"
-                    android:text="@string/payment_details"
-                    android:textAppearance="?textAppearanceSubtitle2"
-                    android:textSize="18sp" />
+                android:layout_marginHorizontal="@dimen/size_l"
+                android:layout_marginTop="@dimen/size_l"
+                app:cardCornerRadius="@dimen/size_s"
+                app:cardElevation="@dimen/size_m"
+                app:contentPaddingBottom="@dimen/size_l"
+                app:contentPaddingLeft="@dimen/size_l"
+                app:contentPaddingRight="@dimen/size_l">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_m"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/cart_total"
-                        android:textAppearance="?textAppearanceSubtitle2" />
+                        android:layout_marginTop="@dimen/size_l"
+                        android:text="@string/payment_details"
+                        android:textAppearance="?textAppearanceSubtitle2"
+                        android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/cart_total_text"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceSubtitle1"
-                        tools:text="$34.33" />
+                        android:layout_marginTop="@dimen/size_m"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/cart_total"
+                            android:textAppearance="?textAppearanceSubtitle2" />
+
+                        <TextView
+                            android:id="@+id/cart_total_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?textAppearanceSubtitle1"
+                            tools:text="$34.33" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_s"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/tax"
+                            android:textAppearance="?textAppearanceSubtitle2" />
+
+                        <TextView
+                            android:id="@+id/tax_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?textAppearanceSubtitle1"
+                            tools:text="$34.33" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/size_m"
+                        android:background="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_m"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/total"
+                            android:textAppearance="?textAppearanceSubtitle2" />
+
+                        <TextView
+                            android:id="@+id/total_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?textAppearanceSubtitle1"
+                            tools:text="$34.33" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_s"
-                    android:orientation="horizontal">
+            </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/tax"
-                        android:textAppearance="?textAppearanceSubtitle2" />
-
-                    <TextView
-                        android:id="@+id/tax_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceSubtitle1"
-                        tools:text="$34.33" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/size_m"
-                    android:background="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_m"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/total"
-                        android:textAppearance="?textAppearanceSubtitle2" />
-
-                    <TextView
-                        android:id="@+id/total_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceSubtitle1"
-                        tools:text="$34.33" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/address_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_l"
                 android:layout_marginTop="@dimen/size_l"
-                android:background="@drawable/rounded_corner_bg"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/size_l"
-                android:paddingBottom="@dimen/size_m"
-                tools:visibility="visible">
+                app:cardCornerRadius="@dimen/size_s"
+                app:cardElevation="@dimen/size_m"
+                app:contentPaddingBottom="@dimen/size_l"
+                app:contentPaddingLeft="@dimen/size_l"
+                app:contentPaddingRight="@dimen/size_l">
 
-                <TextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="@dimen/size_m"
-                    android:text="@string/delivery"
-                    android:textAppearance="?textAppearanceSubtitle2"
-                    android:textSize="18sp" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/full_name_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_m"
-                    android:textAppearance="?textAppearanceSubtitle2"
-                    android:textColor="@color/black"
-                    tools:text="Hemit Khunt" />
+                    <TextView
+                        android:id="@+id/delivery_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/size_m"
+                        android:layout_weight="1"
+                        android:text="@string/delivery"
+                        android:textAppearance="?textAppearanceHeadline6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/address_line_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="5032 Avenue Clanranald, Snowden" />
+                    <TextView
+                        android:id="@+id/full_name_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_s"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:textAppearance="?textAppearanceSubtitle2"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/delivery_label"
+                        tools:text="Hemit Khunt" />
 
-                <TextView
-                    android:id="@+id/address_line_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Montreal, Quebec" />
+                    <TextView
+                        android:id="@+id/address_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        app:layout_constraintTop_toBottomOf="@id/full_name_text"
+                        tools:text="5032 Avenue Clanranald, Snowden" />
 
-                <TextView
-                    android:id="@+id/email_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Khunthemit1@gmail.com" />
+                    <TextView
+                        android:id="@+id/address_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        app:layout_constraintTop_toBottomOf="@id/address_line_1"
+                        tools:text="Montreal, Quebec" />
 
-                <TextView
-                    android:id="@+id/phone_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="+1 (514)-434-1744" />
+                    <TextView
+                        android:id="@+id/postal_code_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        app:layout_constraintTop_toBottomOf="@id/address_line_2"
+                        tools:text="H3H 4Y3" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/phone_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/size_l"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/postal_code_text"
+                        tools:text="+1 (514)-434-1744" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <Space
                 android:layout_width="match_parent"
@@ -284,6 +327,6 @@
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/confetti"
-        app:lottie_speed="1.2"/>
+        app:lottie_speed="1.2" />
 
 </FrameLayout>

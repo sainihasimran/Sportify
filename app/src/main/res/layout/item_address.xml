@@ -1,64 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?selectableItemBackground"
-    android:paddingTop="@dimen/size_l">
+    android:layout_marginHorizontal="@dimen/size_l"
+    android:layout_marginBottom="@dimen/size_l"
+    app:cardCornerRadius="@dimen/size_s"
+    app:cardElevation="@dimen/size_m"
+    app:contentPaddingBottom="@dimen/size_l"
+    app:contentPaddingLeft="@dimen/size_l"
+    app:contentPaddingRight="@dimen/size_l">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="@dimen/size_xl"
-        android:layout_height="@dimen/size_xl"
-        android:layout_marginStart="@dimen/size_l"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_location_search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/address_line_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/size_l"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textAppearance="?textAppearanceSubtitle1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="5032 Avenue Clanranald, Snowden" />
+        <TextView
+            android:id="@+id/delivery_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/delivery"
+            android:textAppearance="?textAppearanceHeadline6"
+            app:layout_constraintBottom_toBottomOf="@id/edit_button"
+            app:layout_constraintEnd_toStartOf="@id/edit_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/edit_button" />
 
-    <TextView
-        android:id="@+id/address_line_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textAppearance="?textAppearanceSubtitle2"
-        app:layout_constraintEnd_toEndOf="@id/address_line_1"
-        app:layout_constraintStart_toStartOf="@id/address_line_1"
-        app:layout_constraintTop_toBottomOf="@id/address_line_1"
-        tools:text="Montreal, Quebec" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit"
+            app:chipBackgroundColor="@color/white"
+            app:chipEndPadding="@dimen/size_l"
+            app:chipIcon="@drawable/ic_edit"
+            app:chipIconSize="@dimen/size_l"
+            app:chipStartPadding="@dimen/size_l"
+            app:chipStrokeColor="@color/grey"
+            app:chipStrokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/postal_code"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/address_line_1"
-        app:layout_constraintStart_toStartOf="@id/address_line_1"
-        app:layout_constraintTop_toBottomOf="@id/address_line_2"
-        tools:text="H3H 3T3" />
+        <TextView
+            android:id="@+id/full_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_s"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textAppearance="?textAppearanceSubtitle2"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/delivery_label"
+            tools:text="Hemit Khunt" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/size_l"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/address_line_1"
-        app:layout_constraintTop_toBottomOf="@id/postal_code" />
+        <TextView
+            android:id="@+id/address_line_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            app:layout_constraintTop_toBottomOf="@id/full_name_text"
+            tools:text="5032 Avenue Clanranald, Snowden" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/address_line_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            app:layout_constraintTop_toBottomOf="@id/address_line_1"
+            tools:text="Montreal, Quebec" />
+
+        <TextView
+            android:id="@+id/postal_code_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            app:layout_constraintTop_toBottomOf="@id/address_line_2"
+            tools:text="H3H 4Y3" />
+
+        <TextView
+            android:id="@+id/phone_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/size_l"
+            android:ellipsize="end"
+            android:lines="1"
+            app:layout_constraintEnd_toStartOf="@id/selected_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postal_code_text"
+            tools:text="+1 (514)-434-1744" />
+
+        <ImageView
+            android:id="@+id/selected_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

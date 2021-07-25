@@ -29,7 +29,7 @@ public class SearchAddressAdapter extends RecyclerView.Adapter<SearchAddressAdap
     public SearchAddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_address, parent, false);
+        View view = inflater.inflate(R.layout.item_search_address, parent, false);
         return new SearchAddressViewHolder(view, itemClickListener);
     }
 
