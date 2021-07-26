@@ -16,6 +16,7 @@ import com.cegep.sportify.R;
 import com.cegep.sportify.SearchAddressActivity;
 import com.cegep.sportify.SearchAddressFragment;
 import com.cegep.sportify.Utils;
+import com.mapbox.search.result.SearchAddress;
 import com.mapbox.search.result.SearchSuggestion;
 
 public class AddressActivity extends AppCompatActivity {
@@ -80,10 +81,10 @@ public class AddressActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_SEARCH_ADDRESS) {
             Parcelable parcelableExtra = data.getParcelableExtra(SearchAddressFragment.KEY_SELECTED_ADDRESS);
-            if (parcelableExtra instanceof SearchSuggestion) {
+            if (parcelableExtra instanceof SearchAddress) {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
                 if (fragment instanceof AddressFragment) {
-                    ((AddressFragment) fragment).handleSearchSelection((SearchSuggestion) parcelableExtra);
+                    ((AddressFragment) fragment).handleSearchSelection((SearchAddress) parcelableExtra);
                 }
             }
         }

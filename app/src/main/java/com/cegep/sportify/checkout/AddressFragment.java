@@ -20,6 +20,7 @@ import com.cegep.sportify.model.Address;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.mapbox.search.result.SearchAddress;
 import com.mapbox.search.result.SearchSuggestion;
 import java.util.ArrayList;
 import java.util.List;
@@ -279,18 +280,18 @@ public class AddressFragment extends Fragment {
         });
     }
 
-    public void handleSearchSelection(SearchSuggestion searchSuggestion) {
-        if (searchSuggestion == null) {
+    public void handleSearchSelection(SearchAddress searchAddress) {
+        if (searchAddress == null) {
             return;
         }
 
         Address address = new Address();
         address.setName(nameEditText.getText().toString());
-        address.setSuiteNumber(searchSuggestion.getAddress().getHouseNumber());
-        address.setStreetAddress(searchSuggestion.getAddress().getStreet());
-        address.setCity(searchSuggestion.getAddress().getPlace());
-        address.setProvince(searchSuggestion.getAddress().getRegion());
-        address.setPostalCode(searchSuggestion.getAddress().getPostcode());
+        address.setSuiteNumber(searchAddress.getHouseNumber());
+        address.setStreetAddress(searchAddress.getStreet());
+        address.setCity(searchAddress.getPlace());
+        address.setProvince(searchAddress.getRegion());
+        address.setPostalCode(searchAddress.getPostcode());
         address.setPhoneNumber(phoneNumberEditText.getText().toString());
         setupAddress(address);
     }
