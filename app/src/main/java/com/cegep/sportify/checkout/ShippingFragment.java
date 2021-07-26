@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.Adapter.AddressAdapter;
@@ -29,6 +30,7 @@ public class ShippingFragment extends Fragment implements AddressSelectedListene
     private View noAddressContainer;
     private View addressContainer;
     private Button nextButton;
+    private AlertDialog loadingDialog;
 
     private Address selectedAddress;
 
@@ -57,11 +59,17 @@ public class ShippingFragment extends Fragment implements AddressSelectedListene
 
             addressAdapter.updateList(addressList);
             updateContainerVisibility(addressList.isEmpty());
+
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
         }
     };
 
@@ -74,6 +82,11 @@ public class ShippingFragment extends Fragment implements AddressSelectedListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        loadingDialog = new AlertDialog.Builder(requireContext(), R.style.LoadingDialogStyle)
+                .setView(R.layout.item_loading)
+                .setCancelable(false)
+                .show();
 
         noAddressContainer = view.findViewById(R.id.no_address_container);
         addressContainer = view.findViewById(R.id.address_container);
