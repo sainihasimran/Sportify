@@ -191,6 +191,16 @@
             app:iconTint="@color/white"
             app:layout_constraintTop_toBottomOf="@id/add_to_cart_button" />
 
+        <TextView
+            android:id="@+id/return_policy_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/return_policy"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/size_m"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buy_now_button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

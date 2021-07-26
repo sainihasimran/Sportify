@@ -102,4 +102,6 @@
     <string name="delete_address_message">Are you sure your want to delete this address?</string>
 
     <string name="cancel">Cancel</string>
+
+    <string name="return_policy"><u>Return Policy</u></string>
 </resources>

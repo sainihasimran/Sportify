@@ -22,6 +22,7 @@ import com.cegep.sportify.checkout.ShippingActivity;
 import com.cegep.sportify.details.QuantityFragment;
 import com.cegep.sportify.details.QuantitySelectedListener;
 import com.cegep.sportify.gallery.ImageAdapter;
+import com.cegep.sportify.model.Admin;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.ShoppingCartItem;
@@ -55,6 +56,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
         setupEquipmentSport(view);
         setupAddToCart(view);
         setupBuyNow(view);
+        setupReturnPolicy(view);
     }
 
     private void setupEquipmentName(View view) {
@@ -145,6 +147,25 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
                 isBuyMode = true;
             }
         });
+    }
+
+    private void setupReturnPolicy(View view) {
+        view.findViewById(R.id.return_policy_text).setOnClickListener(
+                v -> Utils.getAdminDatabase().getReference("Admin").child(equipment.getAdminId())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Admin admin = snapshot.getValue(Admin.class);
+                                if (admin != null) {
+                                    Utils.launchWebpage(admin.returnPolicyUrl, requireActivity());
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        }));
     }
 
     private boolean isProductValid() {

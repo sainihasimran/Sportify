@@ -1,5 +1,8 @@
 package com.cegep.sportify;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import com.cegep.sportify.model.Address;
 import com.google.firebase.FirebaseApp;
@@ -130,5 +133,13 @@ public class Utils {
 
     public static String getAddressLine2(Address address) {
         return address.getCity() + ", " + address.getProvince();
+    }
+
+    public static void launchWebpage(String url, Activity activity) {
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        }
     }
 }
