@@ -12,10 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Order;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 class OrderViewHolder extends RecyclerView.ViewHolder {
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+
+    private final TextView OrderDate;
     private final ImageView OrderImage;
     private final TextView OrderName;
     private final TextView OrderPrice;
@@ -29,7 +34,7 @@ class OrderViewHolder extends RecyclerView.ViewHolder {
     public OrderViewHolder(@NonNull View itemView) {
         super(itemView);
 
-
+        OrderDate = itemView.findViewById(R.id.order_time);
         OrderImage = itemView.findViewById(R.id.OrderImage);
         OrderName = itemView.findViewById(R.id.OrderName);
         OrderPrice = itemView.findViewById(R.id.item_price);
@@ -73,8 +78,8 @@ class OrderViewHolder extends RecyclerView.ViewHolder {
         if (order.getStatus().equals("pending")) {
             Status.setTextColor(itemView.getResources().getColor(R.color.buttonbg));
         }
+        OrderDate.setText(sdf.format(new Date(order.getCreatedAt())));
         }
-
 
     }
 

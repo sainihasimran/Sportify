@@ -2,7 +2,7 @@ package com.cegep.sportify.model;
 
 import java.util.List;
 
-public class Order {
+public class Order implements Comparable<Order> {
 
     private String orderId;
 
@@ -155,10 +155,17 @@ public class Order {
         this.creditCard = creditCard;
     }
 
-    public  List<String> getImages() { return images;
+    public List<String> getImages() {
+        return images;
     }
+
     public void setImages(List<String> images) {
         this.images = images;
     }
+
+    @Override
+    public int compareTo(Order o) {
+        return Long.compare(createdAt, o.createdAt);
     }
+}
 
