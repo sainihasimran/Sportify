@@ -46,7 +46,7 @@
         <activity android:exported="true" android:name=".checkout.AddressActivity" />
         <activity android:exported="true" android:name=".checkout.ShippingActivity" />
         <activity android:exported="true" android:name=".checkout.PaymentActivity" />
-        <activity android:exported="true" android:name=".SearchActivity" />
+        <activity android:exported="true" android:name=".search.SearchActivity" />
     </application>
 
 </manifest>

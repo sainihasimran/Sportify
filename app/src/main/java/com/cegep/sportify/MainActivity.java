@@ -1,16 +1,10 @@
 package com.cegep.sportify;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -20,10 +14,10 @@ import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductFilterListener;
 import com.cegep.sportify.Home.ProductsListFragment;
-import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
 import com.cegep.sportify.model.EquipmentFilter;
 import com.cegep.sportify.model.ProductFilter;
+import com.cegep.sportify.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
