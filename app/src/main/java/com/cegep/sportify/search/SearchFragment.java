@@ -21,6 +21,8 @@ public class SearchFragment extends Fragment {
 
     private SearchItemAdapter searchItemAdapter;
 
+    private View emptyView;
+
 
 
     @Override
@@ -33,7 +35,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        emptyView = view.findViewById(R.id.empty_view);
+        emptyView = view.findViewById(R.id.empty_view);
         setupRecyclerView(view);
     }
 
