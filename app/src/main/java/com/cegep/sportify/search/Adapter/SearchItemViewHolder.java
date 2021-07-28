@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
@@ -31,7 +32,7 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder {
 
     private SearchItem searchItem;
 
-    public SearchItemViewHolder(@NonNull @NotNull View itemView) {
+    public SearchItemViewHolder(@NonNull @NotNull View itemView, ProductListItemClickListener productListItemClickListener) {
         super(itemView);
 
 
@@ -73,7 +74,7 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder {
             }
 
             isOutOfStock = searchItem.getProduct().isOutOfStock();
-            
+
             if (searchItem.getProduct().getSale() > 0 && !isOutOfStock) {
                 saleTextView.setText(searchItem.getProduct().getSale() + "%\noff");
                 saleTextView.setVisibility(View.VISIBLE);
