@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cegep.sportify.ProductListItemClickListener;
+import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
-import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,19 +24,21 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
 
     private final List<SearchItem> searchItems;
 
-    private final ProductListItemClickListener productListItemClickListener;
+    private final ItemListItemClickListner itemListItemClickListner;
 
-    public SearchItemAdapter(Context context, List<SearchItem> searchItems, ProductListItemClickListener itemClickListener) {
+
+
+    public SearchItemAdapter(Context context, List<SearchItem> searchItems, ItemListItemClickListner itemClickListener) {
         this.context = context;
         this.searchItems = searchItems;
-        this.productListItemClickListener = itemClickListener;
+        this.itemListItemClickListner = itemClickListener;
     }
 
     @Override
     public SearchItemViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_product, parent, false);
-        return new SearchItemViewHolder(view, productListItemClickListener);
+        return new SearchItemViewHolder(view, itemListItemClickListner);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
         return searchItems.size();
     }
 
-    public void update(Collection<SearchItem> searchItems, List<String> favoriteProducts) {
+    public void update(Collection<SearchItem> searchItems) {
         this.searchItems.clear();
         this.searchItems.addAll(searchItems);
         notifyDataSetChanged();

@@ -5,14 +5,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.cegep.sportify.ProductListItemClickListener;
+import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
-import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,9 +32,16 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder {
 
     private SearchItem searchItem;
 
-    public SearchItemViewHolder(@NonNull @NotNull View itemView, ProductListItemClickListener productListItemClickListener) {
+    public SearchItemViewHolder(@NonNull @NotNull View itemView, ItemListItemClickListner itemListItemClickListner) {
         super(itemView);
 
+        itemView.setOnClickListener(v -> {
+            if (searchItem != null) {
+                itemListItemClickListner.onItemClicked(searchItem);
+            } else {
+                Toast.makeText(itemView.getContext(), "Product is null", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         itemImageView = itemView.findViewById(R.id.product_image);
         itemNameTextView = itemView.findViewById(R.id.product_name);
