@@ -39,7 +39,7 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder {
             if (searchItem != null) {
                 itemListItemClickListner.onItemClicked(searchItem);
             } else {
-                Toast.makeText(itemView.getContext(), "Product is null", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), "Item is null", Toast.LENGTH_SHORT).show();
             }
         });
 
