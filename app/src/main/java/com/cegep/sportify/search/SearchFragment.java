@@ -1,6 +1,7 @@
 package com.cegep.sportify.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,11 @@ import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
 import com.cegep.sportify.search.Adapter.SearchItemAdapter;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -42,13 +45,25 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            List<SearchItem> searchItems = new ArrayList<>();
-            for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
-                
-                SearchItem searchItem = new SearchItem();
-                searchItem.setProduct(searchDataSnapshot.getValue(Product.class));
-                searchItems.add(searchItem);
+
+            if (snapshot.getKey().equals("Products"))
+            {
+                for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
+                    SearchItem searchItem = new SearchItem();
+                    searchItem.setProduct(searchDataSnapshot.getValue(Product.class));
+                    searchItems.add(searchItem);
+                }
             }
+            if (snapshot.getKey().equals("Equipments"))
+            {
+                for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
+                    SearchItem searchItem = new SearchItem();
+                    searchItem.setEquipment(searchDataSnapshot.getValue(Equipment.class));
+                    searchItems.add(searchItem);
+                }
+            }
+            Log.d("dsfds", snapshot.getValue().toString());
+
             SearchFragment.this.searchItems = searchItems;
             showItemList();
         }
@@ -74,8 +89,8 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
         itemsReference = adminappdb.getReference("Products").orderByChild("createdAt");
         itemsReference.addValueEventListener(valueEventListener);
-//        itemsReference = adminappdb.getReference("Equipments").orderByChild("createdAt");
-//        itemsReference.addValueEventListener(valueEventListener);
+        itemsReference = adminappdb.getReference("Equipments").orderByChild("createdAt");
+        itemsReference.addValueEventListener(valueEventListener);
     }
 
     private void setupRecyclerView(View view) {
