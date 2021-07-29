@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,35 +23,9 @@ public class SearchActivity extends AppCompatActivity {
         setupToolbar();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search,menu);
-
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_search);
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 }
