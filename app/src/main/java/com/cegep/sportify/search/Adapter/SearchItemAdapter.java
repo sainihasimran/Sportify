@@ -22,7 +22,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
 
     private final Context context;
 
-    private final List<SearchItem> searchItems;
+    private List<SearchItem> searchItems;
 
     private final ItemListItemClickListner itemListItemClickListner;
 
@@ -54,6 +54,11 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
     public void update(Collection<SearchItem> searchItems) {
         this.searchItems.clear();
         this.searchItems.addAll(searchItems);
+        notifyDataSetChanged();
+    }
+
+    public void filter(List<SearchItem> searchItems) {
+        this.searchItems = searchItems;
         notifyDataSetChanged();
     }
 }

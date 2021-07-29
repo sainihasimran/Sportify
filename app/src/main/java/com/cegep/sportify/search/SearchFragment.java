@@ -19,8 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cegep.sportify.Adapter.ProductAdapter;
-import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
@@ -28,7 +26,6 @@ import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
 import com.cegep.sportify.search.Adapter.SearchItemAdapter;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -48,24 +44,19 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     private List<SearchItem> searchItems = new ArrayList<>();
 
     private View emptyView;
-
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
-
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-            if (snapshot.getKey().equals("Products"))
-            {
+            if (snapshot.getKey().equals("Products")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
                     SearchItem searchItem = new SearchItem();
                     searchItem.setProduct(searchDataSnapshot.getValue(Product.class));
                     searchItems.add(searchItem);
                 }
+
             }
-            if (snapshot.getKey().equals("Equipments"))
-            {
+            if (snapshot.getKey().equals("Equipments")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
                     SearchItem searchItem = new SearchItem();
                     searchItem.setEquipment(searchDataSnapshot.getValue(Equipment.class));
@@ -82,6 +73,8 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         public void onCancelled(@NonNull DatabaseError error) {
         }
     };
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,7 +100,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     }
 
     private void setupRecyclerView(View view) {
-        searchItemAdapter = new SearchItemAdapter(requireContext(), this.searchItems,this);
+        searchItemAdapter = new SearchItemAdapter(requireContext(), this.searchItems, this);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
@@ -132,6 +125,30 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     }
 
+    public void filter(String query) {
+        if (!query.trim().isEmpty()) {
+            ArrayList<SearchItem> temp = new ArrayList();
+            for (SearchItem search : searchItems) {
+                //or use .equal(text) with you want equal match
+                //use .toLowerCase() for better matches
+                if (search.getProduct() != null) {
+                    if (search.getProduct().getProductName().toLowerCase().contains(query.toLowerCase())) {
+                        temp.add(search);
+                    }
+                } else if (search.getEquipment() != null) {
+                    if (search.getEquipment().getEquipmentName().toLowerCase().contains(query.toLowerCase())) {
+                        temp.add(search);
+                    }
+                }
+
+            }
+            //update recyclerview
+            searchItemAdapter.filter(temp);
+        } else {
+            searchItemAdapter.filter(searchItems);
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_search, menu);
@@ -152,12 +169,14 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-
+                    filter(newText);
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
+                    filter(query);
 
                     return true;
                 }
