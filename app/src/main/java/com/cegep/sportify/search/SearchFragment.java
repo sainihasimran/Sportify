@@ -63,8 +63,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                     searchItems.add(searchItem);
                 }
             }
-            Log.d("dsfds", snapshot.getValue().toString());
-
             SearchFragment.this.searchItems = searchItems;
             showItemList();
         }
@@ -79,9 +77,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
-
     }
-
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -105,11 +101,9 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(searchItemAdapter);
-
     }
 
     private void showItemList() {
-
         Set<SearchItem> search = new HashSet<>();
         for (SearchItem searchItem : searchItems) {
             search.add(searchItem);
@@ -129,8 +123,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         if (!query.trim().isEmpty()) {
             ArrayList<SearchItem> temp = new ArrayList();
             for (SearchItem search : searchItems) {
-                //or use .equal(text) with you want equal match
-                //use .toLowerCase() for better matches
                 if (search.getProduct() != null) {
                     if (search.getProduct().getProductName().toLowerCase().contains(query.toLowerCase())) {
                         temp.add(search);
@@ -140,9 +132,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                         temp.add(search);
                     }
                 }
-
             }
-            //update recyclerview
             searchItemAdapter.filter(temp);
         } else {
             searchItemAdapter.filter(searchItems);
@@ -155,29 +145,26 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
-
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
             EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
             searchEditText.setTextColor(getResources().getColor(R.color.white));
             searchEditText.setHintTextColor(getResources().getColor(R.color.white));
         }
+
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
             queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    Log.i("onQueryTextChange", newText);
                     filter(newText);
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    Log.i("onQueryTextSubmit", query);
                     filter(query);
-
                     return true;
                 }
             };
@@ -189,7 +176,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
-            // Not implemented here
             return false;
         }
         searchView.setOnQueryTextListener(queryTextListener);
