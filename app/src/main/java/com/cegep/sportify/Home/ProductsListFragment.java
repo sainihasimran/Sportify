@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.cegep.sportify.Adapter.ProductAdapter;
 import com.cegep.sportify.ProductListItemClickListener;
 import com.cegep.sportify.R;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,8 +47,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
     private String adminID;
 
     private View emptyView;
-
-
+    private ProductAdapter productAdapter;
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -62,7 +64,6 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         public void onCancelled(@NonNull DatabaseError error) {
         }
     };
-
     private final ValueEventListener favoriteListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -78,9 +79,6 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
         }
     };
-
-    private ProductAdapter productAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

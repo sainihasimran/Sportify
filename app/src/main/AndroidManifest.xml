@@ -48,6 +48,16 @@
             android:name=".ProfileActivity"
             android:exported="true" />
         <activity
+            android:name=".SavedAddressActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SavedCardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".LoginActivity"
             android:exported="true" />
 
@@ -67,6 +77,10 @@
         </activity>
 
         <activity
+            android:name=".SearchAddressActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".checkout.ShoppingCartActivity"
             android:exported="true" />
         <activity
@@ -79,10 +93,7 @@
             android:name=".checkout.PaymentActivity"
             android:exported="true" />
         <activity
-            android:name=".SearchActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SearchAddressActivity"
+            android:name=".search.SearchActivity"
             android:exported="true" />
     </application>
 
