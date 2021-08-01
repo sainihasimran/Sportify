@@ -4,6 +4,8 @@ import androidx.multidex.MultiDexApplication;
 import com.cegep.sportify.model.Order;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.mapbox.search.MapboxSearchSdk;
+import com.mapbox.search.location.DefaultLocationProvider;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,10 @@ public class SportifyApp extends MultiDexApplication {
 
     public static boolean isBuyMode = true;
 
+    public static boolean productAddedInShoppingCart = false;
+
+    public static boolean equipmentAddedInShoppingCart = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,6 +36,8 @@ public class SportifyApp extends MultiDexApplication {
                 .setDatabaseUrl("https://sportify-admin-default-rtdb.firebaseio.com/")
                 .build();
         FirebaseApp.initializeApp(this, adminOptions, ADMIN_FIREBASE);
+
+        MapboxSearchSdk.initialize(this, getString(R.string.mapbox_access_token), new DefaultLocationProvider(this));
 
 //        FirebaseOptions clientOptions = new FirebaseOptions.Builder()
 //                .setProjectId("sportify-5484f")

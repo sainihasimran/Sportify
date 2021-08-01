@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/no_address_text"
@@ -20,101 +21,38 @@
             android:gravity="center"
             android:text="@string/no_addresses_text" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_address_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_s"
-            android:text="@string/add_address" />
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/address_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/size_l"
-        android:layout_marginTop="@dimen/size_l"
-        android:background="@drawable/rounded_corner_bg"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/size_l"
-        android:paddingBottom="@dimen/size_m"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/size_l"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_address" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="@string/delivery"
-                android:textAppearance="?textAppearanceHeadline6" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit"
-                app:chipBackgroundColor="@color/white"
-                app:chipEndPadding="@dimen/size_l"
-                app:chipIcon="@drawable/ic_edit"
-                app:chipIconSize="@dimen/size_l"
-                app:chipStartPadding="@dimen/size_l"
-                app:chipStrokeColor="@color/grey"
-                app:chipStrokeWidth="1dp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/full_name_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceSubtitle2"
-            android:textColor="@color/black"
-            tools:text="Hemit Khunt" />
-
-        <TextView
-            android:id="@+id/address_line_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="5032 Avenue Clanranald, Snowden" />
-
-        <TextView
-            android:id="@+id/address_line_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Montreal, Quebec" />
-
-        <TextView
-            android:id="@+id/email_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Khunthemit1@gmail.com" />
-
-        <TextView
-            android:id="@+id/phone_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="+1 (514)-434-1744" />
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="@dimen/size_l"
+            android:layout_marginBottom="@dimen/size_l"
+            android:text="@string/next"
+            android:visibility="gone"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            tools:visibility="visible" />
 
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/next_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="@dimen/size_l"
-        android:layout_marginBottom="@dimen/size_l"
-        android:text="@string/next"
-        android:visibility="gone"
-        app:icon="@drawable/ic_arrow_forward"
-        app:iconGravity="textEnd"
-        tools:visibility="visible" />
 
 </FrameLayout>

@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardCornerRadius="2dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="16dp">
+    app:cardCornerRadius="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,64 +17,92 @@
         <ImageView
             android:id="@+id/OrderImage"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/size_l"
             tools:src="@tools:sample/avatars" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/OrderName"
+                android:id="@+id/order_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
-                android:lines="1"
-                android:ellipsize="end"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Order Name"
-                android:textColor="@color/black" />
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/size_m"
+                android:layout_marginEnd="@dimen/size_l"
+                android:textAppearance="?textAppearanceCaption"
+                tools:text="Aug 21, 2021" />
 
-
-            <TextView
-                android:id="@+id/Quantity"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody2"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Order Name"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/Status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceSubtitle2"
-                android:layout_weight="1"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="Order Name"
-                android:textColor="@color/black" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/OrderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="Order Name"
+                        android:textAppearance="?textAppearanceBody1"
+                        android:textColor="@color/black" />
+
+
+                    <TextView
+                        android:id="@+id/Quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Order Name"
+                        android:textAppearance="?textAppearanceBody2"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/Status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="@dimen/size_l"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Order Name"
+                        android:textAppearance="?textAppearanceSubtitle2"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/size_l"
+                    android:textAppearance="?textAppearanceBody2"
+                    android:textColor="@color/faded_red"
+                    android:textSize="24sp"
+                    tools:text="$23.94" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceBody2"
-            android:textColor="@color/faded_red"
-            android:textSize="24sp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/size_m"
-            tools:text="$23.94" />
 
     </LinearLayout>
 

@@ -17,16 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
-            app:menu="@menu/menu_address"
             app:navigationIcon="@drawable/ic_back"
-            app:title="@string/address"
+            app:title="@string/search_address"
             app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
-        android:name="com.cegep.sportify.checkout.AddressFragment"
+        android:name="com.cegep.sportify.SearchAddressFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".details.productdetails.ProductDetailsActivity" />
