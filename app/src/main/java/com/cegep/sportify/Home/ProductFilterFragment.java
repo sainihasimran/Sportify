@@ -4,12 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import java.util.prefs.Preferences;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.cegep.sportify.Constants;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.model.Brands;
-import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ProductFilter;
-import com.cegep.sportify.model.SportWithTeams;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +31,8 @@ import java.util.List;
 
 public class ProductFilterFragment extends BottomSheetDialogFragment {
     private final ProductFilter productFilter = new ProductFilter();
-        @Override
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -75,6 +70,7 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, brands);
                 brandsChooser.setAdapter(adapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -86,10 +82,11 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
                 productFilter.setBrandFilter(brands.get(position));
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                if (position>0)
-                    editor.putString("adminid", brandsList.get(position-1).getAdminID());
+                if (position > 0)
+                    editor.putString("adminid", brandsList.get(position - 1).getAdminID());
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -108,6 +105,7 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 productFilter.setCategoryFilter(categories.get(position));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -125,6 +123,7 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 productFilter.setSubCategoryFilter(subcategories.get(position));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -176,9 +175,8 @@ public class ProductFilterFragment extends BottomSheetDialogFragment {
             Activity activity = getActivity();
             if (activity instanceof ProductFilterListener) {
                 ((ProductFilterListener) activity).onProductFilterSelected(productFilter);
-                Log.d("fragment", "cscdscdsfdfdsfsdfdsfdsfdfsdfs");
             }
-            Log.d("fragment", "cscdscdsfdfdsfsdfdsfdsfdfsdfs");
+
             dismiss();
         });
     }
