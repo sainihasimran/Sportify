@@ -2,6 +2,7 @@ package com.cegep.sportify.search;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
+import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsFragment;
+import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
@@ -39,11 +43,19 @@ import java.util.Set;
 
 public class SearchFragment extends Fragment implements ItemListItemClickListner {
 
+    public static SearchItem selectedItem = null;
+
     private SearchItemAdapter searchItemAdapter;
 
     private List<SearchItem> searchItems = new ArrayList<>();
 
+    private List<String> favoriteProducts = new ArrayList<>();
+
     private View emptyView;
+
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -64,15 +76,13 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 }
             }
             SearchFragment.this.searchItems = searchItems;
-            showItemList();
+
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
         }
     };
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +126,17 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     @Override
     public void onItemClicked(SearchItem searchItem) {
-
+        selectedItem = searchItem;
+        if(searchItem.getProduct() != null)
+        {
+            Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        }
+        else
+        {
+            Intent intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
+        }
+        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        startActivity(intent);
     }
 
     public void filter(String query) {
@@ -158,7 +178,10 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
             queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    filter(newText);
+                    if (newText != null)
+                        filter(newText);
+                    else
+                        showItemList();
                     return true;
                 }
 

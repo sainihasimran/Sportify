@@ -48,6 +48,7 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
 
     private View emptyView;
     private ProductAdapter productAdapter;
+
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
