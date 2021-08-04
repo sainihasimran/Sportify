@@ -53,9 +53,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     private View emptyView;
 
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
-
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -120,7 +117,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         }
 
         emptyView.setVisibility(search.isEmpty() ? View.VISIBLE : View.GONE);
-
         searchItemAdapter.update(search);
     }
 
@@ -157,52 +153,5 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         } else {
             searchItemAdapter.filter(searchItems);
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-            searchEditText.setTextColor(getResources().getColor(R.color.white));
-            searchView.setIconified(false);
-            searchEditText.setHintTextColor(getResources().getColor(R.color.white));
-        }
-
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
-            queryTextListener = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if (newText != null)
-                        filter(newText);
-                    else
-                        showItemList();
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    filter(query);
-                    return true;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            return false;
-        }
-        searchView.setOnQueryTextListener(queryTextListener);
-        return super.onOptionsItemSelected(item);
     }
 }

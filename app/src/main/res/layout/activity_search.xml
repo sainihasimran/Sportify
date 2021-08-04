@@ -27,9 +27,12 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:iconifiedByDefault="false"
+        app:showAsAction="always"
+        android:tooltipText="Search Here"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:tooltipText="Search Here"
         app:layout_constraintTop_toTopOf="parent"/>
 
 
