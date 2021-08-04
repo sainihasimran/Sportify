@@ -173,7 +173,6 @@ public class ProductsListFragment extends Fragment implements ProductListItemCli
         }
 
         emptyView.setVisibility((fromProductList && filteredProducts.isEmpty()) ? View.VISIBLE : View.GONE);
-
         productAdapter.update(filteredProducts, favoriteProducts);
     }
 

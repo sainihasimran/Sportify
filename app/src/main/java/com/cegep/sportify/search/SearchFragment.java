@@ -169,6 +169,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
             searchView = (SearchView) searchItem.getActionView();
             EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
             searchEditText.setTextColor(getResources().getColor(R.color.white));
+            searchView.setIconified(false);
             searchEditText.setHintTextColor(getResources().getColor(R.color.white));
         }
 
