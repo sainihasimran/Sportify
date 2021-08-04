@@ -194,7 +194,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);
 
-            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            Intent intent = ShippingActivity.getCallingIntent(requireContext(), true);
             startActivity(intent);
         } else {
             Utils.getShoppingCartReference().orderByChild("equipmentId").equalTo(equipment.getEquipmentId()).addListenerForSingleValueEvent(

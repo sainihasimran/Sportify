@@ -60,6 +60,7 @@
     <string name="save_address_hint">Use this address for future deliveries</string>
     <string name="save">Save</string>
     <string name="address">Address</string>
+    <string name="addresses">Addresses</string>
     <string name="no_addresses_text">No addresses found.\n\nTap \'+\' icon in the top-right corner to\nadd a new address</string>
     <string name="add_address">Add Address</string>
     <string name="delivery">Delivery</string>

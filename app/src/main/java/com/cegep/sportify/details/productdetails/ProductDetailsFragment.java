@@ -279,7 +279,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);
 
-            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            Intent intent = ShippingActivity.getCallingIntent(requireContext(), true);
             startActivity(intent);
         } else {
             Utils.getShoppingCartReference().orderByChild("productId").equalTo(product.getProductId()).addListenerForSingleValueEvent(

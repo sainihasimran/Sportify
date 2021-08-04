@@ -21,8 +21,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     private final AddressSelectedListener addressSelectedListener;
 
-    public AddressAdapter(AddressSelectedListener addressSelectedListener) {
+    private final boolean isSelectingAddress;
+
+    public AddressAdapter(AddressSelectedListener addressSelectedListener, boolean isSelectingAddress) {
         this.addressSelectedListener = addressSelectedListener;
+        this.isSelectingAddress = isSelectingAddress;
     }
 
     @NonNull
@@ -31,7 +34,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_address, parent, false);
-        return new AddressViewHolder(view, addressSelectedListener);
+        return new AddressViewHolder(view, addressSelectedListener, isSelectingAddress);
     }
 
     @Override
@@ -56,6 +59,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public static class AddressViewHolder extends RecyclerView.ViewHolder {
 
+        private final TextView deliveryLabelTextView;
+
         private final TextView nameTextView;
 
         private final TextView addressLine1TextView;
@@ -70,9 +75,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         private Address address;
 
-        public AddressViewHolder(@NonNull View itemView, AddressSelectedListener addressSelectedListener) {
+        private final boolean isSelectingAddress;
+
+        public AddressViewHolder(@NonNull View itemView, AddressSelectedListener addressSelectedListener, boolean isSelectingAddress) {
             super(itemView);
 
+            deliveryLabelTextView = itemView.findViewById(R.id.delivery_label);
             nameTextView = itemView.findViewById(R.id.full_name_text);
             addressLine1TextView = itemView.findViewById(R.id.address_line_1);
             addressLine2TextView = itemView.findViewById(R.id.address_line_2);
@@ -80,19 +88,35 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             phoneTextView = itemView.findViewById(R.id.phone_text);
             selectedIcon = itemView.findViewById(R.id.selected_icon);
 
-            itemView.setOnClickListener(v -> addressSelectedListener.onAddressSelected(address));
+            if (isSelectingAddress) {
+                itemView.setOnClickListener(v -> addressSelectedListener.onAddressSelected(address));
+            }
+
             itemView.findViewById(R.id.edit_button).setOnClickListener(v -> addressSelectedListener.onEditAddressClicked(address));
+
+            this.isSelectingAddress = isSelectingAddress;
         }
 
         public void bind(Address address) {
             this.address = address;
+
+            if (isSelectingAddress) {
+                deliveryLabelTextView.setVisibility(View.VISIBLE);
+            } else {
+                deliveryLabelTextView.setVisibility(View.GONE);
+            }
 
             nameTextView.setText(address.getName());
             addressLine1TextView.setText(Utils.getAddressLine1(address));
             addressLine2TextView.setText(Utils.getAddressLine2(address));
             postalCodeTextView.setText(address.getPostalCode());
             phoneTextView.setText(address.getPhoneNumber());
-            selectedIcon.setVisibility(address.isSelected() ? View.VISIBLE : View.GONE);
+
+            if (isSelectingAddress) {
+                selectedIcon.setVisibility(address.isSelected() ? View.VISIBLE : View.GONE);
+            } else {
+                selectedIcon.setVisibility(View.GONE);
+            }
         }
     }
 }
