@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.R;
-import com.cegep.sportify.SavedItems.ViewSavedItemsFragment;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.checkout.ShippingActivity;
@@ -60,7 +59,6 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.product = ProductsListFragment.selectedProduct;
-        this.product = ViewSavedItemsFragment.selectedProduct;
 
         setupProductName(view);
         setupProductImages(view);

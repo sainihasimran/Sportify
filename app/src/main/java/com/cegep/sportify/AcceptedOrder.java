@@ -45,7 +45,7 @@ public class AcceptedOrder extends Fragment {
             List<Order> orders = new ArrayList<>();
             for (DataSnapshot orderDatasnapshot : snapshot.getChildren()) {
                 Order order = orderDatasnapshot.getValue(Order.class);
-                if (order != null && "accepted".equals(order.getStatus())) {
+                if (order != null && "Accepted".equals(order.getStatus())) {
                     orders.add(order);
                 }
             }

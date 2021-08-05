@@ -23,9 +23,6 @@ class OrderViewHolder extends RecyclerView.ViewHolder {
     private final TextView Status;
 
 
-
-
-
     public OrderViewHolder(@NonNull View itemView) {
         super(itemView);
 

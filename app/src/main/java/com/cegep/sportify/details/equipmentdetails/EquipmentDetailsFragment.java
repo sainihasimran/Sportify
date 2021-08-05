@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.R;
-import com.cegep.sportify.SavedItems.ViewSavedEquipmentsFragment;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.checkout.ShippingActivity;
@@ -47,7 +46,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.equipment = EquipmentsListFragment.selectedEquipment;
-        this.equipment = ViewSavedEquipmentsFragment.selectedEquipment;
+
 
         setupEquipmentName(view);
         setupEquipmentImages(view);

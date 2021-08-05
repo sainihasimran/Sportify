@@ -13,7 +13,6 @@ import com.cegep.sportify.Home.EquipmentsListFragment;
 import com.cegep.sportify.Home.ProductFilterFragment;
 import com.cegep.sportify.Home.ProductFilterListener;
 import com.cegep.sportify.Home.ProductsListFragment;
-import com.cegep.sportify.SavedItems.ViewSaveditemsActivity;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
 import com.cegep.sportify.model.EquipmentFilter;
 import com.cegep.sportify.model.ProductFilter;
