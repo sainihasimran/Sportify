@@ -52,6 +52,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     private List<String> favoriteProducts = new ArrayList<>();
 
     private View emptyView;
+    private View noResult;
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -84,12 +85,15 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
+
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         emptyView = view.findViewById(R.id.empty_view);
+        noResult = view.findViewById(R.id.no_result);
+        emptyView.setVisibility(View.VISIBLE);
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
@@ -115,7 +119,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
             search.add(searchItem);
         }
 
-        emptyView.setVisibility(search.isEmpty() ? View.VISIBLE : View.GONE);
+        noResult.setVisibility(search.isEmpty() ? View.VISIBLE : View.GONE);
         searchItemAdapter.update(search);
     }
 

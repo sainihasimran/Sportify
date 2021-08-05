@@ -7,7 +7,7 @@
     tools:context=".search.SearchFragment">
 
     <TextView
-        android:id="@+id/empty_view"
+        android:id="@+id/no_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No Search Result Available"
@@ -19,6 +19,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Display"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -30,6 +42,5 @@
             android:paddingBottom="@dimen/size_l"
             tools:listitem="@layout/item_product"
             tools:visibility="visible" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
