@@ -34,13 +34,12 @@ import java.util.Set;
 
 public class SearchFragment extends Fragment implements ItemListItemClickListner {
 
-    public static SearchItem selectedItem = null;
+    public static Product selectedProduct = null;
+    public static Equipment selectedEquipment = null;
 
     private SearchItemAdapter searchItemAdapter;
 
     private List<SearchItem> searchItems = new ArrayList<>();
-
-    private List<String> favoriteProducts = new ArrayList<>();
 
     private View emptyView;
     private View noResult;
@@ -81,7 +80,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
         emptyView = view.findViewById(R.id.empty_view);
         noResult = view.findViewById(R.id.no_result);
-        emptyView.setVisibility(View.VISIBLE);
+        //emptyView.setVisibility(View.VISIBLE);
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
@@ -112,20 +111,22 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     @Override
     public void onItemClicked(SearchItem searchItem) {
-        selectedItem = searchItem;
+        Intent intent;
         if(searchItem.getProduct() != null)
         {
-            Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
+            selectedProduct = searchItem.getProduct();
+            intent = new Intent(requireContext(), ProductDetailsActivity.class);
         }
         else
         {
-            Intent intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
+            selectedEquipment = searchItem.getEquipment();
+            intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
         }
-        Intent intent = new Intent(requireContext(), ProductDetailsActivity.class);
         startActivity(intent);
     }
 
     public void filter(String query) {
+        emptyView.setVisibility(View.VISIBLE);
         if (!query.trim().isEmpty()) {
 
             List<SearchItem> temp = new ArrayList();
@@ -143,6 +144,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
             }
             searchItemAdapter.filter(temp);
         } else {
+            emptyView.setVisibility(View.GONE);
             searchItemAdapter.filter(searchItems);
         }
     }
