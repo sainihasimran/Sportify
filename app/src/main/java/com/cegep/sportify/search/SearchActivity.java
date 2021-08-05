@@ -1,6 +1,7 @@
 package com.cegep.sportify.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import com.cegep.sportify.R;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private SearchFragment searchFragment;
+    private SearchFragment searchFragment = new SearchFragment();
 
     private SearchView searchView;
 
@@ -26,19 +27,24 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, searchFragment)
+                .commit();
+
         searchView = (SearchView) findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                                              @Override
-                                              public boolean onQueryTextSubmit(String query) {
-                                                  return false;
-                                              }
-
-                                              @Override
-                                              public boolean onQueryTextChange(String newText) {
-                                                  searchFragment.filter(newText);
-                                                  return false;
-                                              }
-                                          }
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.e("message", newText);
+                searchFragment.filter(newText);
+                return false;
+            }
+        }
         );
         setupToolbar();
     }

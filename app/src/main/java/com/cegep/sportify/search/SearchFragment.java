@@ -88,7 +88,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
 
         emptyView = view.findViewById(R.id.empty_view);
         setupRecyclerView(view);
@@ -110,9 +109,9 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         recyclerView.setAdapter(searchItemAdapter);
     }
 
-    private void showItemList() {
+    private void showItemList(List<SearchItem> temp) {
         Set<SearchItem> search = new HashSet<>();
-        for (SearchItem searchItem : searchItems) {
+        for (SearchItem searchItem : temp) {
             search.add(searchItem);
         }
 
@@ -136,8 +135,11 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     }
 
     public void filter(String query) {
+        Log.e("message", query);
         if (!query.trim().isEmpty()) {
-            ArrayList<SearchItem> temp = new ArrayList();
+
+            List<SearchItem> temp = new ArrayList();
+            temp.clear();
             for (SearchItem search : searchItems) {
                 if (search.getProduct() != null) {
                     if (search.getProduct().getProductName().toLowerCase().contains(query.toLowerCase())) {
@@ -150,8 +152,10 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 }
             }
             searchItemAdapter.filter(temp);
+            //showItemList(temp);
         } else {
             searchItemAdapter.filter(searchItems);
+            //showItemList(searchItems);
         }
     }
 }
