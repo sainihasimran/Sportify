@@ -1,5 +1,7 @@
 package com.cegep.sportify.search;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -36,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 Log.e("message", newText);
                 searchFragment.filter(newText);
+
                 return false;
             }
         }

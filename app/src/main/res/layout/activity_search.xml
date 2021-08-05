@@ -27,10 +27,11 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:queryBackground="@color/black"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:iconifiedByDefault="false"
         app:showAsAction="always"
-        android:tooltipText="Search Here"
+        app:queryHint="Search Products or Equipment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
