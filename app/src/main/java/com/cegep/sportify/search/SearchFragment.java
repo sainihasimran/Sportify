@@ -1,21 +1,13 @@
 package com.cegep.sportify.search;
 
-import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +16,6 @@ import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
 import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
-import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsFragment;
 import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Product;
@@ -64,7 +55,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                     searchItem.setProduct(searchDataSnapshot.getValue(Product.class));
                     searchItems.add(searchItem);
                 }
-
             }
             if (snapshot.getKey().equals("Equipments")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
@@ -74,7 +64,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 }
             }
             SearchFragment.this.searchItems = searchItems;
-
         }
 
         @Override
@@ -85,7 +74,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
-
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -118,7 +106,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         for (SearchItem searchItem : temp) {
             search.add(searchItem);
         }
-
         noResult.setVisibility(search.isEmpty() ? View.VISIBLE : View.GONE);
         searchItemAdapter.update(search);
     }
@@ -139,7 +126,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     }
 
     public void filter(String query) {
-        Log.e("message", query);
         if (!query.trim().isEmpty()) {
 
             List<SearchItem> temp = new ArrayList();
@@ -156,10 +142,8 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 }
             }
             searchItemAdapter.filter(temp);
-            //showItemList(temp);
         } else {
             searchItemAdapter.filter(searchItems);
-            //showItemList(searchItems);
         }
     }
 }
