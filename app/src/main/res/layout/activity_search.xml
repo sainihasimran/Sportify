@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryBackground="@color/black"
+        android:background="@drawable/seachview_custom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:iconifiedByDefault="false"
         app:showAsAction="always"

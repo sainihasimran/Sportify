@@ -34,8 +34,9 @@ import java.util.Set;
 
 public class SearchFragment extends Fragment implements ItemListItemClickListner {
 
-    public static Product selectedProduct = null;
-    public static Equipment selectedEquipment = null;
+    public static SearchItem selectedItem = null;
+    public static Product selectedSearchProduct = null;
+    public static Equipment selectedSearchEquipment = null;
 
     private SearchItemAdapter searchItemAdapter;
 
@@ -48,7 +49,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
             if (snapshot.getKey().equals("Products")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
                     SearchItem searchItem = new SearchItem();
@@ -65,7 +65,6 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
             }
             SearchFragment.this.searchItems = searchItems;
         }
-
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
         }
@@ -80,9 +79,7 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         super.onViewCreated(view, savedInstanceState);
 
         emptyView = view.findViewById(R.id.empty_view);
-
         noResult = view.findViewById(R.id.no_result);
-        emptyView.setVisibility(View.VISIBLE);
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
@@ -103,26 +100,18 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void showItemList(List<SearchItem> temp) {
-        Set<SearchItem> search = new HashSet<>();
-        for (SearchItem searchItem : temp) {
-            search.add(searchItem);
-        }
-
-        searchItemAdapter.update(search);
-    }
-
     @Override
     public void onItemClicked(SearchItem searchItem) {
         Intent intent;
+        selectedItem = searchItem;
         if(searchItem.getProduct() != null)
         {
-            selectedProduct = searchItem.getProduct();
+            selectedSearchProduct = selectedItem.getProduct();
             intent = new Intent(requireContext(), ProductDetailsActivity.class);
         }
         else
         {
-            selectedEquipment = searchItem.getEquipment();
+            selectedSearchEquipment = selectedItem.getEquipment();
             intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
         }
         startActivity(intent);
@@ -131,8 +120,8 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     public void filter(String query) {
         emptyView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
+        List<SearchItem> temp = new ArrayList();
         if (!query.trim().isEmpty()) {
-            List<SearchItem> temp = new ArrayList();
             temp.clear();
             for (SearchItem search : searchItems) {
                 if (search.getProduct() != null) {
@@ -145,10 +134,9 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                     }
                 }
             }
+            emptyView.setVisibility(View.GONE);
             noResult.setVisibility(temp.isEmpty() ? View.VISIBLE : View.GONE);
-            searchItemAdapter.filter(temp);
-        } else {
-            emptyView.setVisibility(query.equals(null) ?View.GONE : View.VISIBLE);
         }
+        searchItemAdapter.filter(temp);
     }
 }

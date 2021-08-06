@@ -2,9 +2,15 @@ package com.cegep.sportify.search;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.hardware.camera2.params.BlackLevelPattern;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +24,7 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
