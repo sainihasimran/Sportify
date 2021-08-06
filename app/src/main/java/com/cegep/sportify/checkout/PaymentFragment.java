@@ -273,9 +273,9 @@ public class PaymentFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Order confirmation")
-                        .setMessage("Yay! Your order was successfully placed")
-                        .setPositiveButton("OK", null)
+                        .setTitle(R.string.order_successful_popup_title)
+                        .setMessage(R.string.order_successful_popup_message)
+                        .setPositiveButton(R.string.ok, null)
                         .setCancelable(false)
                         .setOnDismissListener(dialog -> {
                             Intent intent = new Intent(requireContext(), MainActivity.class);

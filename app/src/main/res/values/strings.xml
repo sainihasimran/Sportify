@@ -106,4 +106,8 @@
 
     <string name="return_policy"><u>Return Policy</u></string>
     <string name="current_location">Current Location</string>
+
+    <string name="order_successful_popup_title">Order confirmation</string>
+    <string name="order_successful_popup_message">Yay! Your order was placed successfully :)</string>
+    <string name="ok">OK</string>
 </resources>
