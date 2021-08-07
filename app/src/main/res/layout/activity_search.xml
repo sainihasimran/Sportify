@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".search.SearchActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -23,9 +23,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
-        android:name="com.cegep.sportify.SearchFragment"
+        android:name="com.cegep.sportify.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".details.productdetails.ProductDetailsActivity" />

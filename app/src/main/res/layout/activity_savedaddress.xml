@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.cegep.sportify.SavedAddressFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SavedAddressActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="  Saved Address"
+            app:titleTextColor="@color/white"
+            app:logo="@drawable/ic_baseline_home_24"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container"
+        android:name="com.cegep.sportify.SavedAddressFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SavedAddressActivity" />
+
+</LinearLayout>

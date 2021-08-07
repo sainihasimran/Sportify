@@ -1,8 +1,10 @@
 package com.cegep.sportify;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,9 +18,11 @@ import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.checkout.ShoppingCartActivity;
 import com.cegep.sportify.model.EquipmentFilter;
 import com.cegep.sportify.model.ProductFilter;
+import com.cegep.sportify.search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements ProductFilterListener, EquipmentFilterListener {
 
@@ -26,12 +30,14 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
     private EquipmentsListFragment equipmentsListFragment;
     private boolean isShowingProducts = true;
 
+    private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
         Toolbar topAppBar = findViewById(R.id.toolbar);
         topAppBar.inflateMenu(R.menu.menu_home);
@@ -88,6 +94,19 @@ public class MainActivity extends AppCompatActivity implements ProductFilterList
 
             return false;
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (SportifyApp.productAddedInShoppingCart) {
+            Snackbar.make(drawerLayout, "Product was successfully added to shopping cart", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.BLACK).setTextColor(Color.WHITE).show();
+            SportifyApp.productAddedInShoppingCart = false;
+        } else if (SportifyApp.equipmentAddedInShoppingCart) {
+            Snackbar.make(drawerLayout, "Equipment was successfully added to shopping cart", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.BLACK).setTextColor(Color.WHITE).show();
+            SportifyApp.equipmentAddedInShoppingCart = false;
+        }
     }
 
     private void showEquipmentsFragment() {
