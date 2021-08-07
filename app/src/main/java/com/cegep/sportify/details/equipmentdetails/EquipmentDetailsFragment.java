@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.cegep.sportify.Home.EquipmentsListFragment;
+import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.R;
 import com.cegep.sportify.SportifyApp;
 import com.cegep.sportify.Utils;
@@ -26,6 +27,7 @@ import com.cegep.sportify.model.Admin;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.ShoppingCartItem;
+import com.cegep.sportify.search.SearchFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -194,7 +196,7 @@ public class EquipmentDetailsFragment extends Fragment implements QuantitySelect
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);
 
-            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            Intent intent = ShippingActivity.getCallingIntent(requireContext(), true);
             startActivity(intent);
         } else {
             Utils.getShoppingCartReference().orderByChild("equipmentId").equalTo(equipment.getEquipmentId()).addListenerForSingleValueEvent(

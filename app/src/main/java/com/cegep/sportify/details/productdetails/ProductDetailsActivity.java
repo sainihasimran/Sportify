@@ -1,14 +1,9 @@
 package com.cegep.sportify.details.productdetails;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.R;
-import com.cegep.sportify.search.SearchFragment;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -22,12 +17,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> onClick(v));
-    }
-
-    private void onClick(View v) {
-        ProductsListFragment.selectedProduct = null;
-        SearchFragment.selectedSearchProduct = null;
-        finish();
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 }

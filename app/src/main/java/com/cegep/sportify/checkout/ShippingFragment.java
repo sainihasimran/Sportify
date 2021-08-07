@@ -27,6 +27,8 @@ import java.util.List;
 
 public class ShippingFragment extends Fragment implements AddressSelectedListener {
 
+    private static final String KEY_SELECTING_ADDRESS = "KEY_SELECTING_ADDRESS";
+
     private View noAddressContainer;
     private View addressContainer;
     private Button nextButton;
@@ -35,6 +37,14 @@ public class ShippingFragment extends Fragment implements AddressSelectedListene
     private Address selectedAddress;
 
     private AddressAdapter addressAdapter;
+
+    public static ShippingFragment newInstance(boolean isSelectingAddress) {
+        ShippingFragment fragment = new ShippingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_SELECTING_ADDRESS, isSelectingAddress);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     private final ValueEventListener addressChangeListener = new ValueEventListener() {
         @Override
@@ -116,7 +126,8 @@ public class ShippingFragment extends Fragment implements AddressSelectedListene
     }
 
     private void setupAddressContainer(View view) {
-        addressAdapter = new AddressAdapter(this);
+        boolean isSelectingAddress = getArguments().getBoolean(KEY_SELECTING_ADDRESS);
+        addressAdapter = new AddressAdapter(this, isSelectingAddress);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(addressAdapter);

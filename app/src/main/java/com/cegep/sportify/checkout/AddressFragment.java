@@ -228,7 +228,7 @@ public class AddressFragment extends Fragment {
     private void setupSaveButton(View view) {
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
             if (address.isValid(requireContext())) {
-                if (addressList.contains(address)) {
+                if (TextUtils.isEmpty(addressId) && addressList.contains(address)) {
                     Toast.makeText(requireContext(), "Address already exists", Toast.LENGTH_SHORT).show();
                     return;
                 }

@@ -15,14 +15,14 @@ class OrderPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new PendingOrder();
+            return new PendingOrdersFragment();
         }
 
         if (position == 1) {
-            return new AcceptedOrder();
+            return new AcceptedOrdersFragment();
         }
 
-        return new CancelledOrder();
+        return new DeclinedOrdersFragment();
     }
 
     @Override

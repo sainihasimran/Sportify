@@ -59,15 +59,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (SearchFragment.selectedSearchProduct != null) {
-            this.product = SearchFragment.selectedSearchProduct;
-
-        }
-        else {
-            this.product = ProductsListFragment.selectedProduct;
-
-        }
-
+        this.product = ProductsListFragment.selectedProduct;
 
         setupProductName(view);
         setupProductImages(view);
@@ -79,7 +71,6 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         setupAddToCart(view);
         setupBuyNow(view);
         setupReturnPolicy(view);
-        product = null;
     }
 
     private void setupProductName(View view) {
@@ -289,7 +280,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
             SportifyApp.orders.clear();
             SportifyApp.orders.add(order);
 
-            Intent intent = new Intent(requireContext(), ShippingActivity.class);
+            Intent intent = ShippingActivity.getCallingIntent(requireContext(), true);
             startActivity(intent);
         } else {
             Utils.getShoppingCartReference().orderByChild("productId").equalTo(product.getProductId()).addListenerForSingleValueEvent(

@@ -99,6 +99,11 @@ public class ResetPasswordFragment extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(requireContext(), "Reset Link Sent To Your Email.", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(requireActivity(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        requireActivity().finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -107,7 +112,6 @@ public class ResetPasswordFragment extends Fragment {
                     }
                 });
             }
-                requireActivity().finish();
             });
 
         }

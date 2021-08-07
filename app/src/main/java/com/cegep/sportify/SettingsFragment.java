@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.cegep.sportify.checkout.AddressActivity;
-import com.cegep.sportify.checkout.PaymentActivity;
+import com.cegep.sportify.checkout.ShippingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsFragment extends Fragment {
@@ -32,7 +29,7 @@ public class SettingsFragment extends Fragment {
         });
 
         view.findViewById(R.id.saved_address_text).setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), SavedAddressActivity.class);
+            Intent intent = ShippingActivity.getCallingIntent(requireContext(), false);
             requireActivity().startActivity(intent);
         });
 
@@ -45,7 +42,6 @@ public class SettingsFragment extends Fragment {
             Intent intent = new Intent(requireContext(), ResetPasswordActivity.class);
             requireActivity().startActivity(intent);
         });
-
 
         Button button = view.findViewById(R.id.sign_out_button);
         button.setOnClickListener(new View.OnClickListener() {
