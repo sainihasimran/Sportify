@@ -85,6 +85,7 @@
 
     <string name="pending">Pending</string>
     <string name="accepted">Accepted</string>
+    <string name="declined">Declined</string>
     <string name="cancelled">Cancelled</string>
     <string name="favorites">Favorites</string>
 

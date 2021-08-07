@@ -14,6 +14,12 @@ import java.util.UUID;
 
 public class Utils {
 
+    public static final String ORDER_PENDING = "pending";
+
+    public static final String ORDER_ACCEPTED = "accepted";
+
+    public static final String ORDER_DECLINED = "declined";
+
     public static DatabaseReference getUserReference() {
         return getClientDatabase().getReference("Users").child(SportifyApp.user.userId);
     }

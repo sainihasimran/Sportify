@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".PendingOrder">
+    tools:context=".PendingOrdersFragment">
 
     <TextView
         android:id="@+id/empty_view"

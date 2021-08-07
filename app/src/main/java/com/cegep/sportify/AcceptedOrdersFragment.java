@@ -1,43 +1,31 @@
 package com.cegep.sportify;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
-
 import com.cegep.sportify.Adapter.OrderAdapter;
-
-
 import com.cegep.sportify.model.Order;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class PendingOrder extends Fragment {
-
+public class AcceptedOrdersFragment extends Fragment {
 
 
-    private OrderAdapter orderAdapter;
+    private OrderAdapter OrderAdapter;
+
 
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -45,7 +33,7 @@ public class PendingOrder extends Fragment {
             List<Order> orders = new ArrayList<>();
             for (DataSnapshot orderDatasnapshot : snapshot.getChildren()) {
                 Order order = orderDatasnapshot.getValue(Order.class);
-                if (order != null && "pending".equals(order.getStatus())) {
+                if (order != null && Utils.ORDER_ACCEPTED.equalsIgnoreCase(order.getStatus())) {
                     orders.add(order);
                 }
             }
@@ -56,7 +44,7 @@ public class PendingOrder extends Fragment {
             } else {
                 emptyView.setVisibility(View.GONE);
             }
-            orderAdapter.update(orders);
+            OrderAdapter.update(orders);
         }
 
         @Override
@@ -69,7 +57,7 @@ public class PendingOrder extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_order_pending, container, false);
+        return inflater.inflate(R.layout.fragment_accepted_orders, container, false);
     }
 
     @Override
@@ -77,18 +65,20 @@ public class PendingOrder extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         emptyView = view.findViewById(R.id.empty_view);
 
-
         setupRecyclerView(view);
+        FirebaseDatabase adminappdb = Utils.getClientDatabase();
 
         Query query = Utils.getClientDatabase().getReference("Orders").orderByChild("clientId").equalTo(SportifyApp.user.userId);
         query.addValueEventListener(valueEventListener);
+
     }
 
     private void setupRecyclerView(View view) {
-        orderAdapter = new OrderAdapter(requireContext(), new ArrayList<>());
+        OrderAdapter = new OrderAdapter(requireContext(), new ArrayList<>());
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(orderAdapter);
+        recyclerView.setAdapter(OrderAdapter);
     }
+
 }
