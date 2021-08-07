@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cegep.sportify.Home.EquipmentsListFragment;
+import com.cegep.sportify.Home.ProductsListFragment;
 import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
@@ -33,10 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 public class SearchFragment extends Fragment implements ItemListItemClickListner {
-
-    public static SearchItem selectedItem = null;
-    public static Product selectedSearchProduct = null;
-    public static Equipment selectedSearchEquipment = null;
 
     private SearchItemAdapter searchItemAdapter;
 
@@ -103,15 +101,14 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
     @Override
     public void onItemClicked(SearchItem searchItem) {
         Intent intent;
-        selectedItem = searchItem;
         if(searchItem.getProduct() != null)
         {
-            selectedSearchProduct = selectedItem.getProduct();
+            ProductsListFragment.selectedProduct = searchItem.getProduct();
             intent = new Intent(requireContext(), ProductDetailsActivity.class);
         }
         else
         {
-            selectedSearchEquipment = selectedItem.getEquipment();
+            EquipmentsListFragment.selectedEquipment = searchItem.getEquipment();
             intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
         }
         startActivity(intent);
