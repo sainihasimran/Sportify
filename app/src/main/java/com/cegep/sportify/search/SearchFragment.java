@@ -1,20 +1,13 @@
 package com.cegep.sportify.search;
 
-import android.app.SearchManager;
-import android.content.Context;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cegep.sportify.ItemListItemClickListner;
 import com.cegep.sportify.R;
 import com.cegep.sportify.Utils;
+import com.cegep.sportify.details.equipmentdetails.EquipmentDetailsActivity;
+import com.cegep.sportify.details.productdetails.ProductDetailsActivity;
 import com.cegep.sportify.model.Equipment;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.SearchItem;
@@ -39,22 +34,27 @@ import java.util.Set;
 
 public class SearchFragment extends Fragment implements ItemListItemClickListner {
 
+    public static SearchItem selectedItem = null;
+    public static Product selectedSearchProduct = null;
+    public static Equipment selectedSearchEquipment = null;
+
     private SearchItemAdapter searchItemAdapter;
 
     private List<SearchItem> searchItems = new ArrayList<>();
 
+    private RecyclerView recyclerView;
     private View emptyView;
+    private View noResult;
+
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
             if (snapshot.getKey().equals("Products")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
                     SearchItem searchItem = new SearchItem();
                     searchItem.setProduct(searchDataSnapshot.getValue(Product.class));
                     searchItems.add(searchItem);
                 }
-
             }
             if (snapshot.getKey().equals("Equipments")) {
                 for (DataSnapshot searchDataSnapshot : snapshot.getChildren()) {
@@ -64,15 +64,11 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                 }
             }
             SearchFragment.this.searchItems = searchItems;
-            showItemList();
         }
-
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
         }
     };
-    private SearchView searchView = null;
-    private SearchView.OnQueryTextListener queryTextListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,9 +77,9 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
 
         emptyView = view.findViewById(R.id.empty_view);
+        noResult = view.findViewById(R.id.no_result);
         setupRecyclerView(view);
 
         FirebaseDatabase adminappdb = Utils.getAdminDatabase();
@@ -97,31 +93,36 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
 
     private void setupRecyclerView(View view) {
         searchItemAdapter = new SearchItemAdapter(requireContext(), this.searchItems, this);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(searchItemAdapter);
-    }
-
-    private void showItemList() {
-        Set<SearchItem> search = new HashSet<>();
-        for (SearchItem searchItem : searchItems) {
-            search.add(searchItem);
-        }
-
-        emptyView.setVisibility(search.isEmpty() ? View.VISIBLE : View.GONE);
-
-        searchItemAdapter.update(search);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void onItemClicked(SearchItem searchItem) {
-
+        Intent intent;
+        selectedItem = searchItem;
+        if(searchItem.getProduct() != null)
+        {
+            selectedSearchProduct = selectedItem.getProduct();
+            intent = new Intent(requireContext(), ProductDetailsActivity.class);
+        }
+        else
+        {
+            selectedSearchEquipment = selectedItem.getEquipment();
+            intent = new Intent(requireContext(), EquipmentDetailsActivity.class);
+        }
+        startActivity(intent);
     }
 
     public void filter(String query) {
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        List<SearchItem> temp = new ArrayList();
         if (!query.trim().isEmpty()) {
-            ArrayList<SearchItem> temp = new ArrayList();
+            temp.clear();
             for (SearchItem search : searchItems) {
                 if (search.getProduct() != null) {
                     if (search.getProduct().getProductName().toLowerCase().contains(query.toLowerCase())) {
@@ -133,52 +134,9 @@ public class SearchFragment extends Fragment implements ItemListItemClickListner
                     }
                 }
             }
-            searchItemAdapter.filter(temp);
-        } else {
-            searchItemAdapter.filter(searchItems);
+            emptyView.setVisibility(View.GONE);
+            noResult.setVisibility(temp.isEmpty() ? View.VISIBLE : View.GONE);
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-            searchEditText.setTextColor(getResources().getColor(R.color.white));
-            searchEditText.setHintTextColor(getResources().getColor(R.color.white));
-        }
-
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
-            queryTextListener = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    filter(newText);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    filter(query);
-                    return true;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            return false;
-        }
-        searchView.setOnQueryTextListener(queryTextListener);
-        return super.onOptionsItemSelected(item);
+        searchItemAdapter.filter(temp);
     }
 }

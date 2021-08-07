@@ -69,12 +69,9 @@
             android:layout_marginStart="@dimen/size_l"
             android:layout_marginLeft="@dimen/size_l"
             android:layout_marginTop="@dimen/size_m"
-            android:layout_marginEnd="@dimen/size_l"
-            android:layout_marginRight="@dimen/size_l"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/favorite_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/product_image"
             tools:text="LE LED Light Bulbs" />
@@ -89,19 +86,6 @@
             app:layout_constraintStart_toStartOf="@id/product_name"
             app:layout_constraintTop_toBottomOf="@id/product_name"
             tools:text="$25.99" />
-
-        <ImageButton
-            android:id="@+id/favorite_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/size_l"
-            android:layout_marginRight="@dimen/size_l"
-            android:background="@null"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_favorite_border"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/product_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -32,6 +32,7 @@ import com.cegep.sportify.model.Admin;
 import com.cegep.sportify.model.Order;
 import com.cegep.sportify.model.Product;
 import com.cegep.sportify.model.ShoppingCartItem;
+import com.cegep.sportify.search.SearchFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
@@ -58,7 +59,15 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.product = ProductsListFragment.selectedProduct;
+        if (SearchFragment.selectedSearchProduct != null) {
+            this.product = SearchFragment.selectedSearchProduct;
+
+        }
+        else {
+            this.product = ProductsListFragment.selectedProduct;
+
+        }
+
 
         setupProductName(view);
         setupProductImages(view);
@@ -70,6 +79,7 @@ public class ProductDetailsFragment extends Fragment implements QuantitySelected
         setupAddToCart(view);
         setupBuyNow(view);
         setupReturnPolicy(view);
+        product = null;
     }
 
     private void setupProductName(View view) {

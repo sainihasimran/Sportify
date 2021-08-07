@@ -37,7 +37,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
     @Override
     public SearchItemViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_product, parent, false);
+        View view = inflater.inflate(R.layout.item_search, parent, false);
         return new SearchItemViewHolder(view, itemListItemClickListner);
     }
 
