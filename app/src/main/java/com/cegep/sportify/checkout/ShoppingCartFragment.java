@@ -123,7 +123,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
                 SportifyApp.orders.addAll(orders);
                 SportifyApp.isBuyMode = false;
 
-                Intent intent = new Intent(requireContext(), ShippingActivity.class);
+                Intent intent = ShippingActivity.getCallingIntent(requireContext(), true);
                 startActivity(intent);
             }
         });
@@ -144,6 +144,8 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartChange
         shoppingCartAdapter.handleItemDeleted(shoppingCartItem);
 
         updateContentVisibility();
+
+        Toast.makeText(requireContext(), "Item removed from shopping cart", Toast.LENGTH_SHORT).show();
     }
 
     private void showShoppingCartItemsList() {
