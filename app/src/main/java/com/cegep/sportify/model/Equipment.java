@@ -6,7 +6,7 @@ import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Equipment {
+public class Equipment implements Comparable<Equipment> {
 
     private String equipmentId;
 
@@ -149,5 +149,10 @@ public class Equipment {
         order.setSport(sport);
 
         return order;
+    }
+
+    @Override
+    public int compareTo(Equipment o) {
+        return Long.compare(createdAt, o.createdAt);
     }
 }

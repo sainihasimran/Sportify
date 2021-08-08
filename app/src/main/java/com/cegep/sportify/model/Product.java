@@ -5,7 +5,7 @@ import com.cegep.sportify.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Comparable<Product> {
 
     private String productId;
 
@@ -247,5 +247,10 @@ public class Product {
         order.setStatus("pending");
 
         return order;
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        return Long.compare(createdAt, o.createdAt);
     }
 }
